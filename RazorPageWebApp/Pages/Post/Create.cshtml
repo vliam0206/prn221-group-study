@@ -1,0 +1,22 @@
+﻿@page
+@model RazorPageWebApp.Pages.Post.CreatePostModel;
+@{
+}
+
+<section class="create-post-section">
+    <form method="post">
+        <textarea name="TextDs" id="premiumskinsandicons-naked">@Html.Raw(Model.TextDs)</textarea>
+        <button>Submit</button>
+    </form>
+</section>
+<script>
+    tinymce.init({
+        selector: '#premiumskinsandicons-naked',
+        icons: 'small',
+        toolbar_location: 'bottom',
+        plugins: 'lists code table codesample link',
+        toolbar: 'blocks | bold italic underline strikethrough bullist link codesample',
+        menubar: false,
+        statusbar: false
+    });
+</script>
