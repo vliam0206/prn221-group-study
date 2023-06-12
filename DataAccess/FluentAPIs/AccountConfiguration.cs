@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.FluentAPIs;
+namespace DataAccess.FluentAPIs;
 
 public class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
@@ -36,6 +36,6 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
             .OnDelete(DeleteBehavior.Restrict);
         builder.HasMany(x => x.ReplyComments).WithOne(c => c.AccountReplied).HasForeignKey(c => c.AccountRepliedId);
         builder.HasMany(x => x.Likes).WithOne(l => l.AccountCreated).HasForeignKey(l => l.AccountCreatedID);
-        builder.HasMany(x => x.Notifications).WithOne(n => n.AccountRecieved).HasForeignKey(n => n.AccountRecievedId);        
+        builder.HasMany(x => x.Notifications).WithOne(n => n.AccountRecieved).HasForeignKey(n => n.AccountRecievedId);
     }
 }

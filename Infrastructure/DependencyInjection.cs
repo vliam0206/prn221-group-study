@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application.IServices;
+using Infrastructure.UnitOfWorks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -10,10 +12,11 @@ namespace Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastrucureService(this IServiceCollection services, string databaseConnection)
+    public static IServiceCollection AddInfrastrucureService(this IServiceCollection services)
     {
         // Add all services of infrastructure
         //...
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }

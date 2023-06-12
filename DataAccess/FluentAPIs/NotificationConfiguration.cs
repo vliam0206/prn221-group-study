@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.FluentAPIs;
+namespace DataAccess.FluentAPIs;
 
 public class NotificationConfiguration : IEntityTypeConfiguration<Notification>
 {
