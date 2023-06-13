@@ -23,6 +23,7 @@ public class PostRepository
             Content = content,
             GroupId = groupId.Value,
             CreationDate = DateTime.UtcNow,
+            AccountCreatedID = Guid.Parse("18B2128E-1852-424B-BF32-AB977085A560")
         };
          await _context.AddAsync(post);
         return await _context.SaveChangesAsync() > 0;
