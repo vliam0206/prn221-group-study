@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.FluentAPIs.Posts;
+namespace DataAccess.FluentAPIs.Posts;
 
 public class TagConfiguration : IEntityTypeConfiguration<Tag>
 {

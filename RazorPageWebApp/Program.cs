@@ -1,16 +1,29 @@
 using Application.Commons;
+using Application.IServices;
+using DataAccess;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using RazorPageWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //register custom configuration
-var configuration = builder.Configuration.Get<AppConfiguration>();
-builder.Services.AddSingleton(configuration);
+
+//Add DIs
+builder.Services.AddInfrastrucureService();
+
 
 // Add dbcontext ---> Remember to delete at the end
 builder.Services.AddDbContext<AppDBContext>(options =>
-                options.UseSqlServer(configuration.ConnectionStrings.DefaultDB));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDB")));
+
+// Add httpcontext, cache memory for using session
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options
+    => options.IdleTimeout = TimeSpan.FromMinutes(60));
+
+builder.Services.AddScoped<IClaimService, ClaimService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -33,5 +46,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.UseSession();
 
 app.Run();

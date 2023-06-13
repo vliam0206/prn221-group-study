@@ -3,7 +3,7 @@ PLEASE READ THIS FILE CAREFULLY!
 ## EF migration code first
 To apply the latest migrations to your physical database, run this command(run the command from group-study-system folder)
 ```
-dotnet ef database update -s RazorPageWebApp -p Infrastructure
+dotnet ef database update -s RazorPageWebApp -p DataAccess
 ```
 ## Branch convention
 - For every new function, you must create a new branch, then invite other members to review your code in Git Hub, when that branch merged successfully, you can delete it and continue to create a new branch based on main for other functions.

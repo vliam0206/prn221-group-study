@@ -7,20 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mappers\" />
-    <Folder Include="Services\" />
-    <Folder Include="Repositories\" />
+    <Folder Include="IRepositories\Groups\" />
+    <Folder Include="IRepositories\Posts\" />
+    <Folder Include="Repositories\Groups\" />
+    <Folder Include="Repositories\Posts\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.16" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.FluentAPIs.Posts;
+namespace DataAccess.FluentAPIs.Posts;
 
 public class CommentConfiguration : IEntityTypeConfiguration<Comment>
 {
@@ -19,7 +19,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         builder.Property(x => x.CreationDate).HasDefaultValueSql("getutcdate()");
         // assign relationship
         builder.HasOne(x => x.Post).WithMany(p => p.Comments).HasForeignKey(x => x.PostId);
-        builder.HasOne(x => x.AccountCreated).WithMany(a => a.Comments).HasForeignKey(x => x.AccountCreatedID).OnDelete(DeleteBehavior.Restrict);        
+        builder.HasOne(x => x.AccountCreated).WithMany(a => a.Comments).HasForeignKey(x => x.AccountCreatedID).OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.AccountReplied).WithMany(a => a.ReplyComments).HasForeignKey(x => x.AccountRepliedId).OnDelete(DeleteBehavior.Restrict);
         builder.HasOne(x => x.CommentReplied).WithMany(c => c.ReplyComments).HasForeignKey(x => x.CommentRepliedId);
         builder.HasMany(x => x.ReplyComments).WithOne(c => c.CommentReplied).HasForeignKey(x => x.CommentRepliedId);
