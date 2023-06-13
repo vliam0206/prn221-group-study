@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.FluentAPIs.Groups;
+namespace DataAccess.FluentAPIs.Groups;
 
 public class AccountInGroupConfiguration : IEntityTypeConfiguration<AccountInGroup>
 {

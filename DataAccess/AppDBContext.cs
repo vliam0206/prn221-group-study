@@ -1,22 +1,20 @@
-﻿using Application.Commons;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Entities.Groups;
 using Domain.Entities.Posts;
-using Infrastructure.FluentAPIs;
+using DataAccess.FluentAPIs;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
-namespace Infrastructure;
+namespace DataAccess;
 
 public class AppDBContext : DbContext
 {
-    #region Fields
-    private readonly AppConfiguration _configuration;
-    #endregion
-
-    public AppDBContext(DbContextOptions options, AppConfiguration configuration) : base(options)
+    public AppDBContext()
     {
-        _configuration = configuration;
     }
+    public AppDBContext(DbContextOptions options) : base(options)
+    {
+    }    
 
     #region DB Sets
     public DbSet<Account> Accounts { get; set; }
@@ -36,8 +34,16 @@ public class AppDBContext : DbContext
     {
         if (!optionsbuilder.IsConfigured)
         {
-            optionsbuilder.UseSqlServer(_configuration.ConnectionStrings.DefaultDB);
+            optionsbuilder.UseSqlServer(GetConnectionStrings());
         }
+    }
+    private string GetConnectionStrings()
+    {
+        IConfiguration config = new ConfigurationBuilder()
+         .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", true, true)
+        .Build();
+        return config["ConnectionStrings:DefaultDB"];
     }
     #endregion
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.IServices;
 
-public interface ICurrentTime
+public interface IClaimService
 {
-    public DateTime GetCurrentTime();
+    public Guid GetCurrentUserId { get; }
 }
