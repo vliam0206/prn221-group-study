@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="IRepositories\Groups\" />
-    <Folder Include="IRepositories\Posts\" />
-    <Folder Include="Repositories\Groups\" />
-    <Folder Include="Repositories\Posts\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
   </ItemGroup>
 

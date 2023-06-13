@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Infrastructure.IRepositories;
+using Infrastructure.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,4 +10,5 @@ namespace Infrastructure.UnitOfWorks;
 
 public interface IUnitOfWork
 {
+    public IAccountRepository AccountRepository { get; }
 }
