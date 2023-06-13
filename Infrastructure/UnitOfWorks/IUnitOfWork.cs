@@ -1,5 +1,7 @@
 ﻿using Infrastructure.IRepositories;
 using Infrastructure.Repositories;
+using Infrastructure.Repositories.Groups;
+using Infrastructure.Repositories.Posts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,4 +13,6 @@ namespace Infrastructure.UnitOfWorks;
 public interface IUnitOfWork
 {
     public IAccountRepository AccountRepository { get; }
+    GroupRepository GroupRepository { get; }
+    PostRepository PostRepository { get; }
 }
