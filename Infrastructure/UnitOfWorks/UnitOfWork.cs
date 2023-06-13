@@ -1,4 +1,6 @@
 ﻿using Domain.Entities;
+using Infrastructure.IRepositories;
+using Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,4 +11,12 @@ namespace Infrastructure.UnitOfWorks;
 
 public class UnitOfWork : IUnitOfWork
 {
+    #region Fields
+    private readonly IAccountRepository _accountRepository;
+    #endregion
+    public UnitOfWork(IAccountRepository accountRepository)
+    {
+        _accountRepository = accountRepository;
+    }
+    public IAccountRepository AccountRepository => _accountRepository;
 }
