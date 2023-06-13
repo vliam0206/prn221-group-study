@@ -1,13 +1,23 @@
-﻿@page
+﻿@page "/groups/{groupId:guid}"
+@using Microsoft.AspNetCore.Html;
 @model RazorPageWebApp.Pages.Post.CreatePostModel;
 @{
 }
 
-<section class="create-post-section">
-    <form method="post">
-        <textarea name="TextDs" id="premiumskinsandicons-naked">@Html.Raw(Model.TextDs)</textarea>
-        <button>Submit</button>
-    </form>
+<section class="row">
+
+    <div class="col-lg-3 border border-dark rounded">
+        <div class="card-img p-2 d-flex justify-content-center">
+            <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <form method="post">
+            <textarea name="TextDs" id="premiumskinsandicons-naked">@(new HtmlString(@Model.TextDs))</textarea>
+            <button>Submit</button>
+        </form>
+    </div>
+    @(new HtmlString(@Model.TextDs))
 </section>
 <script>
     tinymce.init({
