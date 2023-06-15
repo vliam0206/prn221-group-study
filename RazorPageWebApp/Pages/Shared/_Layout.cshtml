@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RazorPageWebApp.styles.css" asp-append-version="true" />
+    <script src="https://cdn.tiny.cloud/1/wyopdb0u8mweiku159d2tp39m5451adsboem7qcr0jyyixp1/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    @await RenderSectionAsync("TinyMce",false)
 </head>
 <body>
     <header>
