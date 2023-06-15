@@ -20,7 +20,7 @@ public static class DependencyInjection
     {
         // Add all services of infrastructure
         //...
-        services.AddSingleton(typeof(IAccountRepository), typeof(AccountRepository));
+        services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
         services.AddScoped(typeof(PostRepository));
         services.AddScoped(typeof(GroupRepository));
 

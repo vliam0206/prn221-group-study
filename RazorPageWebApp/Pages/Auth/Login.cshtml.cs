@@ -1,50 +1,57 @@
+using Application.Utils;
 using Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorPageWebApp.Models.AccountModels;
 
-namespace RazorPageWebApp.Pages.Auth
-{
-    public class LoginModel : PageModel
-    {
-        private readonly IHttpContextAccessor _context;
-        private IUnitOfWork _unitOfWork;
-        public string Message { get; set; }
-        [BindProperty]
-        public LoginAccount AccountObj { get; set; }
+namespace RazorPageWebApp.Pages.Auth;
 
-        public LoginModel(IUnitOfWork unitOfWork, IHttpContextAccessor context)
-        {
-            _unitOfWork = unitOfWork;
-            _context = context;
-        }
-        public void OnGet()
-        {
-        }
-        public async Task<IActionResult> OnPost()
+public class LoginModel : PageModel
+{
+    private readonly IHttpContextAccessor _httpContext;
+    private IUnitOfWork _unitOfWork;
+    public string Message { get; set; }
+    [BindProperty]
+    public LoginAccount AccountObj { get; set; }
+
+    public LoginModel(IUnitOfWork unitOfWork, IHttpContextAccessor context)
+    {
+        _unitOfWork = unitOfWork;
+        _httpContext = context;
+    }
+    public void OnGet()
+    {
+    }
+    public async Task<IActionResult> OnPost()
+    {
+        try
         {
             if (ModelState.IsValid)
             {
-                var session = _context.HttpContext!.Session;
+                var session = _httpContext.HttpContext!.Session;
                 ModelState.Clear();
+
                 //logic code to login here
-                var username = AccountObj.Username;
-                var password = AccountObj.Password;
-                if ( await _unitOfWork.AccountRepository.LoginAsync(username, password))
+                var account = await _unitOfWork.AccountRepository.GetAccountAsync(AccountObj.Username);
+
+                if (account == null || !AccountObj.Password.Verify(account.Password))
                 {
-                    var account = await _unitOfWork.AccountRepository.GetAccountAsync(username);
-                    session.SetString("UserId", account!.Id.ToString());
-                    //return new RedirectToPageResult("./Admin/Index");
-                    Message = "Login successfully!";
+                    Message = "Wrong username/password";
                     return Page();
                 }
-                Message = "Wrong username/password";
+
+                // Add current user to session
+                session.SetString("UserId", account!.Id.ToString());
+                session.SetString("UserName", account!.Username);
+
+                // logged in successful, redicrect to Homepage
+                Message = "Login successfully!";
+                return new RedirectToPageResult("../Index");
             }
-            else
-            {
-                Message = "Login failed!";
-            }
-            return Page();
+        } catch (Exception ex)
+        {
+            Message = ex.Message;                
         }
+        return Page();
     }
 }
