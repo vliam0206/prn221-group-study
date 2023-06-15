@@ -9,6 +9,7 @@ namespace Infrastructure.IRepositories;
 
 public interface IAccountRepository
 {
-    public Task<bool> LoginAsync(string username, string password);
-    public Task<Account?> GetAccountAsync(string username);
+    Task<Account?> GetAccountAsync(string username);
+
+    Task InsertAccountAsync(Account account);
 }
