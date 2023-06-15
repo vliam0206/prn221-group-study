@@ -1,6 +1,6 @@
 ﻿@page "/groups/{groupId:guid}"
 @using Microsoft.AspNetCore.Html;
-@model RazorPageWebApp.Pages.Post.CreatePostModel;
+@model RazorPageWebApp.Pages.Groups.CreatePostModel;
 @{
 }
 
@@ -14,7 +14,7 @@
     <div class="col-lg-9">
         <form method="post">
             <span asp-validation-for="TextDs"></span>
-            <textarea name="TextDs" id="premiumskinsandicons-naked">@(new HtmlString(@Model.TextDs))</textarea>
+            <textarea name="TextDs" id="create-post">@(new HtmlString(@Model.TextDs))</textarea>
             <button>Submit</button>
         </form>
     </div>
@@ -22,11 +22,14 @@
 </section>
 <script>
     tinymce.init({
-        selector: '#premiumskinsandicons-naked',
+        selector: '#create-post',
         icons: 'small',
+        min_height: 300,
+        max_height: 1000,
         toolbar_location: 'bottom',
-        plugins: 'lists code table codesample link',
+        plugins: 'lists code table codesample link autoresize',
         toolbar: 'blocks | bold italic underline strikethrough bullist link codesample',
+        resize: true,
         menubar: false,
         statusbar: false
     });

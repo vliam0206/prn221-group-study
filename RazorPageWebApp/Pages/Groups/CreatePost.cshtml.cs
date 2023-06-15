@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
-namespace RazorPageWebApp.Pages.Post
+namespace RazorPageWebApp.Pages.Groups
 {
     public class CreatePostModel : PageModel
     {
@@ -18,10 +19,13 @@ namespace RazorPageWebApp.Pages.Post
 
         [BindProperty]
         [Required(ErrorMessage ="Post Content shouldn't be empty")]
-        public string? TextDs { get; set; } = "<h1>Welcome to TinyMce</h1>";
+        public string? TextDs { get; set; } = string.Empty;
         public void OnGet(Guid? groupId)
         {
-           
+            if (Debugger.IsAttached)
+            {
+                TextDs = "hello World";
+            }
 
         }
         public async Task<IActionResult> OnPostAsync(Guid? groupId)
@@ -32,7 +36,7 @@ namespace RazorPageWebApp.Pages.Post
 
                 if (result == true) return Page();
             }
-            return Redirect("/Error");
+            return Page();
         }
     }
 }
