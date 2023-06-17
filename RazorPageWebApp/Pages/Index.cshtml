@@ -8,6 +8,7 @@
     <h1 class="display-4">Welcome</h1>
 
     <span class="text-success">@Model.Message</span>
+  
     <div class="col-md-6 container">
     <p>Test authentication methods</p>
         <a asp-page="./Auth/Login" class="btn btn-dark col-md-7 mb-3 btn-outline-light">Login</a>
@@ -16,4 +17,5 @@
         <a asp-page-handler="CurrentUsername" class="btn btn-dark col-md-7 mb-3 btn-outline-light">Get Current UserName</a>
         <a asp-page-handler="Logout" class="btn btn-danger col-md-7 mb-3 btn-outline-light">Log Out</a>
     </div>
+
 </div>
