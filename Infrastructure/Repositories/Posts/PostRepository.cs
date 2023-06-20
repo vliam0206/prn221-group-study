@@ -8,4 +8,5 @@ namespace Infrastructure.Repositories.Posts;
 
 public class PostRepository
 {
+
 }
