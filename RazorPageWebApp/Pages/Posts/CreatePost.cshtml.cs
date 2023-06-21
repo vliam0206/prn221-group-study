@@ -26,7 +26,7 @@ namespace RazorPageWebApp.Pages.Groups
 
         [BindProperty]
         [Required(ErrorMessage = "Post Content shouldn't be empty")]
-        public string? TextDs { get; set; } = string.Empty;
+        public string? Content { get; set; } = string.Empty;
         //[Authorize]
         public async Task<IActionResult> OnGetAsync(Guid groupId)
         {
@@ -44,7 +44,7 @@ namespace RazorPageWebApp.Pages.Groups
         {
             if (ModelState.IsValid)
             {
-                var result = await _unitOfWork.PostRepository.AddPostAsync(groupId, TextDs);
+                var result = await _unitOfWork.PostRepository.AddPostAsync(groupId, Content);
 
                 if (result == true) return Page();
             }

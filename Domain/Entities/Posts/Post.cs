@@ -9,7 +9,8 @@ namespace Domain.Entities.Posts;
 
 public class Post : BaseEntity
 {
-    #region Properties
+    // ai chi de region o day v bắt mở mệt ghê :<
+    #region Properties 
     public string Content { get; set; } = null!;
     public Guid GroupId { get; set; }
     #endregion

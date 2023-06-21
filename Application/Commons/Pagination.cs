@@ -22,8 +22,8 @@ public class Pagination<T>
             return temp;
         }
     }/// <summary>
-    /// Page number start from 1.
-    /// </summary>
+     /// Page number start from 1.
+     /// </summary>
     public int PageIndex { get; set; }
     public bool Next => PageIndex + 1 < TotalPagesCount;
     public bool Previous => PageIndex > 1;
