@@ -1,8 +1,12 @@
+using Application.IServices;
 using Infrastructure.Repositories.Posts;
 using Infrastructure.UnitOfWorks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
@@ -10,29 +14,37 @@ namespace RazorPageWebApp.Pages.Groups
 {
     public class CreatePostModel : PageModel
     {
-        private readonly IUnitOfWork _unitOfWork;
 
-        public CreatePostModel(IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IClaimService _claimService;
+
+        public CreatePostModel(IUnitOfWork unitOfWork, IClaimService claimService)
         {
-            this._unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
+            _claimService = claimService;
         }
 
         [BindProperty]
-        [Required(ErrorMessage ="Post Content shouldn't be empty")]
+        [Required(ErrorMessage = "Post Content shouldn't be empty")]
         public string? TextDs { get; set; } = string.Empty;
-        public void OnGet(Guid? groupId)
+        //[Authorize]
+        public async Task<IActionResult> OnGetAsync(Guid groupId)
         {
             if (Debugger.IsAttached)
             {
-                TextDs = "hello World";
-            }
 
+            }
+            var userId = _claimService.GetCurrentUserId;
+            if (userId == Guid.Empty) return RedirectToPage("/auth/login",new { Message ="Please Login To Create Post"});
+
+            var result = await _unitOfWork.GroupRepository.IsUserInGroup(userId, groupId);
+            return result ? Page() : RedirectToPage("/index");
         }
         public async Task<IActionResult> OnPostAsync(Guid? groupId)
         {
             if (ModelState.IsValid)
             {
-                var result =  await _unitOfWork.PostRepository.AddPostAsync(groupId, TextDs);
+                var result = await _unitOfWork.PostRepository.AddPostAsync(groupId, TextDs);
 
                 if (result == true) return Page();
             }

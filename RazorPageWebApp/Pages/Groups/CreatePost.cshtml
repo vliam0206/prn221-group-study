@@ -1,4 +1,4 @@
-﻿@page "/groups/{groupId:guid}"
+﻿@page "/groups/{groupId:guid}/create"
 @using Microsoft.AspNetCore.Html;
 @model RazorPageWebApp.Pages.Groups.CreatePostModel;
 @{
@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="col-lg-9">
-        <form method="post">
+        <form method="post" >
             <span asp-validation-for="TextDs"></span>
             <textarea name="TextDs" id="create-post">@(new HtmlString(@Model.TextDs))</textarea>
             <button>Submit</button>
