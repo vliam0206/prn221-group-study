@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RazorPageWebApp.styles.css" asp-append-version="true" />
+    <script src="https://cdn.tiny.cloud/1/wyopdb0u8mweiku159d2tp39m5451adsboem7qcr0jyyixp1/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    @await RenderSectionAsync("TinyMce",false)
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">RazorPageWebApp</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">Group Study</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -38,7 +41,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - RazorPageWebApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2023 - Group Study - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 
@@ -49,3 +52,9 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+</style>

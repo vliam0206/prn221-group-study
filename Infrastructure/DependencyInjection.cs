@@ -2,7 +2,6 @@
 using Infrastructure.IRepositories;
 using Infrastructure.IRepositories.Groups;
 using Infrastructure.Repositories;
-using Infrastructure.Repositories.Groups;
 using Infrastructure.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +20,8 @@ public static class DependencyInjection
         // Add all services of infrastructure
         //...
         services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
-        services.AddScoped(typeof(IGroupRepository), typeof(GroupRepository));
+        services.AddScoped(typeof(IPostRepository), typeof(PostRepository));
+        services.AddScoped(typeof(IGroupRepository), typeof(AccountRepository));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;

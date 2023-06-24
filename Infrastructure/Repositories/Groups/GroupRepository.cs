@@ -1,8 +1,4 @@
-﻿using DataAccess;
-using Domain.Entities.Groups;
-using Infrastructure.IRepositories.Groups;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,5 +38,9 @@ public class GroupRepository : IGroupRepository {
     public async Task UpdateGroupAsync(Group group) {
         _dbcontext.Groups.Update(group);
         await _dbcontext.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsUserInGroup(Guid userId, Guid groupId) {
+        return await _context.AccountInGroups.AnyAsync(x => x.AccountId == userId && x.GroupId == groupId);
     }
 }

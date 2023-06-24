@@ -1,26 +1,40 @@
 ﻿@page
 @model RazorPageWebApp.Pages.Auth.LoginModel
-@{
-}
-<div class="row">
-    <h1 class="display-4">Login</h1>
-    <div class="col-md-4">
-        <form method="post">
-            <div class="form-group mb-3">
-                <label asp-for="@Model.AccountObj.Username" class="form-label">Username</label>
-                <input asp-for="@Model.AccountObj.Username" class="form-control" type="text" />
-                <span asp-validation-for="@Model.AccountObj.Username" class="text-danger form-text"></span>
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body m-5 mt-2 mb-2">
+                    <h1 class="display-4 mb-4">Login</h1>
+                    <form method="post">
+                        <div class="form-group">
+                            <label asp-for="@Model.AccountObj.Username" class="form-label">Username</label>
+                            <input asp-for="@Model.AccountObj.Username" class="form-control" type="text" />
+                            <span asp-validation-for="@Model.AccountObj.Username" class="text-danger form-text"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model.AccountObj.Password" class="form-label">Password</label>
+                            <input asp-for="@Model.AccountObj.Password" class="form-control" type="password" />
+                            <span asp-validation-for="@Model.AccountObj.Password" class="text-danger form-text"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-dark btn-block btn-outline-light mt-3" value="Login" />
+                        </div>
+                    </form>
+                    <p class="text-danger">@Model.Message</p>
+                    <p class="text-center mt-3">
+                        <a asp-page="./Register" class="text-primary">Don't have an account? Register</a>
+                    </p>
+                </div>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="@Model.AccountObj.Password" class="form-label">Password</label>
-                <input asp-for="@Model.AccountObj.Password" class="form-control" type="password" />
-                <span asp-validation-for="@Model.AccountObj.Password" class="text-danger form-text"></span>
-            </div>
-            <div class="form-group mb-3">
-                <input type="submit" class="btn btn-light btn-outline-primary" value="Login" />
-            </div>
-        </form>
+        </div>
     </div>
-    <a asp-page="./Register" class="link-primary mb-5">Not have account? Register</a>
 </div>
-<p class="text-danger">@Model.Message</p>
+
+<style>
+    .card {
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+</style>

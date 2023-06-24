@@ -1,0 +1,37 @@
+﻿@page "/groups/{groupId:guid}/edit/{postId:guid}"
+@using Microsoft.AspNetCore.Html;
+@model RazorPageWebApp.Pages.Groups.Posts.EditPostModel
+@{
+}
+
+<section class="row">
+    <div class="col-lg-3 border border-dark rounded">
+        <div class="card-img p-2 d-flex justify-content-center">
+            <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <form method="post">
+            <span asp-validation-for="Post"></span>
+            <textarea name="Content" id="edit-post">@(new HtmlString(@Model.Content))</textarea>
+            <button>Submit</button>
+        </form>
+    </div>
+</section>
+@section Scripts
+    {
+    <script>
+        tinymce.init({
+            selector: '#edit-post',
+            icons: 'small',
+            min_height: 300,
+            max_height: 1000,
+            toolbar_location: 'bottom',
+            plugins: 'lists code table codesample link autoresize',
+            toolbar: 'blocks | bold italic underline strikethrough bullist link codesample',
+            resize: true,
+            menubar: false,
+            statusbar: false
+        });
+    </script>
+}

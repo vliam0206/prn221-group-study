@@ -2,6 +2,9 @@
 using Infrastructure.IRepositories;
 using Infrastructure.IRepositories.Groups;
 using Infrastructure.Repositories;
+using Infrastructure.Repositories.Groups;
+using Infrastructure.Repositories.Posts;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +16,18 @@ namespace Infrastructure.UnitOfWorks;
 public class UnitOfWork : IUnitOfWork {
     #region Fields
     private readonly IAccountRepository _accountRepository;
+    private readonly IPostRepository _postRepository;
     private readonly IGroupRepository _groupRepository;
     #endregion
-
-    public UnitOfWork(IAccountRepository accountRepository, IGroupRepository groupRepository) {
+    public UnitOfWork(IAccountRepository accountRepository, IPostRepository postRepository, IGroupRepository groupRepository)
+    {
         _accountRepository = accountRepository;
+        _postRepository = postRepository;
         _groupRepository = groupRepository;
     }
 
     public IAccountRepository AccountRepository => _accountRepository;
-
     public IGroupRepository GroupRepository => _groupRepository;
+    public IIPostRepository PostRepository => _postRepository;
+}
 }
