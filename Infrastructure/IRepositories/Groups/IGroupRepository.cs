@@ -12,5 +12,6 @@ namespace Infrastructure.IRepositories.Groups {
         Task CreateGroupAsync(Group group);
         Task UpdateGroupAsync(Group group);
         Task DeleteGroupAsync(Guid? id);
+        Task<bool> IsUserInGroup(Guid userId, Guid groupId);
     }
 }

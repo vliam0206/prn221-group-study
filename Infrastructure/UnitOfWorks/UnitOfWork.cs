@@ -16,10 +16,10 @@ namespace Infrastructure.UnitOfWorks;
 public class UnitOfWork : IUnitOfWork {
     #region Fields
     private readonly IAccountRepository _accountRepository;
-    private readonly IPostRepository _postRepository;
+    private readonly PostRepository _postRepository;
     private readonly IGroupRepository _groupRepository;
     #endregion
-    public UnitOfWork(IAccountRepository accountRepository, IPostRepository postRepository, IGroupRepository groupRepository)
+    public UnitOfWork(IAccountRepository accountRepository, PostRepository postRepository, IGroupRepository groupRepository)
     {
         _accountRepository = accountRepository;
         _postRepository = postRepository;
@@ -28,6 +28,5 @@ public class UnitOfWork : IUnitOfWork {
 
     public IAccountRepository AccountRepository => _accountRepository;
     public IGroupRepository GroupRepository => _groupRepository;
-    public IIPostRepository PostRepository => _postRepository;
-}
+    public PostRepository PostRepository => _postRepository;
 }
