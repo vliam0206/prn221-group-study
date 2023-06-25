@@ -46,7 +46,7 @@ public class LoginModel : PageModel
 
                 // logged in successful, redicrect to Homepage
                 Message = "Login successfully!";
-                return new RedirectToPageResult("../Index");
+                return new RedirectToPageResult("/UserScreen/HomePage");
             }
         } catch (Exception ex)
         {
