@@ -10,16 +10,15 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories;
 
-public class AccountRepository : IAccountRepository
+public class AccountRepository : GenericRepository<Account>, IAccountRepository
 {
     private AppDBContext _dbContext;
 
     public AccountRepository()
     {
         _dbContext = new AppDBContext();
-    }
-
-    public async Task<Account?> GetAccountAsync(string username)
+    }    
+    public async Task<Account?> GetAccountByUsernameAsync(string username)
         => await _dbContext.Accounts.SingleOrDefaultAsync(x => x.Username == username);
 
     public async Task<Account?> GetAccountByEmailAsync(string email)
@@ -27,7 +26,7 @@ public class AccountRepository : IAccountRepository
 
     public async Task InsertAccountAsync(Account account)
     {
-        var acc1 = await GetAccountAsync(account.Username);
+        var acc1 = await GetAccountByUsernameAsync(account.Username);
         var acc2 = await GetAccountByEmailAsync(account.Email);
         if (acc1 != null)
         {

@@ -15,17 +15,19 @@ public class Pagination<T>
         get
         {
             var temp = TotalItemsCount / PageSize;
-            if (TotalItemsCount % PageSize != 0)
+            if (TotalItemsCount % PageSize == 0)
             {
-                temp += 1;
+                return temp;
             }
-            return temp;
+            return temp + 1;
         }
-    }/// <summary>
-     /// Page number start from 1.
-     /// </summary>
+    }
     public int PageIndex { get; set; }
-    public bool Next => PageIndex + 1 < TotalPagesCount;
-    public bool Previous => PageIndex > 1;
+
+    /// <summary>
+    /// page number start from 0
+    /// </summary>
+    public bool HasNext => PageIndex + 1 < TotalPagesCount;
+    public bool HasPrevious => PageIndex > 0;
     public ICollection<T> Items { get; set; }
 }
