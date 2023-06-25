@@ -8,5 +8,6 @@ namespace Domain.Enums;
 
 public enum NotiTypeEnum
 {
-    // Fill in here
+    Info,
+    Alert
 }

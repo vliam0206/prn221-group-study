@@ -42,6 +42,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Initialize data for DB
+SeedDatabase();
+
 app.UseAuthorization();
 
 app.MapRazorPages();
@@ -53,3 +57,24 @@ app.UseSession();
 app.UseMiddleware<CheckAuthenticationMiddleware>();
 
 app.Run();
+
+
+
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<AppDBContext>();
+            //context.Database.EnsureCreated(); // create database if not exist, add table if not has any
+            DbInitializer.InitializeData(context);
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "An error occurred when seeding the DB.");
+        }
+    }
+}

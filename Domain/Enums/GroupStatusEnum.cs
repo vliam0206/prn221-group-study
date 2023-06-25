@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Enums;
 public enum GroupStatusEnum
-{
-    // Fill in here
+{    
+    Pending,
+    Active,
+    Inactive
 }

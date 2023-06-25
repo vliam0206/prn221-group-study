@@ -8,5 +8,6 @@ namespace Domain.Enums;
 
 public enum NotiStatusEnum
 {
-    // Fill in here
+    Unread,
+    Read
 }
