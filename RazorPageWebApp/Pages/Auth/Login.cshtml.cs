@@ -41,8 +41,8 @@ public class LoginModel : PageModel
                 }
 
                 // Add current user to session
-                session.SetString("UserId", account!.Id.ToString());
-                session.SetString("UserName", account!.Username);
+                session.SetString(AppConstants.USER_ID, account!.Id.ToString());
+                session.SetString(AppConstants.USER_NAME, account!.Username);
 
                 // logged in successful, redicrect to Homepage
                 Message = "Login successfully!";

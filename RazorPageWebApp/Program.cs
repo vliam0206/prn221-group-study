@@ -5,6 +5,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RazorPageWebApp;
+using RazorPageWebApp.Middlewares;
 using RazorPageWebApp.Services;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -47,5 +48,8 @@ app.MapRazorPages();
 
 // use session
 app.UseSession();
+
+// add custom middleware
+app.UseMiddleware<CheckAuthenticationMiddleware>();
 
 app.Run();
