@@ -7,7 +7,7 @@ public class CheckAuthenticationMiddleware : IMiddleware
         var currentUser = context.Session.GetString(AppConstants.USER_NAME);
         var path = context.Request.Path;
         if (path.HasValue && PathCondition(path) 
-                    && !PathConditionNotInclude(path))
+                    && PathConditionNotInclude(path))
         {
             if (string.IsNullOrEmpty(currentUser))
             {
@@ -21,14 +21,15 @@ public class CheckAuthenticationMiddleware : IMiddleware
     {
         return (
             path.Value.ToLower().StartsWith("/UserScreen".ToLower())
+         || path.Value.ToLower().StartsWith("/Groups".ToLower())
             );
     }
     private bool PathConditionNotInclude(PathString path)
     {
         return (
-            path.Value.ToLower().StartsWith("/Index".ToLower())
-         && path.Value.ToLower().StartsWith("/Community".ToLower())
-         && path.Value.ToLower().StartsWith("/Auth".ToLower())
+            !path.Value.ToLower().StartsWith("/Index".ToLower())
+         && !path.Value.ToLower().StartsWith("/Community".ToLower())
+         && !path.Value.ToLower().StartsWith("/Auth".ToLower())
             );
     }
 }
