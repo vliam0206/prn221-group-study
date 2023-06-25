@@ -1,12 +1,28 @@
+using Application.Commons;
+using Domain.Entities.Groups;
+using Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace RazorPageWebApp.Pages.UserScreen
+namespace RazorPageWebApp.Pages.UserScreen;
+
+public class CommunityModel : PageModel
 {
-    public class CommunityModel : PageModel
+    private IUnitOfWork _unitOfWork;
+    public CommunityModel(IUnitOfWork unitOfWork)
     {
-        public void OnGet()
+        _unitOfWork = unitOfWork;
+    }
+
+    public Pagination<Group> Groups { get; set; }
+
+    public async Task OnGetAsync(int? pageIndex)
+    {
+        var index = 0;
+        if (pageIndex != null)
         {
+            index = pageIndex.Value;
         }
+        Groups = await _unitOfWork.GroupRepository.ToPagination(index, 8);
     }
 }
