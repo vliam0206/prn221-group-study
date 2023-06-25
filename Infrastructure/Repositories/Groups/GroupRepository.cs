@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Groups;
 
-public class GroupRepository : IGroupRepository {
+public class GroupRepository : GenericRepository<Group>, IGroupRepository {
     private readonly AppDBContext _dbcontext;
 
     public GroupRepository() {

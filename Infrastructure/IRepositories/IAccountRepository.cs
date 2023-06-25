@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.IRepositories;
 
-public interface IAccountRepository
+public interface IAccountRepository : IGenericRepository<Account>
 {
-    Task<Account?> GetAccountAsync(string username);
+    Task<Account?> GetAccountByUsernameAsync(string username);
 
     Task InsertAccountAsync(Account account);
 }

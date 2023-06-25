@@ -32,7 +32,7 @@ public class LoginModel : PageModel
                 ModelState.Clear();
 
                 //logic code to login here
-                var account = await _unitOfWork.AccountRepository.GetAccountAsync(AccountObj.Username);
+                var account = await _unitOfWork.AccountRepository.GetAccountByUsernameAsync(AccountObj.Username);
 
                 if (account == null || !AccountObj.Password.Verify(account.Password))
                 {
