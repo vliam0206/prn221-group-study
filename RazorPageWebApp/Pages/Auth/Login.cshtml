@@ -1,7 +1,11 @@
 ﻿@page
 @model RazorPageWebApp.Pages.Auth.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LayoutGuest";
+}
 
-<div class="container">
+<div class="container my-3">
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <div class="card">
@@ -19,12 +23,12 @@
                             <span asp-validation-for="@Model.AccountObj.Password" class="text-danger form-text"></span>
                         </div>
                         <div class="form-group">
-                            <input type="submit" class="btn btn-dark btn-block btn-outline-light mt-3" value="Login" />
+                            <input type="submit" class="btn btn-light btn-outline-primary mt-3" value="Login" />
                         </div>
                     </form>
                     <p class="text-danger">@Model.Message</p>
                     <p class="text-center mt-3">
-                        <a asp-page="./Register" class="text-primary">Don't have an account? Register</a>
+                        <a asp-page="/Auth/Register" class="text-primary">Don't have an account? Register</a>
                     </p>
                 </div>
             </div>

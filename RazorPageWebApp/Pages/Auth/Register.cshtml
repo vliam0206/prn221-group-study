@@ -1,6 +1,10 @@
 ﻿@page
 @model RazorPageWebApp.Pages.Auth.RegisterModel
-<div class="container">
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_LayoutGuest";
+}
+<div class="container my-3">
     <div class="row justify-content-center mt-5">
         <div class="col-md-6">
             <div class="card">
@@ -51,7 +55,7 @@
                         </div>
                     </form>
                     <p class="text-center mt-3">
-                        <a asp-page="./Login" class="text-primary">Already have an account? Login</a>
+                        <a asp-page="/Auth/Login" class="text-primary">Already have an account? Login</a>
                     </p>
                 </div>
             </div>
