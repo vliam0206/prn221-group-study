@@ -1,0 +1,58 @@
+﻿@page
+@model RazorPageWebApp.Pages.UserScreen.HomePageModel
+@{
+    ViewData["Title"] = "Home page";
+    Layout = "_LayoutUser";
+}
+
+<div class="">    
+    @*My group*@
+    <div class="album py-3 bg-light">
+        <div class="container">
+            @*tieu de*@
+            <div class="d-flex align-self-start fs-3 fw-bold mb-3">My Group</div>
+            @*item*@
+            <div class="row-cols-2 row-cols-md-4 g-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">No member: 9</small>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Public group *@
+    <div class="album py-3 bg-light">
+        <div class="container">
+            @*tieu de*@
+            <div class="d-flex align-self-start fs-3 fw-bold mb-3">Community</div>
+            @*item*@
+            <div class="row-cols-2 row-cols-md-4 g-3">
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title">Card title</h4>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">No member: 9</small>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

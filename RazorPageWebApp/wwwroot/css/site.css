@@ -1,5 +1,10 @@
+* {
+    --primary-color: #164B60;
+    --sencondary-color: #A2FF86;
+}
+
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -14,5 +19,14 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+}
+
+.logo {
+    color: var(--primary-color) !important;
+    padding: 4px 8px;
+    border-radius: 10px;
+    background: var(--sencondary-color) !important;
+    font-family: 'Agency FB';
+    font-size: large;
+    font-weight: 700
 }
