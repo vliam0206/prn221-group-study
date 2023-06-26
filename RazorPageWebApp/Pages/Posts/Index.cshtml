@@ -5,8 +5,8 @@
     if (ViewData["OnlyData"] != null)
         Layout = null;
 }
-<section class="d-flex">
-    <div class="col-lg-3 border border-dark rounded">
+<section class="d-flex ">
+    <div class="col-lg-3 d-none d-lg-block border border-dark rounded">
         <div class="card-img p-2 d-flex justify-content-center">
             <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
         </div>
@@ -24,5 +24,48 @@
             <div class="w-100 view-post">@(new HtmlString(@Model.Content))</div>
         </div>
     </div>
+
+
+</section>
+<section class="row justify-content-end">
+    <div class="comment-group col-lg-9 row gap-2 p-0 ">
+        <form id="comment-form" onsubmit="return AddComment(this)" style="display:none" asp-page-handler="Comment">
+            <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
+        </form>
+        @Model.HttpContext.Request.RouteValues["postId"]
+        <textarea class="col-12 p-0" id="comment-box" asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
+        <button class="btn btn-primary" form="comment-form">Submit</button>
+        @foreach (var comment in Model.Post.Comments)
+        {
+            <div class="comment-container w-100">
+                <div class="comment-item border w-100">
+                    <div>@(new HtmlString(comment.Content))</div>
+                </div>
+            </div>
+        }
+    </div>
 </section>
 
+@section Scripts
+    {
+    <script>
+        tinymce.init({
+            selector: '#comment-box',
+            icons: 'small',
+            min_height: 300,
+            max_height: 1000,
+            toolbar_location: 'bottom',
+            plugins: 'lists code table codesample link autoresize',
+            toolbar: 'blocks | bold italic underline strikethrough bullist link codesample',
+            resize: true,
+            menubar: false,
+            statusbar: false,
+            submit_patch: true
+        });
+    </script>
+    <script>
+        function AddComment(form){
+
+        }
+    </script>
+}
