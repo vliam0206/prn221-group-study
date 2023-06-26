@@ -23,6 +23,6 @@ public class CommunityModel : PageModel
         {
             index = pageIndex.Value;
         }
-        Groups = await _unitOfWork.GroupRepository.ToPagination(index, 8);
+        Groups = await _unitOfWork.GroupRepository.ToPagination(index, AppConstants.GROUP_PAGE_SIZE);
     }
 }
