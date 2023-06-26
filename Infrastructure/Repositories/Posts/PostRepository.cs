@@ -12,16 +12,17 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Posts;
 
-public class PostRepository
+public class PostRepository : IPostRepository
 {
     private readonly AppDBContext _context;
     private readonly IClaimService _claimService;
     private readonly IMapper _mapper;
 
-    public PostRepository(AppDBContext context, IClaimService claimService)
+    public PostRepository(AppDBContext context, IClaimService claimService, IMapper mapper)
     {
         _context = context;
         _claimService = claimService;
+        _mapper = mapper;
     }
     public async Task<bool> AddPostAsync(Guid? groupId, string content)
     {
@@ -44,12 +45,12 @@ public class PostRepository
 
     public Task<Post?> GetPostByIdAsync(Guid postId)
     {
-        return _context.Posts.Include(x=>x.Comments).FirstOrDefaultAsync(x => x.Id == postId);
+        return _context.Posts.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == postId);
     }
-    public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex=0, int pageSize=10)
+    public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {
         var totalPostsCount = await _context.Posts.CountAsync(x => x.GroupId == groupId);
-        var posts = await _context.Posts.Include(x=>x.Comments).Where(x => x.GroupId == groupId)
+        var posts = await _context.Posts.Include(x => x.Comments).Where(x => x.GroupId == groupId)
                                   .Skip((pageIndex - 1) * pageSize)
                                   .Take(pageSize)
                                   .ToListAsync();

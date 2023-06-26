@@ -5,6 +5,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using RazorPageWebApp;
+using RazorPageWebApp.Middlewares;
 using RazorPageWebApp.Services;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -41,6 +42,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Initialize data for DB
+SeedDatabase();
+
 app.UseAuthorization();
 
 app.MapRazorPages();
@@ -48,4 +53,28 @@ app.MapRazorPages();
 // use session
 app.UseSession();
 
+// add custom middleware
+app.UseMiddleware<CheckAuthenticationMiddleware>();
+
 app.Run();
+
+
+
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        try
+        {
+            var context = services.GetRequiredService<AppDBContext>();
+            //context.Database.EnsureCreated(); // create database if not exist, add table if not has any
+            DbInitializer.InitializeData(context);
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "An error occurred when seeding the DB.");
+        }
+    }
+}

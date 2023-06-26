@@ -32,7 +32,7 @@ public class LoginModel : PageModel
                 ModelState.Clear();
 
                 //logic code to login here
-                var account = await _unitOfWork.AccountRepository.GetAccountAsync(AccountObj.Username);
+                var account = await _unitOfWork.AccountRepository.GetAccountByUsernameAsync(AccountObj.Username);
 
                 if (account == null || !AccountObj.Password.Verify(account.Password))
                 {
@@ -41,12 +41,12 @@ public class LoginModel : PageModel
                 }
 
                 // Add current user to session
-                session.SetString("UserId", account!.Id.ToString());
-                session.SetString("UserName", account!.Username);
+                session.SetString(AppConstants.USER_ID, account!.Id.ToString());
+                session.SetString(AppConstants.USER_NAME, account!.Username);
 
                 // logged in successful, redicrect to Homepage
                 Message = "Login successfully!";
-                return new RedirectToPageResult("../Index");
+                return new RedirectToPageResult("/UserScreen/HomePage");
             }
         } catch (Exception ex)
         {

@@ -1,4 +1,5 @@
 ﻿using Infrastructure.IRepositories;
+using Infrastructure.IRepositories.Groups;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Comments;
 using Infrastructure.Repositories.Groups;
@@ -15,6 +16,7 @@ public interface IUnitOfWork
 {
     public IAccountRepository AccountRepository { get; }
     public ICommentRepository CommentRepository { get; }
-    GroupRepository GroupRepository { get; }
-    PostRepository PostRepository { get; }
+    public IGroupRepository GroupRepository { get; }
+    public IPostRepository PostRepository { get; }
+
 }

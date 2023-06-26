@@ -1,5 +1,6 @@
 ﻿using Application.IServices;
 using Infrastructure.IRepositories;
+using Infrastructure.IRepositories.Groups;
 using Infrastructure.Repositories;
 using Infrastructure.Repositories.Comments;
 using Infrastructure.Repositories.Groups;
@@ -23,8 +24,8 @@ public static class DependencyInjection
         //...
         services.AddScoped(typeof(IAccountRepository), typeof(AccountRepository));
         services.AddScoped(typeof(ICommentRepository), typeof(CommentRepository));
-        services.AddScoped(typeof(PostRepository));
-        services.AddScoped(typeof(GroupRepository));
+        services.AddScoped(typeof(IPostRepository),typeof(PostRepository));
+        services.AddScoped(typeof(IGroupRepository), typeof(GroupRepository));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;

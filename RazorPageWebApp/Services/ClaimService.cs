@@ -16,7 +16,7 @@ namespace RazorPageWebApp.Services
         {
             get
             {
-                var Id = _contextAccessor.HttpContext?.Session?.GetString("UserId");
+                var Id = _contextAccessor.HttpContext?.Session?.GetString(AppConstants.USER_ID);
                 return string.IsNullOrEmpty(Id) ? Guid.Empty : Guid.Parse(Id);
             }
         }
@@ -25,7 +25,7 @@ namespace RazorPageWebApp.Services
         {
             get
             {
-                var username = _contextAccessor.HttpContext?.Session?.GetString("UserName");
+                var username = _contextAccessor.HttpContext?.Session?.GetString(AppConstants.USER_NAME);
                 return string.IsNullOrEmpty(username) ? string.Empty : username;
             }
         }

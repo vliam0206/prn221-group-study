@@ -1,0 +1,95 @@
+﻿@page
+@model RazorPageWebApp.Pages.Groups.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Group</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Group.Name" class="control-label"></label>
+                <input asp-for="Group.Name" class="form-control" />
+                <span asp-validation-for="Group.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.Description" class="control-label"></label>
+                <input asp-for="Group.Description" class="form-control" />
+                <span asp-validation-for="Group.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.Visibility" class="control-label"></label>
+                <select asp-for="Group.Visibility" class="form-control"></select>
+                <span asp-validation-for="Group.Visibility" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Group.ForceApprove" /> @Html.DisplayNameFor(model => model.Group.ForceApprove)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.ApproveAuthority" class="control-label"></label>
+                <input asp-for="Group.ApproveAuthority" class="form-control" />
+                <span asp-validation-for="Group.ApproveAuthority" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.BanAuthority" class="control-label"></label>
+                <input asp-for="Group.BanAuthority" class="form-control" />
+                <span asp-validation-for="Group.BanAuthority" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Group.Id" />
+            <div class="form-group">
+                <label asp-for="Group.CreationDate" class="control-label"></label>
+                <input asp-for="Group.CreationDate" class="form-control" />
+                <span asp-validation-for="Group.CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.AccountCreatedID" class="control-label"></label>
+                <input asp-for="Group.AccountCreatedID" class="form-control" />
+                <span asp-validation-for="Group.AccountCreatedID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.ModificationDate" class="control-label"></label>
+                <input asp-for="Group.ModificationDate" class="form-control" />
+                <span asp-validation-for="Group.ModificationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.ModifiedBy" class="control-label"></label>
+                <input asp-for="Group.ModifiedBy" class="form-control" />
+                <span asp-validation-for="Group.ModifiedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.DeletedDate" class="control-label"></label>
+                <input asp-for="Group.DeletedDate" class="form-control" />
+                <span asp-validation-for="Group.DeletedDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Group.DeletedBy" class="control-label"></label>
+                <input asp-for="Group.DeletedBy" class="form-control" />
+                <span asp-validation-for="Group.DeletedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Group.IsDeleted" /> @Html.DisplayNameFor(model => model.Group.IsDeleted)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
