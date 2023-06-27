@@ -65,7 +65,23 @@
     </script>
     <script>
         function AddComment(form){
+            console.log(form);
+            tinymce.triggerSave();
+            var url = new URL(location);
+            url.searchParams.append('handler', "Comment");
+            $.ajax({
+                url: url,
+                data: keyValueArrayToObject($(form).serializeArray()),
+                method: 'Post',
+                success: (res)=>{
+                    console.log(res);
 
+                },
+                error: (e) => {
+                    console.log(e.status);
+                }
+            })
+            return false;
         }
     </script>
 }
