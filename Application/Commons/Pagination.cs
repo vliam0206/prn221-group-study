@@ -25,7 +25,7 @@ public class Pagination<T>
     /// Page number start from 1.
     /// </summary>
     public int PageIndex { get; set; }
-    public bool Next => PageIndex + 1 < TotalPagesCount;
-    public bool Previous => PageIndex > 1;
+    public bool HasNext => PageIndex + 1 < TotalPagesCount;
+    public bool HasPrevious => PageIndex > 1;
     public ICollection<T> Items { get; set; }
 }
