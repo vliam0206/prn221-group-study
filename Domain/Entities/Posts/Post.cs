@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Groups;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -13,6 +14,7 @@ public class Post : BaseEntity
     public string Topic { get; set; } = null!;
     public string Content { get; set; } = null!;
     public byte[]? Image { get; set; }
+    public PostStatusEnum Status { get; set; } = PostStatusEnum.Waiting;
     public Guid GroupId { get; set; }
     #endregion
 
