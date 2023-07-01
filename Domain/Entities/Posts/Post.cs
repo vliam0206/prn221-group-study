@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 namespace Domain.Entities.Posts;
 public class Post : BaseEntity
 {
-    // ai chi de region o day v bắt mở mệt ghê :<
     #region Properties 
+    public string Topic { get; set; } = null!;
     public string Content { get; set; } = null!;
+    public byte[]? Image { get; set; }
     public Guid GroupId { get; set; }
     #endregion
 
