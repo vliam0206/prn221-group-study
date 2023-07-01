@@ -80,3 +80,7 @@ body {
 .gap-x-5 {
     column-gap: 3rem !important;
 }
+
+.c-pointer {
+    cursor:pointer
+}

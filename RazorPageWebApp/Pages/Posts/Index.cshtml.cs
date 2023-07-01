@@ -20,7 +20,7 @@ namespace RazorPageWebApp.Pages.Posts
 
         public Post? Post { get; private set; }
         [BindProperty]
-        public string Content { get; set; } 
+        public string Content { get; set; }
         [BindProperty]
         public Comment? Comment { get; set; }
         public async Task<IActionResult> OnGet(Guid groupId, Guid postId)
@@ -36,7 +36,7 @@ namespace RazorPageWebApp.Pages.Posts
                 Content = Post.Content;
             }
 
-            return result ? Page() : RedirectToPage($"/groups/{groupId}");
+            return result ? Page() : RedirectToPage($"/groups/Details", new { id = groupId });
         }
 
         //Post method only
@@ -58,9 +58,9 @@ namespace RazorPageWebApp.Pages.Posts
                     if (result)
                         return new JsonResult(Comment);
                 }
-                
+
             }
-           
+
             return BadRequest();
         }
     }
