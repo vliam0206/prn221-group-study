@@ -21,6 +21,8 @@ public class Account : BaseEntity
     public bool IsAdmin { get; set; } = false;
     #endregion
 
+    public string FullName => FirstName + LastName;
+
     #region DB Relationship
     public ICollection<AccountInGroup> AccountInGroups { get; set; } = new HashSet<AccountInGroup>();
     public ICollection<Post> Posts { get; set; } = new HashSet<Post>();

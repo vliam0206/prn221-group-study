@@ -45,7 +45,7 @@ public class PostRepository : IPostRepository
 
     public Task<Post?> GetPostByIdAsync(Guid postId)
     {
-        return _context.Posts.Include(x => x.Comments).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).FirstOrDefaultAsync(x => x.Id == postId);
+        return _context.Posts.Include(x => x.Comments).ThenInclude(x=>x.AccountCreated).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).FirstOrDefaultAsync(x => x.Id == postId);
     }
     public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {

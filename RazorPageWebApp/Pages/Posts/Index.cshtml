@@ -32,18 +32,47 @@
             <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
         </form>
 
-        <textarea class="col-12 p-0" id="comment-box" asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
+        <textarea class="col-12 p-0 border border-1" id="comment-box" asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
         <button class="btn btn-primary" form="comment-form">Submit</button>
 
-        <div class="comment-group col-lg-9 gap-2 p-0 ">
+        <div class="comment-group col-lg-12 gap-2 p-0 row ">
             @foreach (var comment in Model.Post.Comments)
             {
-                <div class="comment-container w-100">
-                    <div class="comment-item border w-100">
-                        <div>@comment.Content</div>
+                <div class="comment-container col-lg-10 border border-secondary ">
+                    <div class="comment-user-group d-flex ">
+                        <div class="col-1">
+                            <img src="data:image/png;base64,@comment.AccountCreated.Avatar"
+                                 class="img-fluid rounded-circle border" alt="@comment.AccountCreated.Avatar" />
+                    </div>
+                        <div class="d-flex flex-column">
+                            <div class="fw-bold">
+                                <a asp-page="/account/profile">@comment.AccountCreated.Username</a>
+                </div>
+                            <div class="text-black-50">
+                                <a asp-page="/account/profile">@comment.AccountCreated.Email</a>
+                            </div>
+                        </div>
+                        <aside class="d-flex ms-auto text-black-50">@comment.ModificationDate</aside>
+                    </div>
+                    <div class="comment-item border w-100 p-2">
+                        <div>@Html.Raw(comment.Content)</div>
+                    </div>
+                    <div class="comment-action-container d-flex gap-2">
+                        <a class="link-secondary c-pointer">@*@comment.LikeCount*@ 10 Like</a>
+                        <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@comment.ReplyComments.Count Reply</a>
                     </div>
                 </div>
+                <article class="comment-create-reply collapse ms-auto col-10" id="comment-r-@comment.Id">
+                    <form method="post" onsubmit="return replyComment(this)">
+                        <input name="repId" value="@comment.Id"/>
+                        <label>Reply</label>
+                        <textarea class="comment-create-reply-text"></textarea>
+                    </form>
+                </article>
+                @foreach (var reply in comment.ReplyComments)
+                {
 
+            }
             }
         </div>
 
@@ -56,13 +85,29 @@
             selector: '#comment-box',
             min_height: 300,
             max_height: 1000,
+            skin: 'oxide',
             toolbar_location: 'bottom',
             plugins: 'lists code table codesample link autoresize',
             toolbar: 'blocks | bold italic underline strikethrough bullist link codesample',
             resize: true,
             menubar: false,
             statusbar: false,
-            submit_patch: true
+            submit_patch: true,
+            content_css: '/tinymce.css'
+        });
+        tinymce.init({
+            selector: '.comment-create-reply-text',
+            min_height: 300,
+            max_height: 1000,
+            skin: 'oxide',
+            toolbar_location: 'bottom',
+            plugins: 'lists code table codesample link autoresize',
+            toolbar: 'blocks | bold italic underline strikethrough bullist link codesample',
+            resize: true,
+            menubar: false,
+            statusbar: false,
+            submit_patch: true,
+            content_css: '/tinymce.css'
         });
     </script>
     <script>
@@ -84,6 +129,23 @@
                 }
             })
             return false;
+        }
+        function replyComment(form) {
+            tinymce.triggerSave(); 
+            var url = new URL(location);
+            url.searchParams.append('handler', "Reply");
+            $.ajax({
+                url: url,
+                data: keyValueArrayToObject($(form).serializeArray()),
+                method: 'Post',
+                success: (res) => {
+                    console.log(res);
+
+                },
+                error: (e) => {
+                    console.log(e.status);
+                }
+            })
         }
     </script>
 }
