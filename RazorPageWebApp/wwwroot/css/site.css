@@ -1,6 +1,6 @@
 * {
     --primary-color: #164B60;
-    --sencondary-color: #A2FF86;
+    --secondary-color: #A2FF86;
 }
 
 html {
@@ -29,7 +29,7 @@ body {
     color: var(--primary-color) !important;
     padding: 4px 8px;
     border-radius: 10px;
-    background: var(--sencondary-color) !important;
+    background: var(--secondary-color) !important;
     font-family: 'Agency FB';
     font-size: large;
     font-weight: 700
