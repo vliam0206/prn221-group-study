@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,9 @@ namespace Domain.Entities.Posts;
 public class Comment : BaseEntity
 {
     #region Properties
+    [Required]
     public string Content { get; set; } = null!;
+    [Required]
     public Guid PostId { get; set; }
     public Guid? AccountRepliedId { get; set; }
     public Guid? CommentRepliedId { get; set; }

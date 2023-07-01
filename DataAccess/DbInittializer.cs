@@ -196,10 +196,9 @@ public class DbInitializer
         {
             return;
         }
-
+        var random = new Random();
         var posts = context.Posts.ToList();
         var accounts = context.Accounts.ToList();
-
         var comments = new Comment[]
         {
             new Comment
@@ -207,14 +206,17 @@ public class DbInitializer
                 Content = "Comment 1",
                 PostId = posts[0].Id,
                 AccountRepliedId = null,
-                CommentRepliedId = null
+                CommentRepliedId = null,
+                AccountCreatedID = accounts[random.Next(0, accounts.Count-1)].Id
             },
             new Comment
             {
                 Content = "Comment 2",
                 PostId = posts[1].Id,
                 AccountRepliedId = accounts[0].Id,
-                CommentRepliedId = null
+                CommentRepliedId = null,
+                AccountCreatedID = accounts[random.Next(0, accounts.Count-1)].Id
+
             }
         };
 

@@ -1,0 +1,89 @@
+﻿@page "/groups/{groupId:guid}/view/{postId:guid}"
+@using Microsoft.AspNetCore.Html;
+@model RazorPageWebApp.Pages.Posts.IndexModel
+@{
+    if (ViewData["OnlyData"] != null)
+        Layout = null;
+}
+<article class="container-fluid">
+    <section class="row ">
+        <div class="col-lg-3 d-none d-lg-block border border-dark rounded">
+            <div class="card-img p-2 d-flex justify-content-center">
+                <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+            </div>
+        </div>
+        <div class="col-lg-9 col-auto border border-dark rounded" style="border-left-width:0px">
+            <div class="dropdown ms-auto d-flex">
+                <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
+                    ...
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
+                    <li><a class="dropdown-item" href="../edit/@Model.Post?.Id">Edit</a></li>
+                </ul>
+            </div>
+            <div class="w-100 p-2">
+                <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
+            </div>
+        </div>
+    </section>
+    @Model.HttpContext.Request.RouteValues["postId"]
+    <section class="row ">
+        <form id="comment-form" onsubmit="return AddComment(this)" style="display:none" asp-page-handler="Comment">
+            <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
+        </form>
+
+        <textarea class="col-12 p-0" id="comment-box" asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
+        <button class="btn btn-primary" form="comment-form">Submit</button>
+
+        <div class="comment-group col-lg-9 gap-2 p-0 ">
+            @foreach (var comment in Model.Post.Comments)
+            {
+                <div class="comment-container w-100">
+                    <div class="comment-item border w-100">
+                        <div>@comment.Content</div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </section>
+</article>
+@section Scripts
+    {
+    <script>
+        tinymce.init({
+            selector: '#comment-box',
+            min_height: 300,
+            max_height: 1000,
+            toolbar_location: 'bottom',
+            plugins: 'lists code table codesample link autoresize',
+            toolbar: 'blocks | bold italic underline strikethrough bullist link codesample',
+            resize: true,
+            menubar: false,
+            statusbar: false,
+            submit_patch: true
+        });
+    </script>
+    <script>
+        function AddComment(form) {
+            console.log(form);
+            tinymce.triggerSave();
+            var url = new URL(location);
+            url.searchParams.append('handler', "Comment");
+            $.ajax({
+                url: url,
+                data: keyValueArrayToObject($(form).serializeArray()),
+                method: 'Post',
+                success: (res) => {
+                    console.log(res);
+
+                },
+                error: (e) => {
+                    console.log(e.status);
+                }
+            })
+            return false;
+        }
+    </script>
+}

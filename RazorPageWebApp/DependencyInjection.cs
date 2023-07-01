@@ -1,4 +1,5 @@
 ﻿using Application.IServices;
+using AutoMapper;
 using RazorPageWebApp.Middlewares;
 using RazorPageWebApp.Services;
 
@@ -16,6 +17,7 @@ public static class DependencyInjection
             => options.IdleTimeout = TimeSpan.FromMinutes(60));        
 
         services.AddScoped<IClaimService, ClaimService>();
+        services.AddAutoMapper(typeof(Mapper));
 
         // Add app middlewares
         services.AddSingleton<CheckAuthenticationMiddleware>();

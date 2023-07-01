@@ -1,4 +1,5 @@
-﻿using Application.Commons;
+﻿using DataAccess;
+using Application.Commons;
 using DataAccess;
 using Domain.Entities.Groups;
 using Infrastructure.IRepositories.Groups;
@@ -11,19 +12,23 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Groups;
 
-public class GroupRepository : GenericRepository<Group>, IGroupRepository {
+public class GroupRepository : GenericRepository<Group>, IGroupRepository
+{
     private readonly AppDBContext _dbcontext;
 
-    public GroupRepository() {
+    public GroupRepository()
+    {
         _dbcontext = new AppDBContext();
     }
 
-    public async Task CreateGroupAsync(Group group) {
+    public async Task CreateGroupAsync(Group group)
+    {
         _dbcontext.Groups.Add(group);
         await _dbcontext.SaveChangesAsync();
     }
 
-    public async Task DeleteGroupAsync(Guid? id) {
+    public async Task DeleteGroupAsync(Guid? id)
+    {
         var group = await _dbcontext.Groups.FindAsync(id);
         if (group == null)
             return;
@@ -32,20 +37,24 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository {
         await _dbcontext.SaveChangesAsync();
     }
 
-    public async Task<List<Group>> GetAllGroupsAsync() {
-        return await _dbcontext.Groups.ToListAsync();
+    public async Task<List<Group>> GetAllGroupsAsync()
+    {
+        return await _dbcontext.Groups.Include(x => x.Posts).ToListAsync();
     }
 
-    public async Task<Group?> GetGroupByIdAsync(Guid? id) {
-        return await _dbcontext.Groups.FindAsync(id);
+    public async Task<Group?> GetGroupByIdAsync(Guid? id)
+    {
+        return await _dbcontext.Groups.Include(x => x.Posts).ThenInclude(x=>x.AccountCreated).FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task UpdateGroupAsync(Group group) {
+    public async Task UpdateGroupAsync(Group group)
+    {
         _dbcontext.Groups.Update(group);
         await _dbcontext.SaveChangesAsync();
     }
 
-    public async Task<bool> IsUserInGroup(Guid userId, Guid groupId) {
+    public async Task<bool> IsUserInGroup(Guid userId, Guid groupId)
+    {
         return await _dbcontext.AccountInGroups.AnyAsync(x => x.AccountId == userId && x.GroupId == groupId);
     }
 

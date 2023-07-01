@@ -25,7 +25,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
         public async Task<IActionResult> OnGet(Guid groupId, Guid postId)
         {
             var userId = _claimService.GetCurrentUserId;
-            if (userId == Guid.Empty) return RedirectToPage("/auth/login", new { Message = "Please Login To Create Post" });
+            if (userId == Guid.Empty) return RedirectToPage("/auth/login", new { Message = "Please Login To Edit Post" });
 
             var result = await _unitOfWork.GroupRepository.IsUserInGroup(userId, groupId);
 
@@ -35,9 +35,9 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 Content = Post.Content;
             }
 
-            return result ? Page() : RedirectToPage($"/groups/{groupId}");
+            return result ? Page() : RedirectToPage($"/groups/details", new { id=groupId });
         }
-        public async Task<IActionResult> OnPost(Guid groupId,Guid postId)
+        public async Task<IActionResult> OnPost(Guid groupId, Guid postId)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,8 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 Post.Content = Content;
                 var result = await _unitOfWork.PostRepository.EditPostAsync(Post);
                 HttpContext.Session.SetEntity("NewPost", Post);
-                if (result == true) return RedirectToPage($"/groups/{groupId}");
+                
+                if (result == true) return RedirectToPage($"/Posts/Index", new { groupId,postId });
             }
             return Page();
         }

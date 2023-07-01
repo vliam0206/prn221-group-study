@@ -1,4 +1,6 @@
-﻿@page
+﻿@page "/groups/{id:guid}"
+@using Domain.Entities.Posts;
+@using Microsoft.AspNetCore.Html;
 @model RazorPageWebApp.Pages.Groups.DetailsModel
 
 @{
@@ -95,3 +97,58 @@
     <a asp-page="./Edit" asp-route-id="@Model.Group?.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
+<!--Post Content-->
+<main class="post-group row gap-y-5">
+    @if (Model.Group != null)
+        @foreach (var post in Model.PostsInGroup.Items)
+        {
+            <section class="d-flex col-12">
+                <div class="col-lg-3 d-none d-lg-block border border-dark rounded">
+                    <div class="card-img p-2 d-flex justify-content-center">
+                        <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+                    </div>
+                </div>
+                <main class="col-lg-9 d-flex border border-dark rounded" style="border-left-width:0px">
+                    <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
+                        <div class="dropdown w-100 d-flex justify-content-between">
+                            <div class="d-flex w-100">
+                                @foreach (var tag in @*post.TagInPosts*@
+                               new List<TagInPost>()
+                        {
+                        new(),new(),new()
+                        })
+                                {
+                                    @*Chưa biết thêm gì *@
+                                    @Html.ActionLink(Url.Content("Tag"),/*tag.Tag?.Name??null */"Tag",new {},new { @class = "btn btn-light border border-2 "})
+                                }
+
+                            </div>
+                            <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
+                                ...
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
+                                <li><a class="dropdown-item" href="@Url.Content($"{Model.Group.Id}/edit/{post.Id}")">Edit</a></li>
+                            </ul>
+                        </div>
+                        <div class="w-100 p-2 align-self-end h-100 justify-content-between d-flex flex-column">
+                            <div class="h3">Topic Name is missing</div>
+                            <div class="d-block"><b>Username:</b> @post.AccountCreated.Username</div>
+                            <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">
+                                <a class="like-item text-black text-decoration-underline"
+                                   href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Like: @post.Likes.Count</a>
+                                <a class="comment-item text-black text-decoration-underline"
+                                   href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Comment: @post.Comments.Count</a>
+                                <span class="text-black-50 align-self-center" style="font-size:0.75em">@post.CreationDate.ToLongDateString()</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <aside class="col-lg-3 card">
+                        <div class="col-6 d-flex m-auto">
+                            <img class="img-fluid card-img rounded" src="https://picsum.photos/200/200" />
+                        </div>
+                    </aside>
+                </main>
+            </section>
+        }
+</main>

@@ -11,11 +11,12 @@
         </div>
     </div>
     <div class="col-lg-9">
-        <form method="post">
-            <span asp-validation-for="Post"></span>
+        <form id="form-edit" method="post">
+            <span asp-validation-for="Content"></span>
             <textarea name="Content" id="edit-post">@(new HtmlString(@Model.Content))</textarea>
-            <button>Submit</button>
+           
         </form>
+        <button class="btn-primary btn" form="form-edit">Save</button>
     </div>
 </section>
 @section Scripts

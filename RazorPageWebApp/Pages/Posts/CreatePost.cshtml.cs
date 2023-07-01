@@ -46,7 +46,7 @@ namespace RazorPageWebApp.Pages.Groups
             {
                 var result = await _unitOfWork.PostRepository.AddPostAsync(groupId, Content);
 
-                if (result == true) return Page();
+                if (result == true) return Redirect($"/groups/{groupId}");
             }
             return Page();
         }

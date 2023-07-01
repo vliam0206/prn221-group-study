@@ -1,4 +1,5 @@
 ﻿using Application.Commons;
+using Application.IServices;
 using AutoMapper;
 using DataAccess;
 using Domain.Entities.Posts;
@@ -11,14 +12,17 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Posts;
 
-public class PostRepository
+public class PostRepository : IPostRepository
 {
     private readonly AppDBContext _context;
+    private readonly IClaimService _claimService;
     private readonly IMapper _mapper;
 
-    public PostRepository(AppDBContext context)
+    public PostRepository(AppDBContext context, IClaimService claimService, IMapper mapper)
     {
         _context = context;
+        _claimService = claimService;
+        _mapper = mapper;
     }
     public async Task<bool> AddPostAsync(Guid? groupId, string content)
     {
@@ -27,7 +31,7 @@ public class PostRepository
             Content = content,
             GroupId = groupId.Value,
             CreationDate = DateTime.UtcNow,
-            AccountCreatedID = Guid.Parse("18B2128E-1852-424B-BF32-AB977085A560")
+            AccountCreatedID = _claimService.GetCurrentUserId,
         };
         await _context.AddAsync(post);
         return await _context.SaveChangesAsync() > 0;
@@ -41,12 +45,13 @@ public class PostRepository
 
     public Task<Post?> GetPostByIdAsync(Guid postId)
     {
-        return _context.Posts.FirstOrDefaultAsync(x => x.Id == postId);
+        return _context.Posts.Include(x => x.Comments).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).FirstOrDefaultAsync(x => x.Id == postId);
     }
-    public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex=0, int pageSize=10)
+    public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {
-        var totalPostsCount = await _context.Posts.CountAsync(x => x.GroupId == groupId);
-        var posts = await _context.Posts.Where(x => x.GroupId == groupId)
+        var query = _context.Posts.AsNoTracking().Include(x=>x.AccountCreated);
+        var totalPostsCount = await query.CountAsync(x => x.GroupId == groupId);
+        var posts = await query.Include(x => x.Comments).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).Where(x => x.GroupId == groupId)
                                   .Skip((pageIndex - 1) * pageSize)
                                   .Take(pageSize)
                                   .ToListAsync();

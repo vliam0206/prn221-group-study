@@ -9,6 +9,8 @@ using DataAccess;
 using Domain.Entities.Groups;
 using Infrastructure.IRepositories.Groups;
 using Infrastructure.UnitOfWorks;
+using Domain.Entities.Posts;
+using Application.Commons;
 
 namespace RazorPageWebApp.Pages.Groups
 {
@@ -17,28 +19,27 @@ namespace RazorPageWebApp.Pages.Groups
         private readonly IHttpContextAccessor _httpContext;
         private IUnitOfWork _unitOfWork;
 
-        public DetailsModel(IHttpContextAccessor httpContext, IUnitOfWork unitOfWork) {
+        public DetailsModel(IHttpContextAccessor httpContext, IUnitOfWork unitOfWork)
+        {
             _httpContext = httpContext;
             _unitOfWork = unitOfWork;
         }
 
-        public Group Group { get; set; } = default!; 
+        public Group Group { get; set; } = default!;
+        public Pagination<Post> PostsInGroup { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
             var group = await _unitOfWork.GroupRepository.GetGroupByIdAsync(id);
             if (group == null)
             {
                 return NotFound();
             }
-            else 
+            else
             {
                 Group = group;
+                PostsInGroup = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(id, 1, 10);
             }
             return Page();
         }
