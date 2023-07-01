@@ -41,15 +41,10 @@
                             </ul>
                         </div>
                         <div class="w-100 p-2 align-self-end h-100 justify-content-between d-flex flex-column">
-                            <div class="h3">Topic Name is missing</div>
-                            <div class="d-block">
-                                <span class="">
-                                    <img class="img-fluid rounded rounded-circle" style="width: 25px; height: 25px" src="https://picsum.photos/200/200" />
-                                </span>
-                                @post.AccountCreated.Username
-                            </div>
-                            <div class="d-flex gap-x-2 justify-content-start align-content-end">
-                                <a class="text-black"
+                            <div class="h3"><a class="link-dark" href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">@post.Topic</a></div>
+                            <div class="d-block"><b>Username:</b> @post.AccountCreated.Username</div>
+                            <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">
+                                <a class="like-item text-black text-decoration-underline"
                                    href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Like: @post.Likes.Count</a>
                                 <a class="text-black"
                                    href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Comment: @post.Comments.Count</a>
@@ -58,9 +53,10 @@
                         </div>
 
                     </div>
-                    <aside class="col-lg-2">
-                        <div class="m-auto p-3">
-                            <img class="img-fluid rounded rounded-3" src="https://picsum.photos/200/200" />
+
+                    <aside class="col-lg-3 card">
+                        <div class="col-6 d-flex m-auto">
+                            <img class="img-fluid card-img rounded" src="@post.Image" alt="@post.Topic"/>
                         </div>
                     </aside>
                 </main>
