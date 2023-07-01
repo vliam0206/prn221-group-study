@@ -45,12 +45,13 @@ public class PostRepository : IPostRepository
 
     public Task<Post?> GetPostByIdAsync(Guid postId)
     {
-        return _context.Posts.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == postId);
+        return _context.Posts.Include(x => x.Comments).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).FirstOrDefaultAsync(x => x.Id == postId);
     }
     public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {
-        var totalPostsCount = await _context.Posts.CountAsync(x => x.GroupId == groupId);
-        var posts = await _context.Posts.Include(x => x.Comments).Where(x => x.GroupId == groupId)
+        var query = _context.Posts.AsNoTracking().Include(x=>x.AccountCreated);
+        var totalPostsCount = await query.CountAsync(x => x.GroupId == groupId);
+        var posts = await query.Include(x => x.Comments).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).Where(x => x.GroupId == groupId)
                                   .Skip((pageIndex - 1) * pageSize)
                                   .Take(pageSize)
                                   .ToListAsync();
