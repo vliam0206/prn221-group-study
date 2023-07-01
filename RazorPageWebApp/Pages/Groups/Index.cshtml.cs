@@ -9,21 +9,34 @@ using DataAccess;
 using Domain.Entities.Groups;
 using Infrastructure.IRepositories.Groups;
 using Infrastructure.UnitOfWorks;
+using Application.Commons;
 
-namespace RazorPageWebApp.Pages.Groups {
-    public class IndexModel : PageModel {
-        private readonly IHttpContextAccessor _httpContext;
-        private IUnitOfWork _unitOfWork;
+namespace RazorPageWebApp.Pages.Groups;
+public class IndexModel : PageModel {
+    private IUnitOfWork _unitOfWork;
 
-        public IndexModel(IHttpContextAccessor httpContext, IUnitOfWork unitOfWork) {
-            _httpContext = httpContext;
-            _unitOfWork = unitOfWork;
+    public IndexModel(IUnitOfWork unitOfWork) {
+        _unitOfWork = unitOfWork;
+    }
+
+    public Pagination<Group> Groups { get; set; }
+    public String SearchString { get; set; }
+
+    public async Task OnGetAsync(int? pageIndex, string? searchValue)
+    {
+        var index = 0;
+        if (pageIndex != null)
+        {
+            index = pageIndex.Value;
         }
-
-        public IList<Group> Group { get; set; } = default!;
-
-        public async Task OnGetAsync() {
-            Group = await _unitOfWork.GroupRepository.GetAllGroupsAsync();
+        if (string.IsNullOrEmpty(searchValue))
+        {
+            Groups = await _unitOfWork.GroupRepository.ToPagination(index, AppConstants.GROUP_PAGE_SIZE);
+        } else
+        {
+            SearchString = searchValue;
+            Groups = await _unitOfWork.GroupRepository.SearchGroupPaginAsync(index, AppConstants.GROUP_PAGE_SIZE, searchValue);
         }
+        
     }
 }

@@ -105,4 +105,23 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
                             .AsNoTracking()
                             .ToListAsync();
     }
+
+    public async Task<Pagination<Group>> SearchGroupPaginAsync(int pageIndex, int pagesize, string searchValue)
+    {
+        var itemCount = await _dbcontext.Groups.CountAsync();
+        var items = await _dbcontext.Groups
+                              .Where(x => x.Name.Contains(searchValue)
+                                        || x.Description!.Contains(searchValue))
+                              .Skip(pageIndex * pagesize)
+                              .Take(pagesize)
+                              .AsNoTracking()
+                              .ToListAsync();
+        return new Pagination<Group>
+        {
+            Items = items,
+            PageIndex = pageIndex,
+            PageSize = pagesize,
+            TotalItemsCount = itemCount
+        };
+    }
 }

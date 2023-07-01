@@ -19,4 +19,5 @@ public interface IGroupRepository  :IGenericRepository<Group>
     Task<Pagination<Group>> GetGroupsToPaginAsync(Guid userId, int pageIndex, int pageSize);
     Task<List<Group>> GetTopGroupsAsync(int limitNum);
     Task<List<Group>> GetTopGroupsAsync(Guid userId, int limitNum);
+    Task<Pagination<Group>> SearchGroupPaginAsync(int pageIndex, int pagesize, string searchValue); // pageIndex start from 0
 }
