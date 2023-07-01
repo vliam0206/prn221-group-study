@@ -3,7 +3,7 @@
 @model RazorPageWebApp.Pages.Groups.CreatePostModel;
 @{
 }
-
+<main class="container">
 <section class="row">
     <div class="col-lg-3 border border-dark rounded">
         <div class="card-img p-2 d-flex justify-content-center">
@@ -12,6 +12,8 @@
     </div>
     <div class="col-lg-9">
         <form method="post">
+            <label asp-for="Topic"></label>
+            <input class="form-control" asp-for="Topic"/>
             <span asp-validation-for="Content"></span>
             <textarea name="Content" id="create-post">@(new HtmlString(@Model.Content))</textarea>
             
@@ -19,6 +21,7 @@
         </form>
     </div>
 </section>
+</main>
 @section Scripts
 {
     <script>

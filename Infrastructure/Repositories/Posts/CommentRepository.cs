@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories.Comments;
 
-public class CommentRepository : ICommentRepository
+public class CommentRepository : GenericRepository<Comment>, ICommentRepository
 {
     private readonly AppDBContext _context;
     private readonly IMapper _mapper;

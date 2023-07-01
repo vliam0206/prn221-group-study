@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,9 +42,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await _dbContext.Set<T>().ToListAsync();
     }
 
-    public async Task<T?> GetByIdAsync(Guid id)
+    public async Task<T?> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] includes)
     {
-        return await _dbContext.Set<T>().FindAsync(id);
+        return await includes.Aggregate(_dbContext.Set<T>().AsNoTracking(), (a, b) => a.Include(b)).FirstOrDefaultAsync(x => x.Id == id) ;
     }
 
     public async Task RemoveAsync(T entity)

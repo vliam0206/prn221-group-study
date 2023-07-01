@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Posts;
 
-public class PostRepository : IPostRepository
+public class PostRepository :GenericRepository<Post>, IPostRepository
 {
     private readonly AppDBContext _context;
     private readonly IClaimService _claimService;
