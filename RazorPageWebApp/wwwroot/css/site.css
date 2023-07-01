@@ -3,6 +3,13 @@
     --secondary-color: #A2FF86;
 }
 
+.bgSecColor {
+    background-color: var(--secondary-color);
+}
+
+.txtPriColor {
+    color: var(--primary-color);
+}
 html {
     font-size: 14px;
 }

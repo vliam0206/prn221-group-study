@@ -7,117 +7,27 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Group</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.Visibility)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.Visibility)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.ForceApprove)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.ForceApprove)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.ApproveAuthority)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.ApproveAuthority)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.BanAuthority)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.BanAuthority)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.CreationDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.CreationDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.AccountCreatedID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.AccountCreatedID)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.ModificationDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.ModificationDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.ModifiedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.ModifiedBy)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.DeletedDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.DeletedDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.DeletedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.DeletedBy)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Group.IsDeleted)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Group.IsDeleted)
-        </dd>
-    </dl>
-</div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Group?.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
 <!--Post Content-->
-<main class="post-group row gap-y-5">
-    @if (Model.Group != null)
-        @foreach (var post in Model.PostsInGroup.Items)
-        {
-            <section class="d-flex col-12">
-                <div class="col-lg-3 d-none d-lg-block border border-dark rounded">
-                    <div class="card-img p-2 d-flex justify-content-center">
-                        <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
-                    </div>
-                </div>
-                <main class="col-lg-9 d-flex border border-dark rounded" style="border-left-width:0px">
-                    <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
+<main class="post-group row mx-3">
+    @if (Model.Group != null) {
+        <section class="col-9">
+            <div class="fs-2 fw-bold mb-3">@Html.DisplayFor(model => model.Group.Name)</div>
+            <div class="fs-5 fw-normal mb-3">@Html.DisplayFor(model => model.Group.Description)</div>
+            <div class="input-group mb-3">
+                <button class="btn btn-outline-secondary me-5" type="button">New Post</button>
+                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button">Search</button>
+            </div>
+            @foreach (var post in Model.PostsInGroup.Items) {
+                <main class="d-flex border border-dark rounded">
+                    <div class="col-lg-10 col-auto d-flex flex-column align-items-start">
                         <div class="dropdown w-100 d-flex justify-content-between">
                             <div class="d-flex w-100">
-                                @foreach (var tag in @*post.TagInPosts*@
-                               new List<TagInPost>()
-                        {
-                        new(),new(),new()
-                        })
-                                {
+                                @foreach (var tag in new List<TagInPost>() { new(), new(), new() }) {
                                     @*Chưa biết thêm gì *@
                                     @Html.ActionLink(Url.Content("Tag"),/*tag.Tag?.Name??null */"Tag",new {},new { @class = "btn btn-light border border-2 "})
                                 }
@@ -132,23 +42,96 @@
                         </div>
                         <div class="w-100 p-2 align-self-end h-100 justify-content-between d-flex flex-column">
                             <div class="h3">Topic Name is missing</div>
-                            <div class="d-block"><b>Username:</b> @post.AccountCreated.Username</div>
-                            <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">
-                                <a class="like-item text-black text-decoration-underline"
+                            <div class="d-block">
+                                <span class="">
+                                    <img class="img-fluid rounded rounded-circle" style="width: 25px; height: 25px" src="https://picsum.photos/200/200" />
+                                </span>
+                                @post.AccountCreated.Username
+                            </div>
+                            <div class="d-flex gap-x-2 justify-content-start align-content-end">
+                                <a class="text-black"
                                    href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Like: @post.Likes.Count</a>
-                                <a class="comment-item text-black text-decoration-underline"
+                                <a class="text-black"
                                    href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Comment: @post.Comments.Count</a>
                                 <span class="text-black-50 align-self-center" style="font-size:0.75em">@post.CreationDate.ToLongDateString()</span>
                             </div>
                         </div>
 
                     </div>
-                    <aside class="col-lg-3 card">
-                        <div class="col-6 d-flex m-auto">
-                            <img class="img-fluid card-img rounded" src="https://picsum.photos/200/200" />
+                    <aside class="col-lg-2">
+                        <div class="m-auto p-3">
+                            <img class="img-fluid rounded rounded-3" src="https://picsum.photos/200/200" />
                         </div>
                     </aside>
                 </main>
-            </section>
-        }
+
+            }
+        </section>
+        <section class="col-3 d-flex justify-content-center">
+
+            <div class="col-12">
+
+                <div class="card" id="chat1" style="border-radius: 15px;">
+                    <div class="card-header d-flex justify-content-between align-items-center p-3 bgSecColor txtPriColor border-bottom-0"
+                         style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                        <p class="mb-0 fw-bold">Live chat</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="" style="height: 50vh; overflow-y: scroll">
+                            <div class="d-flex flex-row justify-content-start mb-4">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                     alt="avatar 1" style="width: 45px; height: 100%;">
+                                <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                    <p class="small mb-0">
+                                        Hello and thank you for visiting MDBootstrap. Please click the video
+                                        below.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row justify-content-end mb-4">
+                                <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
+                                    <p class="small mb-0">Thank you, I really like your product.</p>
+                                </div>
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                     alt="avatar 1" style="width: 45px; height: 100%;">
+                            </div>
+
+                            <div class="d-flex flex-row justify-content-start mb-4">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                     alt="avatar 1" style="width: 45px; height: 100%;">
+                                <div class="ms-3" style="border-radius: 15px;">
+                                    <div class="bg-image">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/screenshot1.webp"
+                                             style="border-radius: 15px;" alt="video">
+                                        <a href="#!">
+                                            <div class="mask"></div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row justify-content-start mb-4">
+                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                     alt="avatar 1" style="width: 45px; height: 100%;">
+                                <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                    <p class="small mb-0">...</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-outline">
+                            <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
+                            <label class="form-label" for="textAreaExample">Type your message</label>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+    }
 </main>
+
