@@ -35,7 +35,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 Content = Post.Content;
             }
 
-            return result ? Page() : RedirectToPage($"/groups/{groupId}");
+            return result ? Page() : RedirectToPage($"/groups/details", new { id=groupId });
         }
         public async Task<IActionResult> OnPost(Guid groupId, Guid postId)
         {
@@ -47,7 +47,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 var result = await _unitOfWork.PostRepository.EditPostAsync(Post);
                 HttpContext.Session.SetEntity("NewPost", Post);
                 
-                if (result == true) return Redirect($"/groups/{groupId}");
+                if (result == true) return RedirectToPage($"/Posts/Index", new { groupId,postId });
             }
             return Page();
         }

@@ -5,51 +5,55 @@
     if (ViewData["OnlyData"] != null)
         Layout = null;
 }
-<section class="d-flex ">
-    <div class="col-lg-3 d-none d-lg-block border border-dark rounded">
-        <div class="card-img p-2 d-flex justify-content-center">
-            <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+<article class="container-fluid">
+    <section class="row ">
+        <div class="col-lg-3 d-none d-lg-block border border-dark rounded">
+            <div class="card-img p-2 d-flex justify-content-center">
+                <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+            </div>
         </div>
-    </div>
-    <div class="col-lg-9 col-auto border border-dark rounded" style="border-left-width:0px">
-        <div class="dropdown ms-auto d-flex">
-            <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
-                ...
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
-                <li><a class="dropdown-item" href="../edit/@Model.Post?.Id">Edit</a></li>
-            </ul>
+        <div class="col-lg-9 col-auto border border-dark rounded" style="border-left-width:0px">
+            <div class="dropdown ms-auto d-flex">
+                <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
+                    ...
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
+                    <li><a class="dropdown-item" href="../edit/@Model.Post?.Id">Edit</a></li>
+                </ul>
+            </div>
+            <div class="w-100 p-2">
+                <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
+            </div>
         </div>
-        <div class="w-100 p-2">
-            <div class="w-100 view-post">@(new HtmlString(@Model.Content))</div>
-        </div>
-    </div>
-</section>
-<section class="row justify-content-end">
-    <div class="comment-group col-lg-9 row gap-2 p-0 ">
+    </section>
+    @Model.HttpContext.Request.RouteValues["postId"]
+    <section class="row ">
         <form id="comment-form" onsubmit="return AddComment(this)" style="display:none" asp-page-handler="Comment">
             <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
         </form>
-        @Model.HttpContext.Request.RouteValues["postId"]
+
         <textarea class="col-12 p-0" id="comment-box" asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
         <button class="btn btn-primary" form="comment-form">Submit</button>
-        @foreach (var comment in Model.Post.Comments)
-        {
-            <div class="comment-container w-100">
-                <div class="comment-item border w-100">
-                    <div>@(new HtmlString(comment.Content))</div>
-                </div>
-            </div>
-        }
-    </div>
-</section>
 
+        <div class="comment-group col-lg-9 gap-2 p-0 ">
+            @foreach (var comment in Model.Post.Comments)
+            {
+                <div class="comment-container w-100">
+                    <div class="comment-item border w-100">
+                        <div>@comment.Content</div>
+                    </div>
+                </div>
+
+            }
+        </div>
+
+    </section>
+</article>
 @section Scripts
     {
     <script>
         tinymce.init({
             selector: '#comment-box',
-            icons: 'small',
             min_height: 300,
             max_height: 1000,
             toolbar_location: 'bottom',
@@ -62,7 +66,7 @@
         });
     </script>
     <script>
-        function AddComment(form){
+        function AddComment(form) {
             console.log(form);
             tinymce.triggerSave();
             var url = new URL(location);
@@ -71,7 +75,7 @@
                 url: url,
                 data: keyValueArrayToObject($(form).serializeArray()),
                 method: 'Post',
-                success: (res)=>{
+                success: (res) => {
                     console.log(res);
 
                 },
