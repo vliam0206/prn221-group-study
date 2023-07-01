@@ -30,8 +30,8 @@
                     <li><a class="nav-link text-dark" asp-area="" asp-page="/UserScreen/Mygroup">My Group</a></li>
                 </ul>
 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                <form method="get" asp-page="/Groups/Index" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input name="searchValue" id="searchInput" type="search" class="form-control" placeholder="Search..." aria-label="Search">
                 </form>
 
                 <div class="dropdown text-end">

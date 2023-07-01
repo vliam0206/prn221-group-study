@@ -15,8 +15,8 @@ public class Group : BaseEntity
     public string? Description { get; set; }
     public GroupVisibilityEnum Visibility { get; set; }
     public bool ForceApprove { get; set; } = true;
-    public string ApproveAuthority { get; set; } // = "RoleEnum,RoleEnum,..." seperate roles by commas
-    public string BanAuthority { get; set; } // = "RoleEnum,RoleEnum,..." seperate roles by commas
+    public AuthorityEnum ApproveAuthority { get; set; } = AuthorityEnum.Admin;
+    public AuthorityEnum BanAuthority { get; set; } = AuthorityEnum.Admin;
     #endregion
 
     #region DB Relationship

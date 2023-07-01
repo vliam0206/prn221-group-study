@@ -139,8 +139,8 @@ public class DbInitializer
                 Description = "Description for Group " + (i + 1),
                 Visibility = (GroupVisibilityEnum)random.Next(0, 2),
                 ForceApprove = random.Next(0, 2) == 1,
-                ApproveAuthority = GetRandomRoles(random),
-                BanAuthority = GetRandomRoles(random)
+                ApproveAuthority = (AuthorityEnum)random.Next(0, 2),
+                BanAuthority = (AuthorityEnum)random.Next(0, 2)
             };
 
             groups.Add(group);
@@ -148,27 +148,6 @@ public class DbInitializer
 
         context.Groups.AddRange(groups);
         context.SaveChanges();
-    }
-
-    private static string GetRandomRoles(Random random)
-    {
-        var roles = Enum.GetValues(typeof(RoleEnum));
-        var randomRoles = new List<RoleEnum>();
-
-        // Randomly select a number of roles
-        int roleCount = random.Next(1, roles.Length + 1);
-
-        while (randomRoles.Count < roleCount)
-        {
-            var role = (RoleEnum)roles.GetValue(random.Next(roles.Length));
-
-            if (!randomRoles.Contains(role))
-            {
-                randomRoles.Add(role);
-            }
-        }
-
-        return string.Join(",", randomRoles);
     }
 
     public static void InitializeAttachment(AppDBContext context)

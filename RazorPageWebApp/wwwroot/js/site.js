@@ -14,6 +14,30 @@ function keyValueArrayToObject(array) {
     }
     return dataObject;
 }
+
+//$(document).ready(function () {
+//    $('#searchInput').on('input', function () {
+//        var searchText = $(this).val();
+
+//        // Send an AJAX request to the server
+//        $.ajax({
+//            url: '/Search', // Replace with the actual URL of your search handler
+//            type: 'GET',
+//            data: { searchText: searchText },
+//            success: function (result) {
+//                // Handle the search results
+//                // You can update the UI or redirect to a different page
+//                console.log(result);
+//                location = "/Groups/Index";
+//            },
+//            error: function (xhr, status, error) {
+//                // Handle the error if any
+//                console.log(error);
+//            }
+//        });
+//    });
+//});
+}
 function initTinyMce(selector) {
     tinymce.init({
         selector: selector,

@@ -5,104 +5,51 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="album py-3 bg-light">
+    <div class="container">
+        @*tieu de*@
+        <div class="d-flex align-self-start fs-3 fw-bold mb-3">Search result for "@Model.SearchString"</div>
+        @*item list*@
+        <div class="row row-cols-2 row-cols-md-4 g-3">
+            @foreach (var item in Model.Groups.Items)
+            {
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="card-title">@item.Name</h4>
+                            <p class="card-text">@item.Description</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">No member: 9</small>
+                                <div class="btn-group">
+                                    <a asp-page="/Groups/Details" asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-outline-secondary">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].Visibility)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].ForceApprove)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].ApproveAuthority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].BanAuthority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].AccountCreatedID)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].ModificationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].ModifiedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].DeletedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].DeletedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group[0].IsDeleted)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Group) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Visibility)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ForceApprove)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApproveAuthority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BanAuthority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountCreatedID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModificationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DeletedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        @{
+            var prevDisable = Model.Groups.HasPrevious ? "" : "disabled";
+            var nextDisable = Model.Groups.HasNext ? "" : "disabled";
+        }
+        <nav class="mt-3">
+            <ul class="pagination">
+                <li class="page-item @prevDisable">
+                    <a asp-page="/Groups/Index"
+                       asp-route-pageIndex="@(Model.Groups.PageIndex -1)"
+                       asp-route-searchValue="@Model.SearchString"
+                       class="page-link">Previous</a>
+                </li>
+                <li class="page-item @nextDisable">
+                    <a asp-page="/Groups/Index"
+                       asp-route-pageIndex="@(Model.Groups.PageIndex +1)"
+                       asp-route-searchValue="@Model.SearchString"
+                       class="page-link">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
