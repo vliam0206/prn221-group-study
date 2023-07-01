@@ -88,5 +88,28 @@ namespace RazorPageWebApp.Pages.Posts
 
             return BadRequest();
         }
+        [ActionName("Reply")]
+        public async Task<IActionResult> OnPostReply(Guid groupId, Guid postId,Guid repId)
+        {
+            var userId = _claimService.GetCurrentUserId;
+            if (userId == Guid.Empty) return RedirectToPage("/auth/login", new { Message = "Please Login To View Post" });
+            var result = await _unitOfWork.GroupRepository.IsUserInGroup(userId, groupId);
+
+            if (result)
+            {
+                if (Comment == null) return NotFound();
+                if (ModelState.IsValid)
+                {
+                    Comment.PostId = postId;
+                    Comment.AccountCreatedID = _claimService.GetCurrentUserId;
+                    result = await _unitOfWork.CommentRepository.AddCommentAsync(Comment);
+                    if (result)
+                        return new JsonResult(Comment);
+                }
+
+            }
+
+            return BadRequest();
+        }
     }
 }

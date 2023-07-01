@@ -23,11 +23,7 @@ public class Pagination<T>
         }
     }
     public int PageIndex { get; set; }
-
-    /// <summary>
-    /// page number start from 0
-    /// </summary>
     public bool HasNext => PageIndex + 1 < TotalPagesCount;
-    public bool HasPrevious => PageIndex >= 0;
+    public bool HasPrevious => PageIndex > 1;
     public ICollection<T> Items { get; set; }
 }

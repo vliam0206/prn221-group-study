@@ -102,8 +102,35 @@
                             </div>
                         }
                     </div>
+                        <div class="d-flex flex-column">
+                            <div class="fw-bold">
+                                <a asp-page="/account/profile">@comment.AccountCreated.Username</a>
                 </div>
+                            <div class="text-black-50">
+                                <a asp-page="/account/profile">@comment.AccountCreated.Email</a>
+                            </div>
+                        </div>
+                        <aside class="d-flex ms-auto text-black-50">@comment.ModificationDate</aside>
+                    </div>
+                    <div class="comment-item border w-100 p-2">
+                        <div>@Html.Raw(comment.Content)</div>
+                    </div>
+                    <div class="comment-action-container d-flex gap-2">
+                        <a class="link-secondary c-pointer">@*@comment.LikeCount*@ 10 Like</a>
+                        <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@comment.ReplyComments.Count Reply</a>
+                    </div>
+                </div>
+                <article class="comment-create-reply collapse ms-auto col-10" id="comment-r-@comment.Id">
+                    <form method="post" onsubmit="return replyComment(this)">
+                        <input name="repId" value="@comment.Id"/>
+                        <label>Reply</label>
+                        <textarea class="comment-create-reply-text"></textarea>
+                    </form>
+                </article>
+                @foreach (var reply in comment.ReplyComments)
+                {
 
+            }
             }
         </div>
 
