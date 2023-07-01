@@ -5,9 +5,17 @@
     Layout = "_LayoutGuest";
 }
 
-<div class="text-center">    
-    <h1 class="display-4">Welcome to Group Study!</h1>         
-    Cho 1 cái hình background đẹp đẹp to to ở đây nha
-    </br>
-    rồi cho mấy cái link kiểu: Tham gia cùng chúng tôi, bạn chưa có tài khoản hả? Đăng kí đi... kiểu kiểu vậy
+<div class="background-custom d-flex text-center text-white">
+    <div class="cover-container mt-5 d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <main class="my-5 px-3">
+            <h1 class="mt-5">Welcome to Group Study!</h1>
+            <p class="lead">
+                Discover the power of collaborative learning. Join our study group today for a rewarding academic journey. Unlock your potential with us!.
+            </p>
+            <p class="lead">
+                <a asp-page="/Auth/Login" class="btn btn-lg btn-secondary fw-bold border-white bg-white text-black">Learn more</a>
+            </p>
+        </main>
+
+    </div>
 </div>

@@ -8,11 +8,9 @@
         @*tieu de*@
         <div class="d-flex align-self-start fs-3 fw-bold mb-3">My Group</div>
         <a asp-page="/Groups/Create" class="btn btn-primary mb-2">New group</a>
-        ~Liam: cíu dùm cái giao diện với
         @*list item*@
-        @foreach (var item in Model.Groups.Items)
-        {
-            <div class="row-cols-2 row-cols-md-4 g-3">
+        <div class="row row-cols-2 row-cols-md-4 g-3">
+            @foreach (var item in Model.Groups.Items) {
                 <div class="col">
                     <div class="card shadow-sm">
                         <div class="card-body">
@@ -28,8 +26,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
 
         @{
             var prevDisable = Model.Groups.HasPrevious ? "" : "disabled";

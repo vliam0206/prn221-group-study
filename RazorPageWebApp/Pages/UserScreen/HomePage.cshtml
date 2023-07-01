@@ -1,49 +1,18 @@
 ﻿@page
 @model RazorPageWebApp.Pages.UserScreen.HomePageModel
 @{
-    ViewData["Title"] = "Home page";    
+    ViewData["Title"] = "Home page";
 }
 
-<div class="">  
-    ~Liam: Cíu tui cái giao diện ik
+<div class="">
     @*My group*@
     <div class="album py-3 bg-light">
         <div class="container">
             @*tieu de*@
             <div class="d-flex align-self-start fs-3 fw-bold mb-3">My Group</div>
             @*list item*@
-            @foreach(var item in Model.OwnGroup)
-            {
-                <div class="row-cols-2 row-cols-md-4 g-3">
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h4 class="card-title">@item.Name</h4>
-                                <p class="card-text">@item.Description</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-muted">No member: 9</small>
-                                    <div class="btn-group">
-                                        <a  asp-page="/Groups/Details" asp-route-id="@item.Id"
-                                            class="btn btn-sm btn-outline-secondary">View</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-
-    @*Public group *@
-    <div class="album py-3 bg-light">
-        <div class="container">
-            @*tieu de*@
-            <div class="d-flex align-self-start fs-3 fw-bold mb-3">Community</div>
-            @*list item*@
-            @foreach (var item in Model.CommunityGroup)
-            {
-                <div class="row-cols-2 row-cols-md-4 g-3">
+            <div class="row row-cols-2 row-cols-md-4 g-3">
+                @foreach (var item in Model.OwnGroup) {
                     <div class="col">
                         <div class="card shadow-sm">
                             <div class="card-body">
@@ -59,8 +28,36 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
+        </div>
+    </div>
+
+    @*Public group *@
+    <div class="album py-3 bg-light">
+        <div class="container">
+            @*tieu de*@
+            <div class="d-flex align-self-start fs-3 fw-bold mb-3">Community</div>
+            @*list item*@
+            <div class="row row-cols-2 row-cols-md-4 g-3">
+                @foreach (var item in Model.CommunityGroup) {
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h4 class="card-title">@item.Name</h4>
+                                <p class="card-text">@item.Description</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">No member: 9</small>
+                                    <div class="btn-group">
+                                        <a asp-page="/Groups/Details" asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-secondary">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
