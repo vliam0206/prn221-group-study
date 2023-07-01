@@ -258,13 +258,15 @@ public class DbInitializer
         {
             new Post
             {
-                Content = "Post 1",
+                Topic = "Post 1",
+                Content = "This is post 1, abc, xyz...",
                 GroupId = groups[0].Id,
                 AccountCreatedID = accounts[0].Id
             },
             new Post
             {
-                Content = "Post 2",
+                Topic = "Post 1",
+                Content = "This is post 2, abc, xyz...",
                 GroupId = groups[1].Id,
                 AccountCreatedID = accounts[1].Id
             }
