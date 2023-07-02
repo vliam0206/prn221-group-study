@@ -2,42 +2,51 @@
 @using Microsoft.AspNetCore.Html;
 @model RazorPageWebApp.Pages.Posts.IndexModel
 @{
- 
+
 }
 <article class="container-fluid bg-light">
     <section class="row m-2 flex-nowrap gap-x-2">
         <div class="col-lg-3 d-none d-lg-block border border-dark rounded bg-white">
             <div class="card-img p-2 d-flex justify-content-center">
-                <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+                <img class=" w-50 rounded-circle border border-2 border-dark" src=@Model.Post.AccountCreated.Avatar" />
             </div>
         </div>
         <div class="col-lg-9 col-auto border border-dark rounded bg-white" style="border-left-width:0px">
-            <div class="dropdown ms-auto d-flex">
-                <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
-                    ...
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
-                    <li><a class="dropdown-item" href="../edit/@Model.Post?.Id">Edit</a></li>
-                    <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePost">Delete</a></li>
-                </ul>
-            </div>
-            <div class="w-100 p-2">
+                @if (Model.CurUser.Id == Model.Post.AccountCreatedID)
+                {
+                <div class="dropdown ms-auto d-flex">
+                    <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
+                        ...
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
+                        <li><a class="dropdown-item" href="../edit/@Model.Post?.Id">Edit</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePost">Delete</a></li>
+                    </ul>
+                </div>
+                }
+            <div class="d-flex flex-column col p-2">
                 <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
+                <div class="d-flex gap-x-3 view-post">
+                    <a class="link-secondary c-pointer">@Model.Post.Likes.Count Likes</a>
+                    <a class="link-secondary c-pointer">@Model.Post.Comments.Count Comments</a>
+                </div>
             </div>
         </div>
     </section>
     <section class="row gap-y-3 m-2">
-        <div class="create-post-form p-0">
-            <form id="comment-form" onsubmit="return AddComment(this)" style="display:none" asp-page-handler="Comment">
+        <div class="create-post-form p-0" >
+            <form id="comment-form" onsubmit="return AddComment(this)" 
+                    style="display:none" asp-page-handler="Comment">
                 <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
             </form>
-
-            <textarea class="col-12 p-0 border border-1" id="comment-box" asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
+            <label asp-for="Comment.Content">Add New Comment</label>
+            <textarea class="col-12 p-0 border border-1" id="comment-box"
+                        asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
             <button class="btn btn-primary" form="comment-form">Submit</button>
         </div>
         <div class="comment-group col-lg-12 gap-2 px-2 row  ">
-            @foreach (var comment in Model.Post.Comments)
-            {
+                @foreach (var comment in Model.Post.Comments)
+                {
                 <div id="comment-@comment.Id" class="comment-container col-lg-10 px-0 border border-secondary rounded">
                     <div class="comment-user-group d-flex ">
                         <div class="">
@@ -59,7 +68,7 @@
                         <div class="comment-action-container d-flex gap-2">
                             <a class="reply-count link-secondary c-pointer" data-count="@comment.ReplyComments.Count" data-bs-toggle="collapse"
                                data-bs-target="#comment-r-@comment.Id">
-                                @comment.ReplyComments.Count Reply
+                                    @comment.ReplyComments.Count Reply
                             </a>
                         </div>
                     </div>
@@ -75,14 +84,14 @@
                         </form>
                     </article>
                     <div class="reply-group ms-auto col d-flex flex-column gap-y-2">
-                        @foreach (var reply in comment.ReplyComments)
-                        {
+                            @foreach (var reply in comment.ReplyComments)
+                            {
                             <div id="comment-@reply.Id" class="comment-container col-lg-11 ms-auto border border-secondary ">
                                 <div class="comment-user-group d-flex ">
                                     <div>
                                         <img src="data:image/png;base64,@reply.AccountCreated.Avatar"
-                                             @*src="https://picsum.photos/seed/1w32/200/300"*@
-                                             class="rounded-circle img-thumbnail border mx-2"  />
+                                            @*src="https://picsum.photos/seed/1w32/200/300"*@
+                                             class="rounded-circle img-thumbnail border mx-2" />
                                     </div>
                                     <div class="d-flex flex-column">
                                         <div class="fw-bold">
@@ -101,12 +110,12 @@
                                     <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@reply.ReplyComments.Count Reply</a>
                                 </div>
                             </div>
-                        }
+                            }
                     </div>
-            </div>
-           
-              
-            }
+                </div>
+
+
+                }
         </div>
 
     </section>
@@ -122,14 +131,14 @@
                 <p>Are you sure you want to delete this post!</p>
             </div>
             <form method="post" class="modal-footer">
-                <button type="submit" asp-page-handler="Delete" class="btn btn-danger"  data-bs-dismiss="modal">Yes</button>
-                <button type="button" class="btn btn-secondary" >No</button>
+                <button type="submit" asp-page-handler="Delete" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-secondary">No</button>
             </form>
         </div>
     </div>
 </div>
-@section Scripts
-    {
+                @section Scripts
+                    {
     <script>
         tinymce.init({
             selector: '#comment-box',

@@ -3,20 +3,26 @@
 @model RazorPageWebApp.Pages.Groups.CreatePostModel;
 @{
 }
-<main class="container">
-    <section class="row">
-        <div class="col-lg-3 border border-dark rounded">
-            <div class="card-img p-2 d-flex justify-content-center">
-                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.User.Avatar" />
-            </div>
+<main class="container ">
+    <section class="row  mt-3 gap-y-3">
+        @*<div class="col-lg-3 border border-dark rounded">
+        <div class="card-img p-2 d-flex justify-content-center">
+        <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.User.Avatar" />
         </div>
-        <div class="col-lg-9">
-            <form method="post">
-                <label asp-for="Topic"></label>
-                <input class="form-control" asp-for="Topic" />
-                <span asp-validation-for="Content"></span>
-                <textarea name="Content" id="create-post">@(new HtmlString(@Model.Content))</textarea>
-                <button class="btn-primary btn" form="form-add">Create</button>
+        </div>*@
+        <div class="col-lg-6 d-flex m-auto">
+            <form class="col" method="post">
+                <div>
+                    <label class="form-label fw-bold" asp-for="Topic"></label>
+                    <input class="form-control" asp-for="Topic" />
+                    <span class="text-danger" asp-validation-for="@Model.Topic"></span>
+                </div>
+                <div>
+                    <label class="form-label fw-bold" asp-for="@Model.Content"></label>
+                    <textarea name="Content" id="create-post">@(new HtmlString(@Model.Content))</textarea>
+                    <span class="text-danger" asp-validation-for="@Model.Content"></span>
+                </div>
+                <button class="btn-primary btn">Create</button>
             </form>
 
         </div>

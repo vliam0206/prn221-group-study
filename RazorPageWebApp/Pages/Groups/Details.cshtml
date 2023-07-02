@@ -9,137 +9,143 @@
 }
 
 <!--Post Content-->
-<main class="post-group row mx-3 pt-3">
-    @if (Model.Group != null) {
-        <section class="col-8">
-            <div class="fs-2 fw-bold mb-3 d-flex justify-content-between">
-                <span>
-                    @Html.DisplayFor(model => model.Group.Name)
-                </span>
-                @if (Model.AccountInGroup?.Role == RoleEnum.Admin ||
-               Model.AccountInGroup?.Role == RoleEnum.Moderator
-               ) {
+<main class="post-group container mx-3 pt-3">
+    <section class="row">
+        @if (Model.Group != null)
+        {
+            <section class="col-8">
+                <div class="fs-2 fw-bold mb-3 d-flex justify-content-between">
                     <span>
-                        <a asp-page="./Edit" asp-route-id="@Model.Group?.Id" class="btn btn-info">Setting group</a>
+                        @Html.DisplayFor(model => model.Group.Name)
                     </span>
+                    @if (Model.AccountInGroup?.Role == RoleEnum.Admin ||
+                   Model.AccountInGroup?.Role == RoleEnum.Moderator
+                   )
+                    {
+                        <span>
+                            <a asp-page="./Edit" asp-route-id="@Model.Group?.Id" class="btn btn-info">Setting group</a>
+                        </span>
+                    }
+                </div>
+                <div class="fs-5 fw-normal mb-3">@Html.DisplayFor(model => model.Group.Description)</div>
+                @if (Model.AccountInGroup != null)
+                {
+                    <div class="input-group mb-3">
+                        <a class="btn btn-outline-secondary me-5" asp-page="/Posts/CreatePost" asp-route-groupId="@Model.Group.Id" type="button">New Post</a>
+                        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="button">Search</button>
+                    </div>
                 }
-            </div>
-            <div class="fs-5 fw-normal mb-3">@Html.DisplayFor(model => model.Group.Description)</div>
-            @if (Model.AccountInGroup != null) {
-            <div class="input-group mb-3">
-                <a class="btn btn-outline-secondary me-5" asp-page="/Posts/CreatePost" asp-route-groupId="@Model.Group.Id"  type="button">New Post</a>
-                <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                <button class="btn btn-outline-secondary" type="button">Search</button>
-            </div>
-            }
-            @foreach (var post in Model.PostsInGroup.Items) {
-                <main class="d-flex border border-dark rounded">
-                    <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
-                        <div class="dropdown w-100 d-flex justify-content-between">
-                            <div class="d-flex w-100">
-                                @foreach (var tag in post.TagInPosts)
-                                {
-                                    <a class="btn btn-outline-dark rounded m-2" asp-page="" >@tag.Tag?.Name</a>
-                                }
+                @foreach (var post in Model.PostsInGroup.Items)
+                {
+                    <main class="d-flex border border-dark rounded">
+                        <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
+                            <div class="dropdown w-100 d-flex justify-content-between">
+                                <div class="d-flex w-100">
+                                    @foreach (var tag in post.TagInPosts)
+                                    {
+                                        <a class="btn btn-outline-dark rounded m-2" asp-page="">@tag.Tag?.Name</a>
+                                    }
 
+                                </div>
+                                @*<button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
+                        ...
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
+                        <li><a class="dropdown-item" href="@Url.Content($"{Model.Group.Id}/edit/{post.Id}")">Edit</a></li>
+                        </ul>*@
                             </div>
-                            @*<button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
-                                ...
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
-                                <li><a class="dropdown-item" href="@Url.Content($"{Model.Group.Id}/edit/{post.Id}")">Edit</a></li>
-                            </ul>*@
-                        </div>
-                        <div class="w-100 p-2 align-self-end h-100 justify-content-between d-flex flex-column">
-                            <div class="h3"><a class="link-dark" href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">@post.Topic</a></div>
-                            <div class="d-block"><b>Username:</b> @post.AccountCreated.Username</div>
-                            <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">
-                                <a class="like-item text-black text-decoration-underline"
-                                   href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Like: @post.Likes.Count</a>
-                                <a class="text-black"
-                                   href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Comment: @post.Comments.Count</a>
-                                <span class="text-black-50 align-self-center" style="font-size:0.75em">@post.CreationDate.ToLongDateString()</span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <aside class="col-lg-3 card bg-transparent">
-                        <div class="col-6 d-flex m-auto">
-                            <img class="img-fluid card-img rounded" src="@post.Image" alt="@post.Topic"/>
-                        </div>
-                    </aside>
-                </main>
-
-            }
-        </section>
-
-        @*chat*@
-        <section class="col-4 d-flex justify-content-center">
-
-            <div class="col-12">
-
-                <div class="card" id="chat1" style="border-radius: 15px;">
-                    <div class="card-header d-flex justify-content-between align-items-center p-3 bgSecColor txtPriColor border-bottom-0"
-                         style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                        <p class="mb-0 fw-bold">Live chat</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="" style="height: 50vh; overflow-y: scroll">
-                            <div class="d-flex flex-row justify-content-start mb-4">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                     alt="avatar 1" style="width: 40px; height: 100%;">
-                                <div class="p-2 ms-2" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                                    <p class="small mb-0">
-                                        Hello and thank you for visiting MDBootstrap. Please click the video
-                                        below.
-                                    </p>
+                            <div class="w-100 p-2 align-self-end h-100 justify-content-between d-flex flex-column">
+                                <div class="h3"><a class="link-dark" href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">@post.Topic</a></div>
+                                <div class="d-block"><b>Username:</b> @post.AccountCreated.Username</div>
+                                <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">
+                                    <a class="like-item text-black text-decoration-underline"
+                                       href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Like: @post.Likes.Count</a>
+                                    <a class="text-black"
+                                       href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Comment: @post.Comments.Count</a>
+                                    <span class="text-black-50 align-self-center" style="font-size:0.75em">@post.CreationDate.ToLongDateString()</span>
                                 </div>
                             </div>
 
-                            <div class="d-flex flex-row justify-content-end mb-4">
-                                <div class="p-2 me-2 border" style="border-radius: 15px; background-color: #fbfbfb;">
-                                    <p class="small mb-0">Thank you, I really like your product.</p>
-                                </div>
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                     alt="avatar 1" style="width: 40px; height: 40px;">
-                            </div>
+                        </div>
 
-                            <div class="d-flex flex-row justify-content-start mb-4">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                     alt="avatar 1" style="width: 40px; height: 40px;">
-                                <div class="ms-2" style="border-radius: 15px;">
-                                    <div class="bg-image">
-                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/screenshot1.webp"
-                                             style="border-radius: 15px;" alt="video">
-                                        <a href="#!">
-                                            <div class="mask"></div>
-                                        </a>
+                        <aside class="col-lg-3 card bg-transparent">
+                            <div class="col-6 d-flex m-auto">
+                                <img class="object-fit-contain card-img rounded" src="@post.Image" alt="@post.Topic" />
+                            </div>
+                        </aside>
+                    </main>
+
+                }
+            </section>
+
+            @*chat*@
+            <section class="col-4 d-flex justify-content-center">
+
+                <div class="col-12">
+
+                    <div class="card" id="chat1" style="border-radius: 15px;">
+                        <div class="card-header d-flex justify-content-between align-items-center p-3 bgSecColor txtPriColor border-bottom-0"
+                             style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                            <p class="mb-0 fw-bold">Live chat</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="" style="height: 50vh; overflow-y: scroll">
+                                <div class="d-flex flex-row justify-content-start mb-4">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                         alt="avatar 1" style="width: 40px; height: 100%;">
+                                    <div class="p-2 ms-2" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                        <p class="small mb-0">
+                                            Hello and thank you for visiting MDBootstrap. Please click the video
+                                            below.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row justify-content-end mb-4">
+                                    <div class="p-2 me-2 border" style="border-radius: 15px; background-color: #fbfbfb;">
+                                        <p class="small mb-0">Thank you, I really like your product.</p>
+                                    </div>
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
+                                         alt="avatar 1" style="width: 40px; height: 40px;">
+                                </div>
+
+                                <div class="d-flex flex-row justify-content-start mb-4">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                         alt="avatar 1" style="width: 40px; height: 40px;">
+                                    <div class="ms-2" style="border-radius: 15px;">
+                                        <div class="bg-image">
+                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/screenshot1.webp"
+                                                 style="border-radius: 15px;" alt="video">
+                                            <a href="#!">
+                                                <div class="mask"></div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row justify-content-start mb-4">
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                         alt="avatar 1" style="width: 40px; height: 40px;">
+                                    <div class="p-2 ms-2" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                        <p class="small mb-0">...</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="d-flex flex-row justify-content-start mb-4">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                     alt="avatar 1" style="width: 40px; height: 40px;">
-                                <div class="p-2 ms-2" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                                    <p class="small mb-0">...</p>
-                                </div>
+
+                            <div class="form-outline">
+                                <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
+                                <label class="form-label" for="textAreaExample">Type your message</label>
                             </div>
+
                         </div>
-
-
-                        <div class="form-outline">
-                            <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
-                            <label class="form-label" for="textAreaExample">Type your message</label>
-                        </div>
-
                     </div>
+
                 </div>
 
-            </div>
-
-        </section>
-    }
+            </section>
+        }
+    </section>
 </main>
 

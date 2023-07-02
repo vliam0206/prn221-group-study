@@ -1,6 +1,8 @@
 * {
     --primary-color: #164B60;
+    --primary-color-hover: #1c5d77;
     --secondary-color: #A2FF86;
+    --secondary-color-hover: #92f973;
 }
 
 .bgSecColor {
@@ -10,19 +12,20 @@
 .txtPriColor {
     color: var(--primary-color);
 }
+
 html {
     font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -41,6 +44,14 @@ body {
     font-size: large;
     font-weight: 700
 }
+a {
+    color: black;
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
 .gap-y-0 {
     row-gap: 0 !important;
 }
@@ -64,6 +75,7 @@ body {
 .gap-y-5 {
     row-gap: 3rem !important;
 }
+
 .gap-x-0 {
     row-gap: 0 !important;
 }
@@ -89,5 +101,16 @@ body {
 }
 
 .c-pointer {
-    cursor:pointer
+    cursor: pointer
 }
+
+.btn-info, btn-info:active {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: #ffffff !important;
+}
+
+    .btn-info:hover {
+        background: var(--primary-color-hover) !important;
+        border-color: var(--primary-color-hover) !important;
+    }

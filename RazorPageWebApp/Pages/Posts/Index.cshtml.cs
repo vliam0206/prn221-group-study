@@ -1,4 +1,5 @@
 using Application.IServices;
+using Domain.Entities;
 using Domain.Entities.Posts;
 using Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,7 @@ namespace RazorPageWebApp.Pages.Posts
             _claimService = claimService;
         }
 
+        public Account? CurUser { get; private set; }
         public Post? Post { get; private set; }
         [BindProperty]
         public string Content { get; set; }
@@ -36,7 +38,7 @@ namespace RazorPageWebApp.Pages.Posts
                 Post.Comments = Post.Comments.Where(x => x.CommentRepliedId == null).ToList();
                 Content = Post.Content;
             }
-
+            CurUser = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId); 
             return result ? Page() : RedirectToPage($"/groups/Details", new { id = groupId });
         }
 
@@ -86,7 +88,6 @@ namespace RazorPageWebApp.Pages.Posts
                 }
 
             }
-
             return RedirectToAction("OnGet", new { groupId, postId });
         }
        

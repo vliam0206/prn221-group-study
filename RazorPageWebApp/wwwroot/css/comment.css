@@ -11,13 +11,7 @@
             height:50px;
         }
            
-    .comment-container .comment-user-group a{
-        color: black;
-        text-decoration:none;
-    }
-        .comment-container .comment-user-group a:hover {
-            text-decoration: underline;
-        }
+   
     .comment-container .comment-item {
         padding: 1em;
     }

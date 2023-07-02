@@ -5,21 +5,27 @@
 }
 
 <section class="row">
-    <div class="col-lg-3 border border-dark rounded">
+    @*<div class="col-lg-3 border border-dark rounded">
         <div class="card-img p-2 d-flex justify-content-center">
             <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.User.Avatar" />
         </div>
-    </div>
-    <div class="col-lg-9">
-        <form id="form-edit" method="post">
-            <label asp-for="Topic"></label>
-            <input class="form-control" asp-for="Topic" />
-            <span asp-validation-for="Content"></span>
-            <textarea name="Content" id="edit-post">@(new HtmlString(@Model.Content))</textarea>
+    </div>*@
+    <div class="col-lg-6 d-flex m-auto">
+            <form class="col" method="post">
+                <div>
+                    <label class="form-label fw-bold" asp-for="Topic"></label>
+                    <input class="form-control" asp-for="Topic" />
+                    <span class="text-danger" asp-validation-for="@Model.Topic"></span>
+                </div>
+                <div>
+                    <label class="form-label fw-bold" asp-for="@Model.Content"></label>
+                    <textarea name="Content" id="edit-post">@(new HtmlString(@Model.Content))</textarea>
+                    <span class="text-danger" asp-validation-for="@Model.Content"></span>
+                </div>
+                <button class="btn-primary btn">Save</button>
+            </form>
 
-            <button class="btn-primary btn" form="form-edit">Save</button>
-        </form>
-    </div>
+        </div>
 </section>
 @section Scripts
     {
