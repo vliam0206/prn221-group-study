@@ -1,4 +1,5 @@
-﻿using DataAccess;
+﻿using Application.IServices;
+using DataAccess;
 using Domain.Entities;
 using Infrastructure.IRepositories;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,10 @@ public class AccountRepository : GenericRepository<Account>, IAccountRepository
 {
     private AppDBContext _dbContext;
 
-    public AccountRepository()
+    public AccountRepository(IClaimService claimService) : base(claimService)
     {
         _dbContext = new AppDBContext();
-    }    
+    }
     public async Task<Account?> GetAccountByUsernameAsync(string username)
         => await _dbContext.Accounts.SingleOrDefaultAsync(x => x.Username == username);
 
@@ -38,5 +39,5 @@ public class AccountRepository : GenericRepository<Account>, IAccountRepository
         }
         await _dbContext.Accounts.AddAsync(account);
         await _dbContext.SaveChangesAsync();
-    }        
+    }
 }

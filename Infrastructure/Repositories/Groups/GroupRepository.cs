@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.IServices;
 
 namespace Infrastructure.Repositories.Groups;
 
@@ -16,7 +17,7 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
 {
     private readonly AppDBContext _dbcontext;
 
-    public GroupRepository()
+    public GroupRepository(IClaimService claimService):base(claimService)
     {
         _dbcontext = new AppDBContext();
     }

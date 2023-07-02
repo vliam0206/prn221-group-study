@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Domain.Entities.Posts;
 using RazorPageWebApp.Extensions;
+using Domain.Entities;
 
 namespace RazorPageWebApp.Pages.Groups.Posts
 {
@@ -18,10 +19,13 @@ namespace RazorPageWebApp.Pages.Groups.Posts
             _claimService = claimService;
         }
 
+        public Account? User { get; set; }
         [BindProperty]
         public Post? Post { get; set; }
         [BindProperty]
-        public string? Content { get; set; }
+        public string? Content { get; set; } 
+        [BindProperty]
+        public string? Topic { get; set; }
         public async Task<IActionResult> OnGet(Guid groupId, Guid postId)
         {
             var userId = _claimService.GetCurrentUserId;
@@ -33,8 +37,9 @@ namespace RazorPageWebApp.Pages.Groups.Posts
             {
                 Post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);
                 Content = Post.Content;
+                Topic = Post.Topic;
             }
-
+            User = await _unitOfWork.AccountRepository.GetByIdAsync(userId);
             return result ? Page() : RedirectToPage($"/groups/details", new { id=groupId });
         }
         public async Task<IActionResult> OnPost(Guid groupId, Guid postId)
@@ -44,11 +49,15 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 Post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);
                 if (Post == null) return Page();
                 Post.Content = Content;
+                Post.Topic = Topic;
+                Post.AccountCreated = null;
                 var result = await _unitOfWork.PostRepository.EditPostAsync(Post);
                 HttpContext.Session.SetEntity("NewPost", Post);
                 
                 if (result == true) return RedirectToPage($"/Posts/Index", new { groupId,postId });
             }
+            User = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId);
+
             return Page();
         }
     }

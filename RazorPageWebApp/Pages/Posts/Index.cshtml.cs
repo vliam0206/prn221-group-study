@@ -1,4 +1,5 @@
 using Application.IServices;
+using Domain.Entities;
 using Domain.Entities.Posts;
 using Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,10 @@ namespace RazorPageWebApp.Pages.Posts
             _claimService = claimService;
         }
 
+        public Account? CurUser { get; private set; }
         public Post? Post { get; private set; }
         [BindProperty]
-        public string Content { get; set; } 
+        public string Content { get; set; }
         [BindProperty]
         public Comment? Comment { get; set; }
         public async Task<IActionResult> OnGet(Guid groupId, Guid postId)
@@ -33,9 +35,10 @@ namespace RazorPageWebApp.Pages.Posts
             if (result)
             {
                 Post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);
+                Post.Comments = Post.Comments.Where(x => x.CommentRepliedId == null).ToList();
                 Content = Post.Content;
             }
-
+            CurUser = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId); 
             return result ? Page() : RedirectToPage($"/groups/Details", new { id = groupId });
         }
 
@@ -52,19 +55,21 @@ namespace RazorPageWebApp.Pages.Posts
                 if (Comment == null) return NotFound();
                 if (ModelState.IsValid)
                 {
-                    Comment.PostId = postId;
                     Comment.AccountCreatedID = _claimService.GetCurrentUserId;
                     result = await _unitOfWork.CommentRepository.AddCommentAsync(Comment);
                     if (result)
-                        return new JsonResult(Comment);
+                    {
+                        if (Comment.CommentRepliedId == null) return RedirectToPage("/Comments/Index", new { id = Comment.Id, comment = Comment });
+                        else { return RedirectToPage("/Comments/Reply", new { id = Comment.Id, commentId = Comment.Id }); }
+                    }
                 }
-                
+
             }
-           
+
             return BadRequest();
         }
-        [ActionName("Reply")]
-        public async Task<IActionResult> OnPostReply(Guid groupId, Guid postId,Guid repId)
+        [ActionName("Delete")]
+        public async Task<IActionResult> OnPostDelete(Guid groupId, Guid postId)
         {
             var userId = _claimService.GetCurrentUserId;
             if (userId == Guid.Empty) return RedirectToPage("/auth/login", new { Message = "Please Login To View Post" });
@@ -72,19 +77,19 @@ namespace RazorPageWebApp.Pages.Posts
 
             if (result)
             {
-                if (Comment == null) return NotFound();
-                if (ModelState.IsValid)
+                
+                if (ModelState.ErrorCount == 1)
                 {
-                    Comment.PostId = postId;
-                    Comment.AccountCreatedID = _claimService.GetCurrentUserId;
-                    result = await _unitOfWork.CommentRepository.AddCommentAsync(Comment);
-                    if (result)
-                        return new JsonResult(Comment);
+                    await _unitOfWork.PostRepository.RemoveAsyncId(postId);
+                    return RedirectToPage("/Groups/Details", new
+                    {
+                        id= groupId
+                    });
                 }
 
             }
-
-            return BadRequest();
+            return RedirectToAction("OnGet", new { groupId, postId });
         }
+       
     }
 }

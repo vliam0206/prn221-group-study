@@ -1,0 +1,28 @@
+﻿@page "{id:guid}/{commentId:guid}"
+@model RazorPageWebApp.Pages.Comments.ReplyModel
+@{
+    Layout = null;
+}  
+<div id="comment-@Model.Comment.Id" data-val-reply="@Model.CommentId" class="comment-container ms-auto col-lg-11 border border-secondary ">
+    <div class="comment-user-group d-flex ">
+        <div class="col-1">
+            <img src="data:image/png;base64,@Model.Comment.AccountCreated.Avatar"
+                 class="img-fluid mx-2 rounded-circle border"/>
+        </div>
+        <div class="d-flex flex-column">
+            <div class="fw-bold">
+                <a asp-page="/account/profile">@Model.Comment.AccountCreated.Username</a>
+            </div>
+            <div class="text-black-50">
+                <a asp-page="/account/profile">@Model.Comment.AccountCreated.Email</a>
+            </div>
+        </div>
+        <aside class="d-flex ms-auto text-black-50">@Model.Comment.ModificationDate</aside>
+    </div>
+    <div class="comment-item border w-100 p-2">
+        <div>@Html.Raw(Model.Comment.Content)</div>
+    </div>
+    <div class="comment-action-container d-flex gap-2">
+        <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@Model.CommentId">@Model.Comment.ReplyComments.Count Reply</a>
+    </div>
+</div>

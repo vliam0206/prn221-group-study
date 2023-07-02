@@ -8,7 +8,11 @@ public static class SessionExtensions
     public static void SetEntity(this ISession session, string key, object? value)
     {
         if (value == null) throw new JsonException(nameof(value) + " is null");
-        session.SetString(key, JsonConvert.SerializeObject(value));
+
+        var settings = new JsonSerializerSettings {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+        };
+        session.SetString(key, JsonConvert.SerializeObject(value,settings));
     }
     public static T? GetEntity<T>(this ISession session)
     {

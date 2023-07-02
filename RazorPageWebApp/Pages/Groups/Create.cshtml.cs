@@ -56,7 +56,7 @@ namespace RazorPageWebApp.Pages.Groups {
 
             await _unitOfWork.GroupRepository.CreateGroupAsync(Group);
 
-            return new RedirectToPageResult($"/Groups/Details", new { id = Group.Id });
+            return  RedirectToPage($"/Groups/Details", new { id = Group.Id });
         }
     }
 }
