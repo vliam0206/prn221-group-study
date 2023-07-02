@@ -1,14 +1,15 @@
 ﻿@page "/groups/{groupId:guid}/view/{postId:guid}"
 @using Microsoft.AspNetCore.Html;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model RazorPageWebApp.Pages.Posts.IndexModel
 @{
 
 }
 <article class="container-fluid bg-light">
-    <section class="row m-2 flex-nowrap gap-x-2">
+    <section class="row mx-5 flex-nowrap gap-x-2">
         <div class="col-lg-3 d-none d-lg-block border border-dark rounded bg-white">
             <div class="card-img p-2 d-flex justify-content-center">
-                <img class=" w-50 rounded-circle border border-2 border-dark" src=@Model.Post.AccountCreated.Avatar" />
+                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar" />
             </div>
         </div>
         <div class="col-lg-9 col-auto border border-dark rounded bg-white" style="border-left-width:0px">
@@ -28,23 +29,24 @@
                 <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
                 <div class="d-flex gap-x-3 view-post">
                     <a class="link-secondary c-pointer">@Model.Post.Likes.Count Likes</a>
-                    <a class="link-secondary c-pointer">@Model.Post.Comments.Count Comments</a>
+                    <a class="link-secondary c-pointer" data-bs-toggle="collapse"
+                       data-bs-target="#comment-form-container">@Model.Post.Comments.Count Comments</a>
                 </div>
             </div>
         </div>
     </section>
-    <section class="row gap-y-3 m-2">
-        <div class="create-post-form p-0" >
+    <section class="row gap-y-3 mx-5">
+        <div class="create-post-form p-0 my-3 collapse" id="comment-form-container" >
             <form id="comment-form" onsubmit="return AddComment(this)" 
                     style="display:none" asp-page-handler="Comment">
                 <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
             </form>
-            <label asp-for="Comment.Content">Add New Comment</label>
+            <label class="fw-bold" asp-for="Comment.Content"></label>
             <textarea class="col-12 p-0 border border-1" id="comment-box"
-                        asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
-            <button class="btn btn-primary" form="comment-form">Submit</button>
+                        asp-for="Comment.Content"  form="comment-form" placeholder="Write some comments"></textarea>
+            <button class="btn btn-primary my-2" form="comment-form">Submit</button>
         </div>
-        <div class="comment-group col-lg-12 gap-2 px-2 row  ">
+        <div class="comment-group col-lg-12 my-3 gap-2 px-2 row  ">
                 @foreach (var comment in Model.Post.Comments)
                 {
                 <div id="comment-@comment.Id" class="comment-container col-lg-10 px-0 border border-secondary rounded">
@@ -79,7 +81,8 @@
                             <input asp-for="Comment.CommentRepliedId" value="@comment.Id" type="hidden" readonly />
                             <input asp-for="Comment.PostId" value="@comment.PostId" type="hidden" readonly />
                             <input value="@comment.PostId" type="hidden" readonly />
-                            <textarea id="reply-text-@comment.Id" asp-for="Comment.Content" form="reply-form-@comment.Id" class="comment-create-reply-text"></textarea>
+                            <label class="fw-bold">Reply Comment</label>
+                            <textarea id="reply-text-@comment.Id" asp-for="Comment.Content" placeholder="Enter Your Reply" form="reply-form-@comment.Id" class="comment-create-reply-text"></textarea>
                             <button class="btn btn-primary" form="reply-form-@comment.Id">Submit</button>
                         </form>
                     </article>
@@ -142,7 +145,7 @@
     <script>
         tinymce.init({
             selector: '#comment-box',
-            min_height: 300,
+            min_height: 150,
             max_height: 1000,
             skin: 'oxide',
             toolbar_location: 'bottom',
@@ -156,7 +159,7 @@
         });
         tinymce.init({
             selector: '.comment-create-reply-text',
-            min_height: 300,
+            min_height: 150,
             max_height: 1000,
             skin: 'oxide',
             toolbar_location: 'bottom',

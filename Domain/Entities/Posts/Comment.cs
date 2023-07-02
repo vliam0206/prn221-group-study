@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ public class Comment : BaseEntity
 {
     #region Properties
     [Required]
+    [DisplayName("Comment")]
     public string Content { get; set; } = null!;
     [Required]
     public Guid PostId { get; set; }

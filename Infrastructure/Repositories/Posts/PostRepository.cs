@@ -39,14 +39,14 @@ public class PostRepository :GenericRepository<Post>, IPostRepository
     public async Task<bool> EditPostAsync(Post? post)
     {
         if (post == null) return false;
-        _context.Update(post);
+        _context.Entry<Post>(post).State = EntityState.Modified;
         return await _context.SaveChangesAsync() > 0;
     }
 
     public Task<Post?> GetPostByIdAsync(Guid postId)
     {
         return _context.Posts.AsNoTracking()
-                             .Include(x => x.Comments)
+                             .Include(x => x.Comments).ThenInclude(x=>x.AccountCreated)
                              .Include(x => x.AccountCreated)
                              .Include(x => x.Likes)
                              .Include(x => x.TagInPosts)
