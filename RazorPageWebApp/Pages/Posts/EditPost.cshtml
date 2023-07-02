@@ -12,6 +12,8 @@
     </div>
     <div class="col-lg-9">
         <form id="form-edit" method="post">
+            <label asp-for="Topic"></label>
+            <input class="form-control" asp-for="Topic" />
             <span asp-validation-for="Content"></span>
             <textarea name="Content" id="edit-post">@(new HtmlString(@Model.Content))</textarea>
            

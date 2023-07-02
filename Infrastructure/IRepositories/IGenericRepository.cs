@@ -16,6 +16,7 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task AddAsync(T entity);
     Task UpdateAsync(T entity);
     Task RemoveAsync(T entity);
+    Task RemoveAsyncId(Guid id);
     Task<bool> ExistsAsync(Guid id);
     Task<int> CountAsync();
     Task SaveChangesAsync();

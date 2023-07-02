@@ -1,4 +1,5 @@
 ﻿using Application.Commons;
+using Application.IServices;
 using AutoMapper;
 using DataAccess;
 using Domain.Entities.Posts;
@@ -11,7 +12,7 @@ public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     private readonly AppDBContext _context;
     private readonly IMapper _mapper;
 
-    public CommentRepository(AppDBContext context)
+    public CommentRepository(AppDBContext context, IClaimService claimService) : base(claimService)
     {
         _context = context;
     }

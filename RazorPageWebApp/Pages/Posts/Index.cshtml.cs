@@ -33,7 +33,7 @@ namespace RazorPageWebApp.Pages.Posts
             if (result)
             {
                 Post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);
-                Post.Comments = Post.Comments.Where(x => x.AccountRepliedId == null).ToList();
+                Post.Comments = Post.Comments.Where(x => x.CommentRepliedId == null).ToList();
                 Content = Post.Content;
             }
 
@@ -66,8 +66,8 @@ namespace RazorPageWebApp.Pages.Posts
 
             return BadRequest();
         }
-        [ActionName("Reply")]
-        public async Task<IActionResult> OnPostReply(Guid groupId, Guid postId)
+        [ActionName("Delete")]
+        public async Task<IActionResult> OnPostDelete(Guid groupId, Guid postId)
         {
             var userId = _claimService.GetCurrentUserId;
             if (userId == Guid.Empty) return RedirectToPage("/auth/login", new { Message = "Please Login To View Post" });
@@ -75,41 +75,20 @@ namespace RazorPageWebApp.Pages.Posts
 
             if (result)
             {
-                if (Comment == null) return NotFound();
-                if (ModelState.IsValid)
+                
+                if (ModelState.ErrorCount == 1)
                 {
-                    Comment.AccountCreatedID = _claimService.GetCurrentUserId;
-                    result = await _unitOfWork.CommentRepository.AddCommentAsync(Comment);
-                    if (result)
-                        return new JsonResult(Comment);
+                    await _unitOfWork.PostRepository.RemoveAsyncId(postId);
+                    return RedirectToPage("/Groups/Details", new
+                    {
+                        id= groupId
+                    });
                 }
 
             }
 
-            return BadRequest();
+            return RedirectToAction("OnGet", new { groupId, postId });
         }
-        [ActionName("Reply")]
-        public async Task<IActionResult> OnPostReply(Guid groupId, Guid postId,Guid repId)
-        {
-            var userId = _claimService.GetCurrentUserId;
-            if (userId == Guid.Empty) return RedirectToPage("/auth/login", new { Message = "Please Login To View Post" });
-            var result = await _unitOfWork.GroupRepository.IsUserInGroup(userId, groupId);
-
-            if (result)
-            {
-                if (Comment == null) return NotFound();
-                if (ModelState.IsValid)
-                {
-                    Comment.PostId = postId;
-                    Comment.AccountCreatedID = _claimService.GetCurrentUserId;
-                    result = await _unitOfWork.CommentRepository.AddCommentAsync(Comment);
-                    if (result)
-                        return new JsonResult(Comment);
-                }
-
-            }
-
-            return BadRequest();
-        }
+       
     }
 }

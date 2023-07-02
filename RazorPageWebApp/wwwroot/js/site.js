@@ -37,7 +37,7 @@ function keyValueArrayToObject(array) {
 //        });
 //    });
 //});
-}
+//}
 function initTinyMce(selector) {
     tinymce.init({
         selector: selector,

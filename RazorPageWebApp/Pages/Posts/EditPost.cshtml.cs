@@ -21,7 +21,9 @@ namespace RazorPageWebApp.Pages.Groups.Posts
         [BindProperty]
         public Post? Post { get; set; }
         [BindProperty]
-        public string? Content { get; set; }
+        public string? Content { get; set; } 
+        [BindProperty]
+        public string? Topic { get; set; }
         public async Task<IActionResult> OnGet(Guid groupId, Guid postId)
         {
             var userId = _claimService.GetCurrentUserId;
@@ -33,6 +35,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
             {
                 Post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);
                 Content = Post.Content;
+                Topic = Post.Topic;
             }
 
             return result ? Page() : RedirectToPage($"/groups/details", new { id=groupId });
@@ -44,6 +47,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 Post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);
                 if (Post == null) return Page();
                 Post.Content = Content;
+                Post.Topic = Topic;
                 var result = await _unitOfWork.PostRepository.EditPostAsync(Post);
                 HttpContext.Session.SetEntity("NewPost", Post);
                 

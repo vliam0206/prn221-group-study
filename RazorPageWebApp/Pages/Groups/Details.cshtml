@@ -7,10 +7,7 @@
     ViewData["Title"] = "Details";
 }
 
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Group?.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+
 <!--Post Content-->
 <main class="post-group row mx-3">
     @if (Model.Group != null) {
@@ -18,7 +15,7 @@
             <div class="fs-2 fw-bold mb-3">@Html.DisplayFor(model => model.Group.Name)</div>
             <div class="fs-5 fw-normal mb-3">@Html.DisplayFor(model => model.Group.Description)</div>
             <div class="input-group mb-3">
-                <button class="btn btn-outline-secondary me-5" type="button">New Post</button>
+                <a class="btn btn-outline-secondary me-5" asp-page="/Posts/CreatePost" asp-route-groupId="@Model.Group.Id"  type="button">New Post</a>
                 <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
                 <button class="btn btn-outline-secondary" type="button">Search</button>
             </div>
