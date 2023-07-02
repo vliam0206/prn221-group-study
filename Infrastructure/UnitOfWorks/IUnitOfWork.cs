@@ -18,5 +18,6 @@ public interface IUnitOfWork
     public ICommentRepository CommentRepository { get; }
     public IGroupRepository GroupRepository { get; }
     public IPostRepository PostRepository { get; }
+    public IAccountInGroupRepository AccountInGroupRepository { get; }
 
 }
