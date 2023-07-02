@@ -9,39 +9,54 @@ using DataAccess;
 using Domain.Entities.Groups;
 using Infrastructure.IRepositories.Groups;
 using Infrastructure.UnitOfWorks;
+using Domain.Enums;
+using Application.IServices;
 
-namespace RazorPageWebApp.Pages.Groups
-{
-    public class CreateModel : PageModel
-    {
+namespace RazorPageWebApp.Pages.Groups {
+    public class CreateModel : PageModel {
         private readonly IHttpContextAccessor _httpContext;
+        private readonly IClaimService _claimService;
         private IUnitOfWork _unitOfWork;
 
-        public CreateModel(IHttpContextAccessor httpContext, IUnitOfWork unitOfWork) {
+        public CreateModel(IHttpContextAccessor httpContext, IUnitOfWork unitOfWork, IClaimService claimService) {
             _httpContext = httpContext;
             _unitOfWork = unitOfWork;
+            _claimService = claimService;
         }
+        public IActionResult OnGet() {
+            var visibilityOptions = from GroupVisibilityEnum e in Enum.GetValues(typeof(GroupVisibilityEnum))
+                                    select new {
+                                        ID = (int)e,
+                                        Name = e.ToString()
+                                    };
+            var authorityOptions = from AuthorityEnum e in Enum.GetValues(typeof(AuthorityEnum))
+                                    select new {
+                                        ID = (int)e,
+                                        Name = e.ToString()
+                                    };
 
-        public IActionResult OnGet()
-        {
+            ViewData["Visibility"] = new SelectList(visibilityOptions, "ID", "Name");
+            ViewData["Authority"] = new SelectList(authorityOptions, "ID", "Name");
+
             return Page();
         }
 
         [BindProperty]
         public Group Group { get; set; } = default!;
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
-        {
-          if (!ModelState.IsValid || Group == null)
-            {
+        public async Task<IActionResult> OnPostAsync() {
+            if (!ModelState.IsValid || Group == null) {
                 return Page();
             }
+            Group.CreationDate = DateTime.Now;
+            var username = HttpContext?.Session?.GetString(AppConstants.USER_NAME);
+            Group.AccountCreatedID = _claimService.GetCurrentUserId;
 
             await _unitOfWork.GroupRepository.CreateGroupAsync(Group);
 
-            return RedirectToPage("./Index");
+            return new RedirectToPageResult($"/Groups/Details", new { id = Group.Id });
         }
     }
 }
