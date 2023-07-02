@@ -20,6 +20,23 @@
     ViewData["Title"] = "Admin-GroupSetting";
     Layout = "_LayoutUser";
 }
+<head>
+    @*Add Template relative links*@
+    <link rel="apple-touch-icon" sizes="76x76" href="~/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="~/assets/img/favicon.png">
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    <!-- Nucleo Icons -->
+    <link href="~/assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="~/assets/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- CSS Files -->
+    <link id="pagestyle" href="~/assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+    @*End Add Template relative links*@
+</head>
 <!-- Left side bar -->
 <div class="row d-flex justify-content-center">
     <div class="col-3 position-relative sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 bg-gradient-dark ">
@@ -112,27 +129,32 @@
                     </div>
                     <!-- End Group Title -->
                     <!-- Configuration bar -->
+                    @*<div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                    <div class="nav-wrapper position-relative end-0">
+                    <ul class="nav nav-pills nav-fill p-1 flex-column on-resize" role="tablist">
+                    <li class="nav-item">
+                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" role="tab" aria-selected="false">
+                    <i class="material-icons text-lg position-relative">settings</i>
+                    <span class="ms-1">Settings</span>
+                    </a>
+                    </li>
+                    </ul>
+                    </div>
+                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" role="tab" aria-selected="false">
+
+                    </a>
+                    </div>*@
                     <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                        <div class="nav-wrapper position-relative end-0">
-                            <ul class="nav nav-pills nav-fill p-1 flex-column on-resize" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="true">
-                                        <i class="material-icons text-lg position-relative">home</i>
-                                        <span class="ms-1">App</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">email</i>
-                                        <span class="ms-1">Messages</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;" role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">settings</i>
-                                        <span class="ms-1">Settings</span>
-                                    </a>
-                                </li>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="material-icons text-lg position-relative">settings</i>
+                                <span class="ms-1">Settings</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a asp-page="" class="dropdown-item">Edit Group</a></li>
+                                <li><a asp-page="" class="dropdown-item">Change Visibility</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a asp-page="" class="dropdown-item text-danger">Remove Group</a></li>
                             </ul>
                         </div>
                     </div>
@@ -149,8 +171,8 @@
             </div>
             <!-- End Main Part -->
         </div>
-    <!-- End Right Part -->
-
+        <!-- End Right Part -->
+    </div>
 </div>
 <!--   Core JS Files   -->
 <script src="~/assets/js/plugins/perfect-scrollbar.min.js"></script>
