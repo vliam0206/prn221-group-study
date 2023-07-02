@@ -13,6 +13,7 @@ using Domain.Entities.Posts;
 using Application.Commons;
 using Domain.Entities;
 using Application.IServices;
+using System.ComponentModel.DataAnnotations;
 
 namespace RazorPageWebApp.Pages.Groups
 {
@@ -28,7 +29,6 @@ namespace RazorPageWebApp.Pages.Groups
             _unitOfWork = unitOfWork;
             _claimService = claimService;
         }
-
         public Group Group { get; set; } = default!;
         public AccountInGroup? AccountInGroup { get; set; } = default!;
         public Pagination<Post> PostsInGroup { get; set; } = default!;
@@ -49,5 +49,6 @@ namespace RazorPageWebApp.Pages.Groups
             }
             return Page();
         }
+        
     }
 }

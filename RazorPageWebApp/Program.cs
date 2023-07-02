@@ -52,7 +52,8 @@ app.MapRazorPages();
 
 // use session
 app.UseSession();
-
+// map hub
+app.MapHub<LiveChatHub>("/liveChat");
 // add custom middleware
 app.UseMiddleware<CheckAuthenticationMiddleware>();
 
