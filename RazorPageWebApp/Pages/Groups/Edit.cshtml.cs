@@ -10,50 +10,59 @@ using DataAccess;
 using Domain.Entities.Groups;
 using Infrastructure.IRepositories.Groups;
 using Infrastructure.UnitOfWorks;
+using Application.IServices;
+using Domain.Enums;
 
 namespace RazorPageWebApp.Pages.Groups
 {
     public class EditModel : PageModel
     {
-        private readonly IHttpContextAccessor _httpContext;
+        private readonly IClaimService _claimService;
         private IUnitOfWork _unitOfWork;
 
-        public EditModel(IHttpContextAccessor httpContext, IUnitOfWork unitOfWork) {
-            _httpContext = httpContext;
+        public EditModel(IUnitOfWork unitOfWork, IClaimService claimService)
+        {            
             _unitOfWork = unitOfWork;
+            _claimService = claimService;
+        }
+        public IActionResult OnGet()
+        {
+            var visibilityOptions = from GroupVisibilityEnum e in Enum.GetValues(typeof(GroupVisibilityEnum))
+                                    select new
+                                    {
+                                        ID = (int)e,
+                                        Name = e.ToString()
+                                    };
+            var authorityOptions = from AuthorityEnum e in Enum.GetValues(typeof(AuthorityEnum))
+                                   select new
+                                   {
+                                       ID = (int)e,
+                                       Name = e.ToString()
+                                   };
+
+            ViewData["Visibility"] = new SelectList(visibilityOptions, "ID", "Name");
+            ViewData["Authority"] = new SelectList(authorityOptions, "ID", "Name");
+
+            return Page();
         }
 
         [BindProperty]
         public Group Group { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var group =  await _unitOfWork.GroupRepository.GetGroupByIdAsync(id);
-            if (group == null)
-            {
-                return NotFound();
-            }
-            Group = group;
-            return Page();
-        }
-
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
+        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || Group == null)
             {
                 return Page();
             }
+            Group.CreationDate = DateTime.Now;            
+            Group.AccountCreatedID = _claimService.GetCurrentUserId;
 
-            await _unitOfWork.GroupRepository.UpdateGroupAsync(Group);
+            await _unitOfWork.GroupRepository.UpdateAsync(Group);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage($"/Groups/Details", new { id = Group.Id });
         }
     }
 }
