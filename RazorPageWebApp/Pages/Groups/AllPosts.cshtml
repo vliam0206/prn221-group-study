@@ -1,5 +1,5 @@
 ﻿@page
-@model RazorPageWebApp.Pages.Groups.AdminGroupSettingModel
+@model RazorPageWebApp.Pages.Groups.AllPostsModel
 @{
     #region template license
     //=========================================================
@@ -17,7 +17,7 @@
     //The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     #endregion
 
-    ViewData["Title"] = "Admin Group Setting";
+    ViewData["Title"] = "All Post";
     Layout = "_LayoutUser";
 }
 @inject IHttpContextAccessor httpContext
@@ -41,8 +41,9 @@
     <link id="pagestyle" href="~/assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
     @*End Add Template relative links*@
 </head>
-<!-- Left side bar -->
+
 <div class="row d-flex justify-content-center">
+    <!-- Left side bar -->
     <div class="col-3 position-relative sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 bg-gradient-dark ">
         <!-- Sidenav Header -->
         <div class="sidenav-header">
@@ -119,41 +120,93 @@
             <div class="card card-body mx-3 mx-md-4 mt-n6">
                 <!-- Title Info -->
                 <div class="row gx-4 mb-2">
-
                     <!-- Group Title -->
                     <div class="col-auto my-auto">
                         <div class="h-100">
-                            <h5 class="mb-1">@Model.GroupObj.Name</h5>
-                            <p class="mb-0 font-weight-normal text-sm">@Model.GroupObj.Description</p>
+                            <h5 class="mb-1">All Posts</h5>
                         </div>
                     </div>
                     <!-- End Group Title -->
                     <!-- Configuration bar -->
                     <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="material-icons text-lg position-relative">settings</i>
-                                <span class="ms-1">Settings</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item">Edit Group</a></li>
-                                <li><a class="dropdown-item">Change Visibility</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger">Remove Group</a></li>
-                            </ul>
-                        </div>
+                        <p>
+                            <a class="btn bnt-light btn-outline-primary mt-3">Invite Member</a>
+                        </p>
                     </div>
                     <!-- End Configuration bar -->
                 </div>
                 <!-- End Title Info -->
                 <!-- Detail Info -->
-                <div class="row">
-                    <div class="row">
-                        <p><b>Creation date: </b> @Model.GroupObj.CreationDate</p>
-                        <p><b>Creation by: </b>@username</p>
-                        <p><b>Total members: </b>[15]</p>
-                        <p><b>Total post: </b>[15]</p>
-                    </div>
+                <div class="row">                    
+                    @*List of posts pagin*@
+                    @foreach (var post in Model.Posts.Items)
+                    {
+                        <main class="d-flex my-2 mx-5 border-start border-3 border-primary">
+                            <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
+                                <div class="dropdown w-100 d-flex justify-content-between">
+                                    <div class="d-flex w-100">
+                                        @foreach (var tag in post.TagInPosts)
+                                        {
+                                            <a class="btn btn-outline-dark rounded mt-2" asp-page="">@tag.Tag?.Name</a>
+                                        }
+                                    </div>                                
+                                </div>
+                                <div class="w-100 ps-2 align-self-end h-100 justify-content-between d-flex flex-column">
+                                    <div class="h5"><a class="link-dark" href="@Url.Content($"{Model.GroupObj.Id}/view/{post.Id}")">@post.Topic</a></div>
+                                    <div class="d-block"><b>Created by:</b> @post.AccountCreated.Username</div>
+                                    <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">                   
+                                        <span class="text-black-50 align-self-center" style="font-size:0.75em">@post.CreationDate.ToLongDateString()</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 mt-5">
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Waiting)
+                                {
+                                    <div class="btn-group col-lg-6">
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Waiting
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                }
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Approved)
+                                {
+                                    <div class="btn-group col-lg-6">
+                                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Waiting
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Waiting</a></li>
+                                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                }
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Rejected)
+                                {
+                                    <div class="btn-group col-lg-6">
+                                        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Waiting
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Waiting</a></li>
+                                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </main>
+
+                    }
+                    @*End list of posts pagin*@
                 </div>
                 <!-- End Detail Info -->
             </div>
