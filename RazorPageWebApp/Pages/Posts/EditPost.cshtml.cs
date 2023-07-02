@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Domain.Entities.Posts;
 using RazorPageWebApp.Extensions;
+using Domain.Entities;
 
 namespace RazorPageWebApp.Pages.Groups.Posts
 {
@@ -18,6 +19,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
             _claimService = claimService;
         }
 
+        public Account? User { get; set; }
         [BindProperty]
         public Post? Post { get; set; }
         [BindProperty]
@@ -37,7 +39,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 Content = Post.Content;
                 Topic = Post.Topic;
             }
-
+            User = await _unitOfWork.AccountRepository.GetByIdAsync(userId);
             return result ? Page() : RedirectToPage($"/groups/details", new { id=groupId });
         }
         public async Task<IActionResult> OnPost(Guid groupId, Guid postId)
@@ -53,6 +55,8 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 
                 if (result == true) return RedirectToPage($"/Posts/Index", new { groupId,postId });
             }
+            User = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId);
+
             return Page();
         }
     }

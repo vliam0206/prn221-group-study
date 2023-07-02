@@ -1,4 +1,5 @@
 using Application.IServices;
+using Domain.Entities;
 using Domain.Entities.Posts;
 using Infrastructure.Repositories.Posts;
 using Infrastructure.UnitOfWorks;
@@ -26,6 +27,7 @@ namespace RazorPageWebApp.Pages.Groups
             _claimService = claimService;
         }
 
+        public Account? User { get; set; }
         [BindProperty]
         [Required(ErrorMessage = "Post Content shouldn't be empty")]
         public string? Content { get; set; } = string.Empty;
@@ -35,14 +37,10 @@ namespace RazorPageWebApp.Pages.Groups
         //[Authorize]
         public async Task<IActionResult> OnGetAsync(Guid groupId)
         {
-            if (Debugger.IsAttached)
-            {
-
-            }
             var userId = _claimService.GetCurrentUserId;
             if (userId == Guid.Empty) return RedirectToPage("/auth/login", new { Message = "Please Login To Create Post" });
-
             var result = await _unitOfWork.GroupRepository.IsUserInGroup(userId, groupId);
+            User = await _unitOfWork.AccountRepository.GetByIdAsync(userId);
             return result ? Page() : RedirectToPage("/index");
         }
         public async Task<IActionResult> OnPostAsync(Guid? groupId)
@@ -62,10 +60,11 @@ namespace RazorPageWebApp.Pages.Groups
                 HttpContext.Session.SetEntity("NewPost", post);
                 return RedirectToPage($"/groups/details", new
                 {
-                    groupId,
-                    postId = post.Id
+                    id = groupId
                 });
             }
+            User = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId);
+
             return Page();
         }
     }

@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(ICommentRepository), typeof(CommentRepository));
         services.AddScoped(typeof(IPostRepository),typeof(PostRepository));
         services.AddScoped(typeof(IGroupRepository), typeof(GroupRepository));
+        services.AddScoped(typeof(IAccountInGroupRepository), typeof(AccountInGroupRepository));
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;

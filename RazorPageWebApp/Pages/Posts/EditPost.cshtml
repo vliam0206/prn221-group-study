@@ -7,7 +7,7 @@
 <section class="row">
     <div class="col-lg-3 border border-dark rounded">
         <div class="card-img p-2 d-flex justify-content-center">
-            <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+            <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.User.Avatar" />
         </div>
     </div>
     <div class="col-lg-9">
@@ -16,9 +16,9 @@
             <input class="form-control" asp-for="Topic" />
             <span asp-validation-for="Content"></span>
             <textarea name="Content" id="edit-post">@(new HtmlString(@Model.Content))</textarea>
-           
+
+            <button class="btn-primary btn" form="form-edit">Save</button>
         </form>
-        <button class="btn-primary btn" form="form-edit">Save</button>
     </div>
 </section>
 @section Scripts

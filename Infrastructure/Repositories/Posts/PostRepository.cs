@@ -49,9 +49,9 @@ public class PostRepository :GenericRepository<Post>, IPostRepository
     }
     public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {
-        var query = _context.Posts.AsNoTracking().Include(x=>x.AccountCreated);
+        var query = _context.Posts.AsNoTracking();
         var totalPostsCount = await query.CountAsync(x => x.GroupId == groupId);
-        var posts = await query.Include(x => x.Comments).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).Where(x => x.GroupId == groupId)
+        var posts = await query.Include(x => x.Comments).Include(x => x.AccountCreated).Include(x => x.Likes).Include(x => x.TagInPosts).ThenInclude(x => x.Tag).Include(x => x.Attachments).Where(x => x.GroupId == groupId)
                                   .Skip((pageIndex - 1) * pageSize)
                                   .Take(pageSize)
                                   .ToListAsync();

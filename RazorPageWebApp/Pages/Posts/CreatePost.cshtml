@@ -4,26 +4,26 @@
 @{
 }
 <main class="container">
-<section class="row">
-    <div class="col-lg-3 border border-dark rounded">
-        <div class="card-img p-2 d-flex justify-content-center">
-            <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+    <section class="row">
+        <div class="col-lg-3 border border-dark rounded">
+            <div class="card-img p-2 d-flex justify-content-center">
+                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.User.Avatar" />
+            </div>
         </div>
-    </div>
-    <div class="col-lg-9">
-        <form method="post">
-            <label asp-for="Topic"></label>
-            <input class="form-control" asp-for="Topic"/>
-            <span asp-validation-for="Content"></span>
-            <textarea name="Content" id="create-post">@(new HtmlString(@Model.Content))</textarea>
-            
-            <button>Submit</button>
-        </form>
-    </div>
-</section>
+        <div class="col-lg-9">
+            <form method="post">
+                <label asp-for="Topic"></label>
+                <input class="form-control" asp-for="Topic" />
+                <span asp-validation-for="Content"></span>
+                <textarea name="Content" id="create-post">@(new HtmlString(@Model.Content))</textarea>
+                <button class="btn-primary btn" form="form-add">Create</button>
+            </form>
+
+        </div>
+    </section>
 </main>
 @section Scripts
-{
+    {
     <script>
         tinymce.init({
             selector: '#create-post',
