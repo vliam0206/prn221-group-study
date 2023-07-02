@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace Application.Commons;
 
-public class Pagination<T> {
+public class Pagination<T>
+{
     public int TotalItemsCount { get; set; }
     public int PageSize { get; set; }
-    public int TotalPagesCount {
-        get {
+    public int TotalPagesCount
+    {
+        get
+        {
             var temp = TotalItemsCount / PageSize;
-            if (TotalItemsCount % PageSize == 0) {
+            if (TotalItemsCount % PageSize == 0)
+            {
                 return temp;
             }
             return temp + 1;

@@ -8,6 +8,8 @@ function keyValueArrayToObject(array) {
         var pair = array[i];
         var key = pair.name;
         var value = pair.value;
+        console.log(key)
+        console.log(value)
         dataObject[key] = value;
     }
     return dataObject;
@@ -35,3 +37,20 @@ function keyValueArrayToObject(array) {
 //        });
 //    });
 //});
+//}
+function initTinyMce(selector) {
+    tinymce.init({
+        selector: selector,
+        min_height: 300,
+        max_height: 1000,
+        skin: 'oxide',
+        toolbar_location: 'bottom',
+        plugins: 'lists code table codesample link autoresize',
+        toolbar: 'blocks | bold italic underline strikethrough bullist link codesample',
+        resize: true,
+        menubar: false,
+        statusbar: false,
+        submit_patch: true,
+        content_css: '/css/tinymce.css'
+    });
+}

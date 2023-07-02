@@ -1,53 +1,64 @@
 ﻿@page "/groups/{groupId:guid}/view/{postId:guid}"
 @using Microsoft.AspNetCore.Html;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model RazorPageWebApp.Pages.Posts.IndexModel
 @{
-    if (ViewData["OnlyData"] != null)
-        Layout = null;
+
 }
-<article class="container-fluid">
-    <section class="row ">
-        <div class="col-lg-3 d-none d-lg-block border border-dark rounded">
+<article class="container-fluid bg-light">
+    <section class="row mx-5 flex-nowrap gap-x-2">
+        <div class="col-lg-3 d-none d-lg-block border border-dark rounded bg-white">
             <div class="card-img p-2 d-flex justify-content-center">
-                <img class=" w-50 rounded-circle border border-2 border-dark" src="https://picsum.photos/200/200" />
+                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar" />
             </div>
         </div>
-        <div class="col-lg-9 col-auto border border-dark rounded" style="border-left-width:0px">
-            <div class="dropdown ms-auto d-flex">
-                <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
-                    ...
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
-                    <li><a class="dropdown-item" href="../edit/@Model.Post?.Id">Edit</a></li>
-                </ul>
-            </div>
-            <div class="w-100 p-2">
+        <div class="col-lg-9 col-auto border border-dark rounded bg-white" style="border-left-width:0px">
+                @if (Model.CurUser.Id == Model.Post.AccountCreatedID)
+                {
+                <div class="dropdown ms-auto d-flex">
+                    <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
+                        ...
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
+                        <li><a class="dropdown-item" href="../edit/@Model.Post?.Id">Edit</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePost">Delete</a></li>
+                    </ul>
+                </div>
+                }
+            <div class="d-flex flex-column col p-2">
                 <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
+                <div class="d-flex gap-x-3 view-post">
+                    <a class="link-secondary c-pointer">@Model.Post.Likes.Count Likes</a>
+                    <a class="link-secondary c-pointer" data-bs-toggle="collapse"
+                       data-bs-target="#comment-form-container">@Model.Post.Comments.Count Comments</a>
+                </div>
             </div>
         </div>
     </section>
-    @Model.HttpContext.Request.RouteValues["postId"]
-    <section class="row ">
-        <form id="comment-form" onsubmit="return AddComment(this)" style="display:none" asp-page-handler="Comment">
-            <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
-        </form>
-
-        <textarea class="col-12 p-0 border border-1" id="comment-box" asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
-        <button class="btn btn-primary" form="comment-form">Submit</button>
-
-        <div class="comment-group col-lg-12 gap-2 p-0 row ">
-            @foreach (var comment in Model.Post.Comments)
-            {
-                <div class="comment-container col-lg-10 border border-secondary ">
+    <section class="row gap-y-3 mx-5">
+        <div class="create-post-form p-0 my-3 collapse" id="comment-form-container" >
+            <form id="comment-form" onsubmit="return AddComment(this)" 
+                    style="display:none" asp-page-handler="Comment">
+                <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
+            </form>
+            <label class="fw-bold" asp-for="Comment.Content"></label>
+            <textarea class="col-12 p-0 border border-1" id="comment-box"
+                        asp-for="Comment.Content"  form="comment-form" placeholder="Write some comments"></textarea>
+            <button class="btn btn-primary my-2" form="comment-form">Submit</button>
+        </div>
+        <div class="comment-group col-lg-12 my-3 gap-2 px-2 row  ">
+                @foreach (var comment in Model.Post.Comments)
+                {
+                <div id="comment-@comment.Id" class="comment-container col-lg-10 px-0 border border-secondary rounded">
                     <div class="comment-user-group d-flex ">
-                        <div class="col-1">
+                        <div class="">
                             <img src="data:image/png;base64,@comment.AccountCreated.Avatar"
-                                 class="img-fluid rounded-circle border" alt="@comment.AccountCreated.Avatar" />
-                    </div>
+                                 class="img-thumbnail mx-2 rounded-circle border" />
+                        </div>
                         <div class="d-flex flex-column">
                             <div class="fw-bold">
                                 <a asp-page="/account/profile">@comment.AccountCreated.Username</a>
-                </div>
+                            </div>
                             <div class="text-black-50">
                                 <a asp-page="/account/profile">@comment.AccountCreated.Email</a>
                             </div>
@@ -56,34 +67,85 @@
                     </div>
                     <div class="comment-item border w-100 p-2">
                         <div>@Html.Raw(comment.Content)</div>
+                        <div class="comment-action-container d-flex gap-2">
+                            <a class="reply-count link-secondary c-pointer" data-count="@comment.ReplyComments.Count" data-bs-toggle="collapse"
+                               data-bs-target="#comment-r-@comment.Id">
+                                    @comment.ReplyComments.Count Reply
+                            </a>
+                        </div>
                     </div>
-                    <div class="comment-action-container d-flex gap-2">
-                        <a class="link-secondary c-pointer">@*@comment.LikeCount*@ 10 Like</a>
-                        <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@comment.ReplyComments.Count Reply</a>
+
+                    <article class="comment-create-reply my-3 collapse ms-auto col-11" id="comment-r-@comment.Id">
+                        <form id="reply-form-@comment.Id" method="post" onsubmit="return AddComment(this)">
+                            <input asp-for="Comment.AccountRepliedId" value="@comment.AccountCreatedID" type="hidden" readonly />
+                            <input asp-for="Comment.CommentRepliedId" value="@comment.Id" type="hidden" readonly />
+                            <input asp-for="Comment.PostId" value="@comment.PostId" type="hidden" readonly />
+                            <input value="@comment.PostId" type="hidden" readonly />
+                            <label class="fw-bold">Reply Comment</label>
+                            <textarea id="reply-text-@comment.Id" asp-for="Comment.Content" placeholder="Enter Your Reply" form="reply-form-@comment.Id" class="comment-create-reply-text"></textarea>
+                            <button class="btn btn-primary" form="reply-form-@comment.Id">Submit</button>
+                        </form>
+                    </article>
+                    <div class="reply-group ms-auto col d-flex flex-column gap-y-2">
+                            @foreach (var reply in comment.ReplyComments)
+                            {
+                            <div id="comment-@reply.Id" class="comment-container col-lg-11 ms-auto border border-secondary ">
+                                <div class="comment-user-group d-flex ">
+                                    <div>
+                                        <img src="data:image/png;base64,@reply.AccountCreated.Avatar"
+                                            @*src="https://picsum.photos/seed/1w32/200/300"*@
+                                             class="rounded-circle img-thumbnail border mx-2" />
+                                    </div>
+                                    <div class="d-flex flex-column">
+                                        <div class="fw-bold">
+                                            <a asp-page="/account/profile">@reply.AccountCreated.Username</a>
+                                        </div>
+                                        <div class="text-black-50">
+                                            <a asp-page="/account/profile">@reply.AccountCreated.Email</a>
+                                        </div>
+                                    </div>
+                                    <aside class="d-flex ms-auto text-black-50">@reply.ModificationDate</aside>
+                                </div>
+                                <div class="comment-item border w-100 p-2">
+                                    <div>@Html.Raw(reply.Content)</div>
+                                </div>
+                                <div class="comment-action-container d-flex gap-2 mx-2">
+                                    <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@reply.ReplyComments.Count Reply</a>
+                                </div>
+                            </div>
+                            }
                     </div>
                 </div>
-                <article class="comment-create-reply collapse ms-auto col-10" id="comment-r-@comment.Id">
-                    <form method="post" onsubmit="return replyComment(this)">
-                        <input name="repId" value="@comment.Id"/>
-                        <label>Reply</label>
-                        <textarea class="comment-create-reply-text"></textarea>
-                    </form>
-                </article>
-                @foreach (var reply in comment.ReplyComments)
-                {
 
-            }
-            }
+
+                }
         </div>
 
     </section>
 </article>
-@section Scripts
-    {
+<div class="modal" id="deletePost" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deleting @Model.Post.Topic</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this post!</p>
+            </div>
+            <form method="post" class="modal-footer">
+                <button type="submit" asp-page-handler="Delete" class="btn btn-danger" data-bs-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-secondary">No</button>
+            </form>
+        </div>
+    </div>
+</div>
+                @section Scripts
+                    {
     <script>
         tinymce.init({
             selector: '#comment-box',
-            min_height: 300,
+            min_height: 150,
             max_height: 1000,
             skin: 'oxide',
             toolbar_location: 'bottom',
@@ -93,11 +155,11 @@
             menubar: false,
             statusbar: false,
             submit_patch: true,
-            content_css: '/tinymce.css'
+            content_css: '/css/tinymce.css'
         });
         tinymce.init({
             selector: '.comment-create-reply-text',
-            min_height: 300,
+            min_height: 150,
             max_height: 1000,
             skin: 'oxide',
             toolbar_location: 'bottom',
@@ -107,7 +169,7 @@
             menubar: false,
             statusbar: false,
             submit_patch: true,
-            content_css: '/tinymce.css'
+            content_css: '/css/tinymce.css'
         });
     </script>
     <script>
@@ -116,13 +178,32 @@
             tinymce.triggerSave();
             var url = new URL(location);
             url.searchParams.append('handler', "Comment");
+            data = keyValueArrayToObject($(form).serializeArray());
+            //console.log(data);
             $.ajax({
                 url: url,
-                data: keyValueArrayToObject($(form).serializeArray()),
+                data: data,
                 method: 'Post',
                 success: (res) => {
-                    console.log(res);
+                    res = $(res);
+                    //console.log(res.html());
+                    //console.log(data["Comment.CommentRepliedId"])
+                    if (data["Comment.CommentRepliedId"] == null) {
+                        // create comment
+                        $(".comment-group").prepend(res);
+                        selector = '#reply-text-' + res.data('id')
+                        initTinyMce(selector)
+                        tinymce.get('comment-box').setContent('')
+                    } else {
+                        // Reply Comment
+                        console.log($("#comment-" + data["Comment.CommentRepliedId"] + " .reply-group"));
+                        var count = $("#comment-" + data["Comment.CommentRepliedId"]).find('.reply-count')
+                        count.data('count', parseInt(count.data('count') + 1));
+                        count.html(count.data('count') + " Reply")
+                        $("#comment-" + data["Comment.CommentRepliedId"] + " .reply-group").prepend(res);
+                        tinymce.get('reply-text-' + data["Comment.CommentRepliedId"]).setContent('')
 
+                    }
                 },
                 error: (e) => {
                     console.log(e.status);
@@ -130,22 +211,6 @@
             })
             return false;
         }
-        function replyComment(form) {
-            tinymce.triggerSave(); 
-            var url = new URL(location);
-            url.searchParams.append('handler', "Reply");
-            $.ajax({
-                url: url,
-                data: keyValueArrayToObject($(form).serializeArray()),
-                method: 'Post',
-                success: (res) => {
-                    console.log(res);
 
-                },
-                error: (e) => {
-                    console.log(e.status);
-                }
-            })
-        }
     </script>
 }

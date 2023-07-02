@@ -1,0 +1,44 @@
+﻿@page "{id:guid}"
+@model RazorPageWebApp.Pages.Comments.IndexModel
+@{
+    Layout = null;
+}   
+<div id="comment-@Model.Comment.Id" data-id="@Model.Comment.Id" class="comment-container col-lg-10 px-0 border border-secondary rounded">
+    <div class="comment-user-group d-flex ">
+        <div class="">
+            <img src="data:image/png;base64,@Model.Comment.AccountCreated.Avatar"
+                 class="img-fluid mx-2 rounded-circle border"  />
+        </div>
+        <div class="d-flex flex-column">
+            <div class="fw-bold">
+                <a asp-page="/account/profile">@Model.Comment.AccountCreated.Username</a>
+            </div>
+            <div class="text-black-50">
+                <a asp-page="/account/profile">@Model.Comment.AccountCreated.Email</a>
+            </div>
+        </div>
+        <aside class="d-flex ms-auto text-black-50">@Model.Comment.ModificationDate</aside>
+    </div>
+    <div class="comment-item border w-100 p-2">
+        <div>@Html.Raw(Model.Comment.Content)</div>
+        <div class="comment-action-container d-flex gap-2">
+            <a class="reply-count link-secondary c-pointer" data-count="@Model.Comment.ReplyComments.Count" data-bs-toggle="collapse"
+               data-bs-target="#comment-r-@Model.Comment.Id">
+                @Model.Comment.ReplyComments.Count Reply
+            </a>
+        </div>
+    </div>
+
+    <article class="comment-create-reply my-3 collapse ms-auto col-11" id="comment-r-@Model.Comment.Id">
+        <form id="reply-form-@Model.Comment.Id" method="post" onsubmit="return AddComment(this)">
+            <input asp-for="Comment.AccountRepliedId" value="@Model.Comment.AccountCreatedID" type="hidden" readonly />
+            <input asp-for="Comment.CommentRepliedId" value="@Model.Comment.Id" type="hidden" readonly />
+            <input asp-for="Comment.PostId" value="@Model.Comment.PostId" type="hidden" readonly />
+            <input value="@Model.Comment.PostId" type="hidden" readonly />
+            <textarea id="reply-text-@Model.Comment.Id" asp-for="Comment.Content" form="reply-form-@Model.Comment.Id" class="comment-create-reply-text"></textarea>
+            <button class="btn btn-primary" form="reply-form-@Model.Comment.Id">Submit</button>
+        </form>
+    </article>
+    <div class="reply-group ms-auto col d-flex flex-column gap-y-2">
+    </div>
+</div>

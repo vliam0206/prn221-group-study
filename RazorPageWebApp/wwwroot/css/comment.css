@@ -1,0 +1,25 @@
+﻿.comment-container {
+}
+
+    .comment-container .comment-user-group {
+        background: var(--bs-gray-200);
+        padding: 1em;
+    }
+        .comment-container .comment-user-group img 
+        {
+            width:50px;
+            height:50px;
+        }
+           
+   
+    .comment-container .comment-item {
+        padding: 1em;
+    }
+
+.reply-group {
+    background: var(--bs-gray-200);
+}
+
+    .reply-group > .comment-container {
+        background: var(--bs-light);
+    }

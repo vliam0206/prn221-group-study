@@ -1,4 +1,5 @@
 ﻿using Application.Commons;
+using Application.IServices;
 using DataAccess;
 using Domain.Entities;
 using Infrastructure.IRepositories;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,10 +16,12 @@ namespace Infrastructure.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
     private readonly AppDBContext _dbContext;
+    private readonly IClaimService _claimService;
 
-    public GenericRepository()
+    public GenericRepository(IClaimService claimService)
     {
         _dbContext = new AppDBContext();
+        _claimService = claimService;
     }
 
     public async Task AddAsync(T entity)
@@ -41,17 +45,25 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await _dbContext.Set<T>().ToListAsync();
     }
 
-    public async Task<T?> GetByIdAsync(Guid id)
+    public async Task<T?> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] includes)
     {
-        return await _dbContext.Set<T>().FindAsync(id);
+        return await includes.Aggregate(_dbContext.Set<T>().AsNoTracking(), (a, b) => a.Include(b)).FirstOrDefaultAsync(x => x.Id == id) ;
     }
-
+     
     public async Task RemoveAsync(T entity)
     {
-        _dbContext.Set<T>().Remove(entity);
+        entity.IsDeleted = true;
+        entity.DeletedDate = DateTime.UtcNow;
+        entity.DeletedBy = _claimService.GetCurrentUserId;
+        _dbContext.Set<T>().Update(entity);
         await _dbContext.SaveChangesAsync();
     }
-
+    public async Task RemoveAsyncId(Guid id)
+    {
+        var entity = await this.GetByIdAsync(id);
+        if (entity == null) throw new InvalidOperationException("Id not found");
+        await this.RemoveAsync(entity);
+    }
     public async Task SaveChangesAsync()
     {
         await _dbContext.SaveChangesAsync();

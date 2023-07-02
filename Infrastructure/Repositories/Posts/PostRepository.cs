@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories.Posts;
 
-public class PostRepository : IPostRepository
+public class PostRepository : GenericRepository<Post>, IPostRepository
 {
     private readonly AppDBContext _context;
     private readonly IClaimService _claimService;
     private readonly IMapper _mapper;
 
-    public PostRepository(AppDBContext context, IClaimService claimService, IMapper mapper)
+    public PostRepository(AppDBContext context, IClaimService claimService, IMapper mapper) : base(claimService)
     {
         _context = context;
         _claimService = claimService;
@@ -39,22 +39,24 @@ public class PostRepository : IPostRepository
     public async Task<bool> EditPostAsync(Post? post)
     {
         if (post == null) return false;
-        _context.Update(post);
+        _context.Entry<Post>(post).State = EntityState.Modified;
         return await _context.SaveChangesAsync() > 0;
     }
 
     public Task<Post?> GetPostByIdAsync(Guid postId)
     {
-        return _context.Posts.Include(x => x.Comments).ThenInclude(x=>x.AccountCreated).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).FirstOrDefaultAsync(x => x.Id == postId);
+        return GetQuery().FirstOrDefaultAsync(x => x.Id == postId);
+
+
     }
     public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {
-        var query = _context.Posts.AsNoTracking().Include(x=>x.AccountCreated);
+        var query = GetQuery();
         var totalPostsCount = await query.CountAsync(x => x.GroupId == groupId);
-        var posts = await query.Include(x => x.Comments).Include(x => x.Likes).Include(x => x.TagInPosts).Include(x => x.Attachments).Where(x => x.GroupId == groupId)
-                                  .Skip((pageIndex - 1) * pageSize)
-                                  .Take(pageSize)
-                                  .ToListAsync();
+        var posts = await query
+                        .Skip((pageIndex - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync();
         var pagination = new Pagination<Post>
         {
             TotalItemsCount = totalPostsCount,
@@ -63,5 +65,15 @@ public class PostRepository : IPostRepository
             Items = posts
         };
         return pagination;
+    }
+    private IQueryable<Post> GetQuery()
+    {
+        return _context.Posts.Where(x => x.IsDeleted == false).AsNoTracking()
+                                     .Include(x => x.Comments).ThenInclude(x => x.AccountCreated)
+                                     .Include(x => x.AccountCreated)
+                                     .Include(x => x.Likes)
+                                     .Include(x => x.TagInPosts)
+                                     .ThenInclude(x => x.Tag)
+                                     .Include(x => x.Attachments);
     }
 }
