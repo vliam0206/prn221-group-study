@@ -136,7 +136,7 @@
                                 <span class="ms-1">Settings</span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item">Edit Group</a></li>
+                                <li><a asp-page="/Groups/Edit" asp-route-id="@Model.GroupObj.Id" class="dropdown-item">Edit Group</a></li>
                                 <li><a class="dropdown-item">Change Visibility</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger">Remove Group</a></li>
