@@ -20,7 +20,7 @@ public class AdminGroupSettingModel : PageModel
 
     public Group GroupObj { get; set; }
     public async Task<IActionResult> OnGetAsync(string id)
-    {        
+    {
         var group = await _unitOfWork.GroupRepository.GetGroupByIdAsync(Guid.Parse(id));
         if (group == null)
         {
