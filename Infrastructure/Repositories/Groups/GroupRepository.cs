@@ -40,7 +40,9 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
 
     public async Task<List<Group>> GetAllGroupsAsync()
     {
-        return await _dbcontext.Groups.Include(x => x.Posts).ToListAsync();
+        return await _dbcontext.Groups.Include(x => x.Posts)
+            .OrderByDescending(x => x.CreationDate)
+            .ToListAsync();
     }
 
     public async Task<Group?> GetGroupByIdAsync(Guid? id)
@@ -65,6 +67,7 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
                             .Include(x => x.Group)
                             .Where(x => x.AccountId == userId)
                             .Select(x => x.Group)
+                            .OrderByDescending (x => x.CreationDate)
                             .ToListAsync();
     }
 
@@ -73,7 +76,8 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
         var groupList = _dbcontext.AccountInGroups
                             .Include(x => x.Group)
                             .Where(x => x.AccountId == userId)
-                            .Select(x => x.Group);
+                            .Select(x => x.Group)
+                            .OrderByDescending(x => x.CreationDate);
         var itemCount = await groupList.CountAsync();
         var items = await groupList.Skip(pageIndex * pageSize)
                               .Take(pageSize)
@@ -92,6 +96,7 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
     {
         return await _dbcontext.Groups
                         .Take(limitNum)
+                        .OrderByDescending(x =>x.CreationDate)
                         .AsNoTracking()
                         .ToListAsync();
     }
@@ -102,6 +107,7 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
                             .Include(x => x.Group)
                             .Where(x => x.AccountId == userId)
                             .Select(x => x.Group)
+                            .OrderByDescending(x => x.CreationDate)
                             .Take(limitNum)
                             .AsNoTracking()
                             .ToListAsync();
@@ -115,6 +121,7 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
                                         || x.Description!.Contains(searchValue))
                               .Skip(pageIndex * pagesize)
                               .Take(pagesize)
+                              .OrderByDescending(x => x.CreationDate)
                               .AsNoTracking()
                               .ToListAsync();
         return new Pagination<Group>
