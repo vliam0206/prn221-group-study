@@ -42,7 +42,7 @@ public class DbInitializer
                 Email = "v.trclam@gmail.com",
                 FirstName = "Truc Lam",
                 LastName = "Vo",
-                Avatar = null,
+                Avatar = "https://png.pngtree.com/png-vector/20190130/ourlarge/pngtree-cute-girl-avatar-material-png-image_678035.jpg",
                 IsBanned = false,
                 IsAdmin = false
             },
@@ -53,7 +53,7 @@ public class DbInitializer
                 Email = "phu@fpt.com",
                 FirstName = "Phu",
                 LastName = "Huynh",
-                Avatar = null,
+                Avatar = "https://i.pinimg.com/originals/78/54/84/7854843699c1893928012a442386a129.jpg",
                 IsBanned = false,
                 IsAdmin = true
             },
@@ -64,7 +64,7 @@ public class DbInitializer
                 Email = "binh@fpt.com",
                 FirstName = "Tranquility",
                 LastName = "Nguyen",
-                Avatar = null,
+                Avatar = "https://i.pinimg.com/originals/61/3d/c8/613dc8f6fb4fdd394490dcf93bbbc8c0.jpg",
                 IsBanned = false,
                 IsAdmin = true
             }
