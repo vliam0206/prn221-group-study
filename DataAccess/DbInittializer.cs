@@ -128,6 +128,7 @@ public class DbInitializer
         }
 
         var random = new Random();
+        var accounts = context.Accounts.ToList();
 
         var groups = new List<Group>();
 
@@ -140,7 +141,8 @@ public class DbInitializer
                 Visibility = (GroupVisibilityEnum)random.Next(0, 2),
                 ForceApprove = random.Next(0, 2) == 1,
                 ApproveAuthority = (AuthorityEnum)random.Next(0, 2),
-                BanAuthority = (AuthorityEnum)random.Next(0, 2)
+                BanAuthority = (AuthorityEnum)random.Next(0, 2),
+                AccountCreatedID = accounts[random.Next(0, 3)].Id,
             };
 
             groups.Add(group);

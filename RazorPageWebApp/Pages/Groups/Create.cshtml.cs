@@ -50,11 +50,20 @@ namespace RazorPageWebApp.Pages.Groups {
             if (!ModelState.IsValid || Group == null) {
                 return Page();
             }
+
+            var userId = _claimService.GetCurrentUserId;
             Group.CreationDate = DateTime.Now;
-            var username = HttpContext?.Session?.GetString(AppConstants.USER_NAME);
-            Group.AccountCreatedID = _claimService.GetCurrentUserId;
+            Group.AccountCreatedID = userId;
 
             await _unitOfWork.GroupRepository.CreateGroupAsync(Group);
+
+            await _unitOfWork.AccountInGroupRepository.AddAsync(new AccountInGroup
+            {
+                GroupId = Group.Id,
+                AccountId = userId,
+                Role = RoleEnum.Admin,
+                Status = GroupStatusEnum.Active
+            }); ;
 
             return  RedirectToPage($"/Groups/Details", new { id = Group.Id });
         }

@@ -47,7 +47,9 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
 
     public async Task<Group?> GetGroupByIdAsync(Guid? id)
     {
-        return await _dbcontext.Groups.Include(x => x.Posts).ThenInclude(x=>x.AccountCreated).FirstOrDefaultAsync(x => x.Id == id);
+        return await _dbcontext.Groups.Include(x => x.Posts)
+                        .ThenInclude(x=>x.AccountCreated)
+                        .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task UpdateGroupAsync(Group group)

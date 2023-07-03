@@ -137,7 +137,7 @@
                 </div>
                 <!-- End Title Info -->
                 <!-- Detail Info -->
-                <div class="row">                    
+                <div class="row">
                     @*List of posts pagin*@
                     @foreach (var post in Model.Posts.Items)
                     {
@@ -149,12 +149,12 @@
                                         {
                                             <a class="btn btn-outline-dark rounded mt-2" asp-page="">@tag.Tag?.Name</a>
                                         }
-                                    </div>                                
+                                    </div>
                                 </div>
                                 <div class="w-100 ps-2 align-self-end h-100 justify-content-between d-flex flex-column">
                                     <div class="h5"><a class="link-dark" href="@Url.Content($"{Model.GroupObj.Id}/view/{post.Id}")">@post.Topic</a></div>
                                     <div class="d-block"><b>Created by:</b> @post.AccountCreated.Username</div>
-                                    <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">                   
+                                    <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">
                                         <span class="text-black-50 align-self-center" style="font-size:0.75em">@post.CreationDate.ToLongDateString()</span>
                                     </div>
                                 </div>
@@ -167,8 +167,16 @@
                                             Waiting
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Approve</a></li>
-                                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                                            <li>
+                                                <a asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Approved" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
+                                                    Approve
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Rejected" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
+                                                    Reject
+                                                </a>
+                                            </li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                                         </ul>
@@ -178,11 +186,19 @@
                                 {
                                     <div class="btn-group col-lg-6">
                                         <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Waiting
+                                            Approved
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Waiting</a></li>
-                                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                                            <li>
+                                                <a asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Waiting" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
+                                                    Waiting
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Rejected" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
+                                                    Reject
+                                                </a>
+                                            </li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                                         </ul>
@@ -192,11 +208,19 @@
                                 {
                                     <div class="btn-group col-lg-6">
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Waiting
+                                            Rejected
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Waiting</a></li>
-                                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                                            <li>
+                                                <a asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Waiting" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
+                                                    Waiting
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Approved" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
+                                                    Approve
+                                                </a>
+                                            </li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
                                         </ul>
