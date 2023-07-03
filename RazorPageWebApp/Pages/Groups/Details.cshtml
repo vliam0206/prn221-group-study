@@ -19,10 +19,11 @@
                         @Html.DisplayFor(model => model.Group.Name)
                     </span>
                     @if (Model.AccountInGroup?.Role == RoleEnum.Admin ||
-                   Model.AccountInGroup?.Role == RoleEnum.Moderator)
+                   Model.AccountInGroup?.Role == RoleEnum.Moderator
+                   )
                     {
                         <span>
-                            <a asp-page="./Edit" asp-route-id="@Model.Group?.Id" class="btn btn-info">Setting group</a>
+                            <a asp-page="/Groups/AdminGroupSetting" asp-route-id="@Model.Group.Id" class="btn btn-info">Setting group</a>
                         </span>
                     }
                 </div>
@@ -38,6 +39,7 @@
                 @foreach (var post in Model.PostsInGroup.Items)
                 {
                     <main class="d-flex border border-dark my-2 rounded">
+
                         <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
                             <div class="dropdown w-100 d-flex justify-content-between">
                                 <div class="d-flex w-100">
@@ -102,9 +104,7 @@
                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
                                          alt="avatar 1" style="width: 40px; height: 40px;">
                                 </div>
-
-               
-
+                              
                                 <div class="d-flex flex-row justify-content-start mb-4">
                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                                          alt="avatar 1" style="width: 40px; height: 40px;">
@@ -113,6 +113,7 @@
                                     </div>
                                 </div>
                             </div>
+
 
 
                             <form id="live-chat-form" data-userid="@Model.HttpContext.Session.GetString("UserId")" class="chat-chatbox form-outline">

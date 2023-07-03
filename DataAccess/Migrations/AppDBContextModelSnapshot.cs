@@ -177,6 +177,9 @@ namespace DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("JoinAuthority")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("datetime2");
 

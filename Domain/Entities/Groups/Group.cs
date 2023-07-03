@@ -19,6 +19,8 @@ public class Group : BaseEntity
     public bool ForceApprove { get; set; } = true;
     public AuthorityEnum ApproveAuthority { get; set; } = AuthorityEnum.Admin;
     public AuthorityEnum BanAuthority { get; set; } = AuthorityEnum.Admin;
+    public JoinAuthorityEnum JoinAuthority { get; set; } = JoinAuthorityEnum.All;
+
     #endregion
 
     #region DB Relationship

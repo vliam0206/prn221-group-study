@@ -1,0 +1,234 @@
+﻿@page
+@model RazorPageWebApp.Pages.Groups.AllPostsModel
+@{
+    #region template license
+    //=========================================================
+    //Material Dashboard 2 - v3.0.0
+    //=========================================================
+
+    //Product Page: https://www.creative-tim.com/product/material-dashboard
+    //Copyright 2021 Creative Tim (https://www.creative-tim.com)
+    //Licensed under MIT (https://www.creative-tim.com/license)
+
+    //Coded by Creative Tim
+
+    //=========================================================
+
+    //The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    #endregion
+
+    ViewData["Title"] = "All Post";
+    Layout = "_LayoutUser";
+}
+@inject IHttpContextAccessor httpContext
+@{
+    var username = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_NAME);
+}
+<head>
+    @*Add Template relative links*@
+    <link rel="apple-touch-icon" sizes="76x76" href="~/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="~/assets/img/favicon.png">
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    <!-- Nucleo Icons -->
+    <link href="~/assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="~/assets/css/nucleo-svg.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- CSS Files -->
+    <link id="pagestyle" href="~/assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+    @*End Add Template relative links*@
+</head>
+
+<div class="row d-flex justify-content-center">
+    <!-- Left side bar -->
+    <div class="col-3 position-relative sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 bg-gradient-dark ">
+        <!-- Sidenav Header -->
+        <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-white end-0 top-0 d-none d-xl-none" aria-hidden="true"></i>
+            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
+                <img src="~/assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
+                <span class="ms-1 font-weight-bold text-white">@Model.GroupObj.Name</span>
+            </a>
+        </div>
+        <!-- End Sidenav Header -->
+        <hr class="horizontal light mt-0 mb-2">
+        <!-- Sidenav Main -->
+        <div class="collapse navbar-collapse w-auto max-height-vh-100 ps">
+            <ul class="navbar-nav">
+                <!-- Dashboard Item -->
+                <li class="nav-item">
+                    <a asp-page="/Groups/AdminGroupSetting" asp-route-id="@Model.GroupObj.Id" class="nav-link text-white">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">dashboard</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+                <!-- End Dashboard Item -->
+                <!-- All Posts Item -->
+                <li class="nav-item">
+                    <a asp-page="/Groups/AllPosts" asp-route-groupId="@Model.GroupObj.Id" class="nav-link text-white ">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+                        <span class="nav-link-text ms-1">All Posts</span>
+                    </a>
+                </li>
+                <!-- End All Posts Item -->
+                <!-- Notification Item -->
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="#">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">notifications</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Notifications</span>
+                    </a>
+                </li>
+                <!-- End Notification Item -->
+                <!-- Members Item -->
+                <li class="nav-item">
+                    <a class="nav-link text-white ">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">person</i>
+                        </div>
+                        <span class="nav-link-text ms-1">Members</span>
+                    </a>
+                </li>
+                <!-- End Members Item -->
+
+
+            </ul>
+            <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
+        </div>
+        <!-- End Sidenav Main -->
+
+        <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div><div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div>
+    </div>
+    <!-- End Left Sidebar-->
+    <!-- Right Part-->
+    <div class="col-9 main-content position-relative max-height-vh-100 my-3 ps ps--active-y ps--scrolling-y">
+        <div class="container-fluid">
+            <!-- Header Background -->
+            <div class="page-header min-height-300 border-radius-xl" style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1920&amp;q=80');">
+                <span class="mask  bg-gradient-primary  opacity-6"></span>
+            </div>
+            <!-- End Header Background -->
+            <!-- Main Part -->
+            <div class="card card-body mx-3 mx-md-4 mt-n6">
+                <!-- Title Info -->
+                <div class="row gx-4 mb-2">
+                    <!-- Group Title -->
+                    <div class="col-auto my-auto">
+                        <div class="h-100">
+                            <h5 class="mb-1">All Posts</h5>
+                        </div>
+                    </div>
+                    <!-- End Group Title -->
+                    <!-- Configuration bar -->
+                    <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                        <p>
+                            <a class="btn bnt-light btn-outline-primary mt-3">Invite Member</a>
+                        </p>
+                    </div>
+                    <!-- End Configuration bar -->
+                </div>
+                <!-- End Title Info -->
+                <!-- Detail Info -->
+                <div class="row">                    
+                    @*List of posts pagin*@
+                    @foreach (var post in Model.Posts.Items)
+                    {
+                        <main class="d-flex my-2 mx-5 border-start border-3 border-primary">
+                            <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
+                                <div class="dropdown w-100 d-flex justify-content-between">
+                                    <div class="d-flex w-100">
+                                        @foreach (var tag in post.TagInPosts)
+                                        {
+                                            <a class="btn btn-outline-dark rounded mt-2" asp-page="">@tag.Tag?.Name</a>
+                                        }
+                                    </div>                                
+                                </div>
+                                <div class="w-100 ps-2 align-self-end h-100 justify-content-between d-flex flex-column">
+                                    <div class="h5"><a class="link-dark" href="@Url.Content($"{Model.GroupObj.Id}/view/{post.Id}")">@post.Topic</a></div>
+                                    <div class="d-block"><b>Created by:</b> @post.AccountCreated.Username</div>
+                                    <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">                   
+                                        <span class="text-black-50 align-self-center" style="font-size:0.75em">@post.CreationDate.ToLongDateString()</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 mt-5">
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Waiting)
+                                {
+                                    <div class="btn-group col-lg-6">
+                                        <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Waiting
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                }
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Approved)
+                                {
+                                    <div class="btn-group col-lg-6">
+                                        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Waiting
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Waiting</a></li>
+                                            <li><a class="dropdown-item" href="#">Reject</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                }
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Rejected)
+                                {
+                                    <div class="btn-group col-lg-6">
+                                        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Waiting
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Waiting</a></li>
+                                            <li><a class="dropdown-item" href="#">Approve</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </main>
+
+                    }
+                    @*End list of posts pagin*@
+                </div>
+                <!-- End Detail Info -->
+            </div>
+            <!-- End Main Part -->
+        </div>
+        <!-- End Right Part -->
+    </div>
+</div>
+<!--   Core JS Files   -->
+<script src="~/assets/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="~/assets/js/plugins/smooth-scrollbar.min.js"></script>
+<script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+        var options = {
+            damping: '0.5'
+        }
+        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+</script>
+<!-- Github buttons -->
+<script async="" defer="" src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="~/assets/js/material-dashboard.min.js?v=3.0.0"></script>
+
