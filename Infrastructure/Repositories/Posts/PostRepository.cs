@@ -74,6 +74,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                                      .Include(x => x.Likes)
                                      .Include(x => x.TagInPosts)
                                      .ThenInclude(x => x.Tag)
-                                     .Include(x => x.Attachments);
+                                     .Include(x => x.Attachments)
+                                     .OrderByDescending(x => x.CreationDate);
     }
 }

@@ -42,7 +42,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<List<T>> GetAllAsync()
     {
-        return await _dbContext.Set<T>().ToListAsync();
+        return await _dbContext.Set<T>()
+            .OrderByDescending(x => x.CreationDate)
+            .ToListAsync();
     }
 
     public async Task<T?> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] includes)
