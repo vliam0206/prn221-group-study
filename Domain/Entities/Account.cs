@@ -16,7 +16,7 @@ public class Account : BaseEntity
     public string Email { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public byte[]? Avatar { get; set; }
+    public string? Avatar { get; set; } = "https://i.pinimg.com/originals/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg";
     public bool IsBanned { get; set; } = false;
     public bool IsAdmin { get; set; } = false;
     #endregion

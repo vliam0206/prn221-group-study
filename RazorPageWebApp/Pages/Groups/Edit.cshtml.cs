@@ -25,8 +25,11 @@ namespace RazorPageWebApp.Pages.Groups
             _unitOfWork = unitOfWork;
             _claimService = claimService;
         }
-        public IActionResult OnGet()
+        [BindProperty]
+        public Group Group { get; set; } = default!;
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            Group = await _unitOfWork.GroupRepository.GetByIdAsync(id);
             var visibilityOptions = from GroupVisibilityEnum e in Enum.GetValues(typeof(GroupVisibilityEnum))
                                     select new
                                     {
@@ -45,10 +48,7 @@ namespace RazorPageWebApp.Pages.Groups
 
             return Page();
         }
-
-        [BindProperty]
-        public Group Group { get; set; } = default!;
-
+        
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
