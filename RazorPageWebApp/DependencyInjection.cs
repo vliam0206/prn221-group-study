@@ -23,7 +23,7 @@ public static class DependencyInjection
         // Add app middlewares
         services.AddSingleton<CheckAuthenticationMiddleware>();
         // Add singleton
-        services.AddScoped<LiveChatHub>();
+        services.AddTransient<LiveChatHub>();
 
         return services;
     }

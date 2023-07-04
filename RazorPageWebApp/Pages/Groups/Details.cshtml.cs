@@ -14,6 +14,8 @@ using Application.Commons;
 using Domain.Entities;
 using Application.IServices;
 using System.ComponentModel.DataAnnotations;
+using RazorPageWebApp.Extensions;
+using Newtonsoft.Json.Linq;
 
 namespace RazorPageWebApp.Pages.Groups
 {
@@ -32,10 +34,9 @@ namespace RazorPageWebApp.Pages.Groups
         public Group Group { get; set; } = default!;
         public AccountInGroup? AccountInGroup { get; set; } = default!;
         public Pagination<Post> PostsInGroup { get; set; } = default!;
-
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-
+            ViewData[AppConstants.LiveChatMSG(id)] = _httpContext.HttpContext.Session.GetEntity<List<LiveChatMessage>>(AppConstants.LiveChatMSG(id));
             var group = await _unitOfWork.GroupRepository.GetGroupByIdAsync(id);
             if (group == null)
             {
@@ -49,6 +50,6 @@ namespace RazorPageWebApp.Pages.Groups
             }
             return Page();
         }
-        
+
     }
 }

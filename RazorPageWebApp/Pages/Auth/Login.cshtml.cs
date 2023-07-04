@@ -42,11 +42,11 @@ public class LoginModel : PageModel
                 }
 
                 // Add current user to session
-                Extensions.SessionExtensions.SetEntity(session, AppConstants.CURRENT_USER, account);
+                session.SetEntity(AppConstants.CURRENT_USER, account);
                 session.SetString(AppConstants.USER_ID, account!.Id.ToString());
                 session.SetString(AppConstants.USER_NAME, account!.Username);
                 session.SetString(AppConstants.USER_AVATAR, account!.Avatar);
-
+                Console.WriteLine("=============================================================================");
                 // logged in successful, redicrect to Homepage
                 Message = "Login successfully!";
                 return new RedirectToPageResult("/UserScreen/HomePage");
