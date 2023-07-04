@@ -1,6 +1,7 @@
 ﻿@inject IHttpContextAccessor httpContext
 @{
     var username = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_NAME);
+    var avatar = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_AVATAR);
 }
 <!DOCTYPE html>
 
@@ -14,7 +15,7 @@
     <link rel="stylesheet" href="~/RazorPageWebApp.styles.css" asp-append-version="true" />
     <link href="
         https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
-        " rel="stylesheet">
+        " rel="stylesheet">  
 </head>
 <body>
     <header class="p-2 border-bottom">
@@ -31,12 +32,12 @@
                 </ul>
 
                 <form method="get" asp-page="/Groups/Index" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                    <input name="searchValue" id="searchInput" type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                    <input name="searchValue" id="searchInput" type="search" class="form-control border-1" placeholder="Search..." aria-label="Search">
                 </form>
 
-                <div class="dropdown text-end">
+                <div class="dropdown text-end me-5">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <img src="@avatar" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                         <li>

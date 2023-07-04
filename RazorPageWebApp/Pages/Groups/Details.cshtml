@@ -19,10 +19,11 @@
                         @Html.DisplayFor(model => model.Group.Name)
                     </span>
                     @if (Model.AccountInGroup?.Role == RoleEnum.Admin ||
-                   Model.AccountInGroup?.Role == RoleEnum.Moderator)
+                   Model.AccountInGroup?.Role == RoleEnum.Moderator
+                   )
                     {
                         <span>
-                            <a asp-page="./Edit" asp-route-id="@Model.Group?.Id" class="btn btn-info">Setting group</a>
+                            <a asp-page="/Groups/AdminGroupSetting" asp-route-id="@Model.Group.Id" class="btn btn-info">Setting group</a>
                         </span>
                     }
                 </div>
@@ -37,7 +38,7 @@
                 }
                 @foreach (var post in Model.PostsInGroup.Items)
                 {
-                    <main class="d-flex border border-dark my-2 rounded">
+                    <main class="d-flex my-2 border border-dark rounded">
                         <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
                             <div class="dropdown w-100 d-flex justify-content-between">
                                 <div class="d-flex w-100">
@@ -47,6 +48,12 @@
                                     }
 
                                 </div>
+                                @*<button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
+                        ...
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="drop-down-post-options">
+                        <li><a class="dropdown-item" href="@Url.Content($"{Model.Group.Id}/edit/{post.Id}")">Edit</a></li>
+                        </ul>*@
                             </div>
                             <div class="w-100 p-2 align-self-end h-100 justify-content-between d-flex flex-column">
                                 <div class="h3"><a class="link-dark" href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">@post.Topic</a></div>

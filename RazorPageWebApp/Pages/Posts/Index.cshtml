@@ -26,6 +26,7 @@
                 </div>
                 }
             <div class="d-flex flex-column col p-2">
+                <h2>@Model.Post.Topic</h2>
                 <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
                 <div class="d-flex gap-x-3 view-post">
                     <a class="link-secondary c-pointer">@Model.Post.Likes.Count Likes</a>

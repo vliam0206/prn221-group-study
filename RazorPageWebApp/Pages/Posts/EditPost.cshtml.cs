@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Domain.Entities.Posts;
 using RazorPageWebApp.Extensions;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace RazorPageWebApp.Pages.Groups.Posts
 {
@@ -23,7 +24,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
         [BindProperty]
         public Post? Post { get; set; }
         [BindProperty]
-        public string? Content { get; set; } 
+        public string? Content { get; set; }
         [BindProperty]
         public string? Topic { get; set; }
         public async Task<IActionResult> OnGet(Guid groupId, Guid postId)
@@ -40,7 +41,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 Topic = Post.Topic;
             }
             User = await _unitOfWork.AccountRepository.GetByIdAsync(userId);
-            return result ? Page() : RedirectToPage($"/groups/details", new { id=groupId });
+            return result ? Page() : RedirectToPage($"/groups/details", new { id = groupId });
         }
         public async Task<IActionResult> OnPost(Guid groupId, Guid postId)
         {
@@ -53,12 +54,12 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 Post.AccountCreated = null;
                 var result = await _unitOfWork.PostRepository.EditPostAsync(Post);
                 HttpContext.Session.SetEntity("NewPost", Post);
-                
-                if (result == true) return RedirectToPage($"/Posts/Index", new { groupId,postId });
+
+                if (result == true) return RedirectToPage($"/Posts/Index", new { groupId, postId });
             }
             User = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId);
 
             return Page();
-        }
+        }        
     }
 }

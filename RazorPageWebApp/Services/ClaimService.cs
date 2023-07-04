@@ -1,4 +1,6 @@
 ﻿using Application.IServices;
+using Domain.Entities;
+using Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
@@ -27,6 +29,14 @@ namespace RazorPageWebApp.Services
             {
                 var username = _contextAccessor.HttpContext?.Session?.GetString(AppConstants.USER_NAME);
                 return string.IsNullOrEmpty(username) ? string.Empty : username;
+            }
+        }
+        public string CurrentAvatar
+        {
+            get
+            {                
+                var avatar = _contextAccessor.HttpContext?.Session?.GetString(AppConstants.USER_AVATAR);
+                return string.IsNullOrEmpty(avatar) ? string.Empty : avatar;
             }
         }
     }

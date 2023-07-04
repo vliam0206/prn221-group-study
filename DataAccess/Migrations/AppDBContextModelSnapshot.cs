@@ -17,7 +17,7 @@ namespace DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.16")
+                .HasAnnotation("ProductVersion", "6.0.18")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -32,8 +32,8 @@ namespace DataAccess.Migrations
                     b.Property<Guid?>("AccountCreatedID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte[]>("Avatar")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
@@ -176,6 +176,9 @@ namespace DataAccess.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<int>("JoinAuthority")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("datetime2");
