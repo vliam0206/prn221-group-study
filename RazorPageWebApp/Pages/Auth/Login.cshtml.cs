@@ -46,7 +46,6 @@ public class LoginModel : PageModel
                 session.SetString(AppConstants.USER_ID, account!.Id.ToString());
                 session.SetString(AppConstants.USER_NAME, account!.Username);
                 session.SetString(AppConstants.USER_AVATAR, account!.Avatar);
-                Console.WriteLine("=============================================================================");
                 // logged in successful, redicrect to Homepage
                 Message = "Login successfully!";
                 return new RedirectToPageResult("/UserScreen/HomePage");

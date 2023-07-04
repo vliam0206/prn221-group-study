@@ -46,17 +46,20 @@ public class LiveChatHub : Hub
 
     private void SaveSession(string message, Guid groupId, Account? user)
     {
-        try { 
-        //Send Message and Save Session
-        string liveChatGroupMemory = AppConstants.LiveChatMSG(groupId);
-        var messages = _httpContextAccessor.HttpContext?.Session.GetEntity<List<LiveChatMessage>>(liveChatGroupMemory);
-        if (messages == null || messages is not List<LiveChatMessage>) messages = new();
-        var msg = new LiveChatMessage(user, message);
-        messages.Add(msg);
-        _httpContextAccessor.HttpContext?.Session.SetEntity(liveChatGroupMemory, messages);
-        }catch(Exception ex)
+        try
+        {
+            //Send Message and Save Session
+            string liveChatGroupMemory = AppConstants.LiveChatMSG(groupId);
+            var messages = _httpContextAccessor.HttpContext?.Session.GetEntity<List<LiveChatMessage>>(liveChatGroupMemory);
+            if (messages == null || messages is not List<LiveChatMessage>) messages = new();
+            var msg = new LiveChatMessage(user, message);
+            messages.Add(msg);
+            _httpContextAccessor.HttpContext?.Session.SetEntity(liveChatGroupMemory, messages);
+        }
+        catch (Exception ex)
         {
             Console.WriteLine("Can't save Live Chat session");
+            Console.WriteLine(ex.ToString());
         }
     }
 
