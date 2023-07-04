@@ -11,7 +11,7 @@ public class AccountInGroup : BaseEntity
 {
     #region Properties
     public RoleEnum Role { get; set; }
-    public GroupStatusEnum Status { get; set; }// enum trong configuration minh co ham ma no convert tu enum sang string co gi migration cai do de de doc  
+    public GroupStatusEnum Status { get; set; } = GroupStatusEnum.Active;
     public Guid AccountId { get; set; }    
     public Guid GroupId { get; set; }    
     #endregion

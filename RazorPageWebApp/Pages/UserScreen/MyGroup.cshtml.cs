@@ -20,6 +20,7 @@ public class MyGroupModel : PageModel
         _claimService = claimService;
     }
     public Pagination<Group> Groups { get; set; }
+    public IUnitOfWork UnitOfWork { get; set; }
     public async Task OnGetAsync(int? pageIndex)
     {
         var index = 0;
@@ -29,5 +30,6 @@ public class MyGroupModel : PageModel
         }
         var currentId = _claimService.GetCurrentUserId;
         Groups = await _unitOfWork.GroupRepository.GetGroupsToPaginAsync(currentId, index, AppConstants.GROUP_PAGE_SIZE);
+        UnitOfWork = _unitOfWork;
     }
 }

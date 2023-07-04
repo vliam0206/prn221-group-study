@@ -84,36 +84,34 @@ public class DbInitializer
 
         var accounts = context.Accounts.ToList();
         var groups = context.Groups.ToList();
-
-        var accountInGroups = new List<AccountInGroup>
-        {
-            new AccountInGroup
-            {
-                Role = RoleEnum.Admin,
-                Status = GroupStatusEnum.Active,
-                AccountId = accounts[0].Id,
-                GroupId = groups[0].Id
-            },
-            new AccountInGroup
-            {
-                Role = RoleEnum.Member,
-                Status = GroupStatusEnum.Pending,
-                AccountId = accounts[1].Id,
-                GroupId = groups[0].Id
-            }
-        };
+        var accountInGroups = new List<AccountInGroup>();
         var random = new Random();
-        for (int i = 1; i < 20; i++)
+
+        for (int i = 0; i < 20; i++)
         {
             var accInGroup = new AccountInGroup
             {
                 Role = RoleEnum.Admin,
-                Status = GroupStatusEnum.Active,
-                AccountId = accounts[random.Next(0, 3)].Id,
+                AccountId = groups[i].AccountCreatedID.Value,
                 GroupId = groups[i].Id
             };
-
             accountInGroups.Add(accInGroup);
+
+            for(int j = 0; j < 3; j++)
+            {
+                var accId = accounts[j].Id;
+                if (accId != groups[i].AccountCreatedID)
+                {
+                    var accInGroup2 = new AccountInGroup
+                    {
+                        Role = RoleEnum.Member,
+                        AccountId = accId,
+                        GroupId = groups[i].Id
+                    };
+                    accountInGroups.Add(accInGroup2);
+                }
+            }
+
         }
 
         context.AccountInGroups.AddRange(accountInGroups);
@@ -180,28 +178,32 @@ public class DbInitializer
         var random = new Random();
         var posts = context.Posts.ToList();
         var accounts = context.Accounts.ToList();
-        var comments = new Comment[]
+        var cmtList = new List<Comment>();
+        foreach (var post in posts)
         {
-            new Comment
+            var comments = new Comment[]
             {
-                Content = "Comment 1",
-                PostId = posts[0].Id,
-                AccountRepliedId = null,
-                CommentRepliedId = null,
-                AccountCreatedID = accounts[random.Next(0, accounts.Count-1)].Id
-            },
-            new Comment
-            {
-                Content = "Comment 2",
-                PostId = posts[1].Id,
-                AccountRepliedId = accounts[0].Id,
-                CommentRepliedId = null,
-                AccountCreatedID = accounts[random.Next(0, accounts.Count-1)].Id
+                new Comment
+                {
+                    Content = "Amazing goodjob!!!",
+                    PostId = post.Id,
+                    AccountRepliedId = null,
+                    CommentRepliedId = null,
+                    AccountCreatedID = accounts[random.Next(0, accounts.Count-1)].Id
+                },
+                new Comment
+                {
+                    Content = "I like it!!!",
+                    PostId = post.Id,
+                    AccountRepliedId = null,
+                    CommentRepliedId = null,
+                    AccountCreatedID = accounts[random.Next(0, accounts.Count-1)].Id
+                }
+            };
+            cmtList.AddRange(comments);
+        }
 
-            }
-        };
-
-        context.Comments.AddRange(comments);
+        context.Comments.AddRange(cmtList);
         context.SaveChanges();
     }
 
@@ -212,16 +214,29 @@ public class DbInitializer
             return;
         }
 
+        var random = new Random();
         var posts = context.Posts.ToList();
         var accounts = context.Accounts.ToList();
-
-        var likes = new Like[]
+        var likeList = new List<Like>();
+        foreach (var post in posts)
         {
-            new Like { PostId = posts[0].Id, AccountCreatedID = accounts[0].Id },
-            new Like { PostId = posts[1].Id, AccountCreatedID = accounts[1].Id }
-        };
+            var likes = new Like[]
+            {
+                new Like
+                {
+                    PostId = post.Id,
+                    AccountCreatedID = accounts[0].Id
+                },
+                new Like
+                {
+                    PostId = post.Id,
+                    AccountCreatedID = accounts[1].Id
+                }
+            };
+            likeList.AddRange(likes);
+        }
 
-        context.Likes.AddRange(likes);
+        context.Likes.AddRange(likeList);
         context.SaveChanges();
     }
 
@@ -234,28 +249,35 @@ public class DbInitializer
 
         var groups = context.Groups.ToList();
         var accounts = context.Accounts.ToList();
+        var postList = new List<Post>();
+        var random = new Random();
 
-        var posts = new Post[]
+        foreach (var group in groups)
         {
-            new Post
+            var posts = new Post[]
             {
-                Topic = "Post 1",
-                Content = "This is post 1, abc, xyz...",
-                GroupId = groups[0].Id,
-                AccountCreatedID = accounts[0].Id,
-                Status = PostStatusEnum.Approved
-            },
-            new Post
-            {
-                Topic = "Post 1",
-                Content = "This is post 2, abc, xyz...",
-                GroupId = groups[1].Id,
-                AccountCreatedID = accounts[1].Id,
-                Status = PostStatusEnum.Approved
-            }
-        };
-
-        context.Posts.AddRange(posts);
+                new Post
+                {
+                    Topic = $"{group.Name}: Post 1 - Group Study",
+                    Content = SampleData.POST_CONTENT_1,
+                    Image = SampleData.image_1,
+                    GroupId = group.Id,
+                    AccountCreatedID = accounts[random.Next(0,2)].Id,
+                    Status = PostStatusEnum.Approved
+                },
+                new Post
+                {
+                    Topic = $"{group.Name}: Post 2 - Animal Kingdom",
+                    Content = SampleData.POST_CONTENT_2,
+                    Image = SampleData.image_2,
+                    GroupId = group.Id,
+                    AccountCreatedID = accounts[random.Next(0,2)].Id,
+                    Status = PostStatusEnum.Approved
+                }
+            };
+            postList.AddRange(posts);
+        }
+        context.Posts.AddRange(postList);
         context.SaveChanges();
     }
 
@@ -270,8 +292,8 @@ public class DbInitializer
 
         var tags = new Tag[]
         {
-            new Tag { Name = "Tag 1", GroupId = groups[0].Id },
-            new Tag { Name = "Tag 2", GroupId = groups[1].Id }
+            new Tag { Name = "animal", GroupId = groups[0].Id },
+            new Tag { Name = "group-study", GroupId = groups[1].Id }
         };
 
         context.Tags.AddRange(tags);
@@ -287,13 +309,16 @@ public class DbInitializer
 
         var tags = context.Tags.ToList();
         var posts = context.Posts.ToList();
-
-        var tagInPosts = new TagInPost[]
+        var tagInPosts = new List<TagInPost>();
+        foreach (var post in posts)
         {
-            new TagInPost { TagID= tags[0].Id, PostId = posts[0].Id },
-            new TagInPost { TagID = tags[1].Id, PostId = posts[1].Id }
-        };
-
+            var tag = new TagInPost[]
+            {
+            new TagInPost { TagID= tags[0].Id, PostId = post.Id },
+            new TagInPost { TagID = tags[1].Id, PostId = post.Id }
+            };
+            tagInPosts.AddRange(tag);
+        }
         context.TagInPosts.AddRange(tagInPosts);
         context.SaveChanges();
     }
@@ -319,16 +344,43 @@ public class DbInitializer
             },
             new Notification
             {
-                FromAccountId = accounts[1].Id,
                 Content = "Notification 2",
                 Status = NotiStatusEnum.Unread,
                 Type = NotiTypeEnum.Alert,
                 AccountRecievedId = accounts[0].Id
+            },
+            new Notification
+            {
+                Content = "Notification 1",
+                Status = NotiStatusEnum.Read,
+                Type = NotiTypeEnum.Alert,
+                AccountRecievedId = accounts[1].Id
+            },
+            new Notification
+            {
+                Content = "Notification 2",
+                Status = NotiStatusEnum.Unread,
+                Type = NotiTypeEnum.Alert,
+                AccountRecievedId = accounts[1].Id
+            },
+            new Notification
+            {
+                Content = "Notification 1",
+                Status = NotiStatusEnum.Read,
+                Type = NotiTypeEnum.Alert,
+                AccountRecievedId = accounts[2].Id
+            },
+            new Notification
+            {
+                Content = "Notification 2",
+                Status = NotiStatusEnum.Unread,
+                Type = NotiTypeEnum.Alert,
+                AccountRecievedId = accounts[2].Id
             }
         };
 
         context.Notifications.AddRange(notifications);
         context.SaveChanges();
-    }    
+    }
 }
 
