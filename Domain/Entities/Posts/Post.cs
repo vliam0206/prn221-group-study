@@ -13,7 +13,7 @@ public class Post : BaseEntity
     #region Properties 
     public string Topic { get; set; } = null!;
     public string Content { get; set; } = null!;
-    public byte[]? Image { get; set; }
+    public string Image { get; set; } = "https://argauto.lv/application/modules/themes/views/default/assets/images/image-placeholder.png";
     public PostStatusEnum Status { get; set; } = PostStatusEnum.Waiting;
     public Guid GroupId { get; set; }
     #endregion

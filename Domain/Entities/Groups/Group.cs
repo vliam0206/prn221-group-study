@@ -20,6 +20,7 @@ public class Group : BaseEntity
     public AuthorityEnum ApproveAuthority { get; set; } = AuthorityEnum.Admin;
     public AuthorityEnum BanAuthority { get; set; } = AuthorityEnum.Admin;
     public JoinAuthorityEnum JoinAuthority { get; set; } = JoinAuthorityEnum.All;
+    public int NumOfMember { get; set; } = 0;
 
     #endregion
 

@@ -16,7 +16,7 @@
                             <h4 class="card-title">@item.Name</h4>
                             <p class="card-text">@item.Description</p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">No member: 9</small>
+                                <small class="text-muted">Members: @item.NumOfMember</small>
                                 <div class="btn-group">
                                     <a asp-page="/Groups/Details" asp-route-id="@item.Id"
                                        class="btn btn-sm btn-outline-secondary">View</a>

@@ -51,7 +51,7 @@
                             </div>
                             <div class="w-100 p-2 align-self-end h-100 justify-content-between d-flex flex-column">
                                 <div class="h3"><a class="link-dark" href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">@post.Topic</a></div>
-                                <div class="d-block"><b>Username:</b> @post.AccountCreated.Username</div>
+                                <div class="d-block"><b>Created by:</b> @post.AccountCreated.Username</div>
                                 <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">
                                     <a class="like-item text-black text-decoration-underline"
                                        href="@Url.Content($"{Model.Group.Id}/view/{post.Id}")">Like: @post.Likes.Count</a>
