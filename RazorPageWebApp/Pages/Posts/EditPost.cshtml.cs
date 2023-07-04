@@ -51,6 +51,7 @@ namespace RazorPageWebApp.Pages.Groups.Posts
                 if (Post == null) return Page();
                 Post.Content = Content;
                 Post.Topic = Topic;
+                Post.AccountCreated = null;
                 var result = await _unitOfWork.PostRepository.EditPostAsync(Post);
                 HttpContext.Session.SetEntity("NewPost", Post);
 

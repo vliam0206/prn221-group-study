@@ -10,13 +10,17 @@ namespace Domain.Entities;
 
 public class Account : BaseEntity
 {
+    private const string DefaultAvatar = "https://i.pinimg.com/originals/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg";
+    
+    
+    private string? _avatar = DefaultAvatar;
     #region Properties
     public string Username { get; set; }
     public string Password { get; set; }
     public string Email { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public string? Avatar { get; set; } = "https://i.pinimg.com/originals/f1/0f/f7/f10ff70a7155e5ab666bcdd1b45b726d.jpg";
+    public string? Avatar { get => _avatar??= DefaultAvatar; set => _avatar = value; }
     public bool IsBanned { get; set; } = false;
     public bool IsAdmin { get; set; } = false;
     #endregion

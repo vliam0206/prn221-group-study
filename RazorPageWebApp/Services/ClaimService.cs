@@ -9,6 +9,7 @@ namespace RazorPageWebApp.Services
     public class ClaimService : IClaimService
     {
         private readonly IHttpContextAccessor _contextAccessor;
+        
         public ClaimService(IHttpContextAccessor httpContextAccessor)
         {
             _contextAccessor = httpContextAccessor;

@@ -51,8 +51,8 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
     }
     public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {
-        var query = GetQuery();
-        var totalPostsCount = await query.CountAsync(x => x.GroupId == groupId);
+        var query = GetQuery().Where(x => x.GroupId == groupId);
+        var totalPostsCount = await query.CountAsync();
         var posts = await query
                         .Skip((pageIndex - 1) * pageSize)
                         .Take(pageSize)

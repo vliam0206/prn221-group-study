@@ -19,10 +19,12 @@ public class HomePageModel : PageModel
     }
     public List<Group> CommunityGroup { get; set; }
     public List<Group> OwnGroup { get; set; }
+    public IUnitOfWork UnitOfWork { get; set; }
     public async Task OnGetAsync()
     {
+        UnitOfWork = _unitOfWork;
         var currentId = _claimService.GetCurrentUserId;
-        CommunityGroup = await _unitOfWork.GroupRepository.GetTopGroupsAsync(AppConstants.TOP_GROUP_NUM);
+        CommunityGroup = await _unitOfWork.GroupRepository.GetTopGroupsAsync(AppConstants.GROUP_PAGE_SIZE);
         OwnGroup = await _unitOfWork.GroupRepository.GetTopGroupsAsync(currentId, AppConstants.TOP_GROUP_NUM);
     }
 }

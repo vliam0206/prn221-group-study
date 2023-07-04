@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddHttpContextAccessor(); // Add DI for IHttpContextAccessor
 
         services.AddDistributedMemoryCache();
+        services.AddSignalR();
         services.AddSession(options
             => options.IdleTimeout = TimeSpan.FromMinutes(60));        
 
@@ -21,6 +22,8 @@ public static class DependencyInjection
 
         // Add app middlewares
         services.AddSingleton<CheckAuthenticationMiddleware>();
+        // Add singleton
+        services.AddTransient<LiveChatHub>();
 
         return services;
     }

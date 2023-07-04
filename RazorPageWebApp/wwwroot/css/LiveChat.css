@@ -1,0 +1,8 @@
+﻿#live-chat .chat-chatbox{
+
+}
+    #live-chat .chat-chatbox textarea {
+        min-height: calc(1.4 * 1em);
+        max-height: calc(1.4 * 3em);
+        resize: none;
+    }
