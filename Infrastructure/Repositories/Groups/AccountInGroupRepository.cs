@@ -17,6 +17,8 @@ namespace Infrastructure.Repositories.Groups {
         public AccountInGroupRepository(IClaimService claimService):base(claimService) {
             _dbContext = new AppDBContext();
         }
+
+
         public async Task<AccountInGroup?> GetAccountInGroupAsync(Guid accountId, Guid groupId) {
             return await _dbContext.AccountInGroups.FirstOrDefaultAsync(x => x.AccountId == accountId && x.GroupId == groupId);
 
@@ -33,6 +35,30 @@ namespace Infrastructure.Repositories.Groups {
                 Items = accounts
             };
             return pagination;
+        }
+
+        public async Task<bool> AddAccountInGroupAsync(string username, Guid groupId) {
+            var account = _dbContext.Accounts.Where(x => x.Username == username).FirstOrDefault();
+            if (account == null) {
+                return false;
+            } else {
+                AccountInGroup accountInGroup = new AccountInGroup {
+                    Role = Domain.Enums.RoleEnum.Member,
+                    AccountId = account.Id,
+                    GroupId = groupId
+                };
+                await _dbContext.AccountInGroups.AddAsync(accountInGroup);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+        }
+
+        public async Task RemoveAccountInGroupAsync(Guid accountId, Guid groupId) {
+            var account = _dbContext.AccountInGroups.Where(x => x.AccountId == accountId && x.GroupId ==  groupId).FirstOrDefault();
+            if (account != null) {
+                _dbContext.AccountInGroups.Remove(account);
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }

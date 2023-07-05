@@ -11,5 +11,8 @@ namespace Infrastructure.IRepositories.Groups {
     public interface IAccountInGroupRepository : IGenericRepository<AccountInGroup> {
         Task<AccountInGroup?> GetAccountInGroupAsync(Guid accountId, Guid groupId);
         Task<Pagination<AccountInGroup>?> GetAccountListInGroupPaginationAsync(Guid groupId, int pageIndex, int pageSize);
+        Task<bool> AddAccountInGroupAsync(string username, Guid groupId);
+
+        Task RemoveAccountInGroupAsync(Guid accountId, Guid groupId);
     }
 }

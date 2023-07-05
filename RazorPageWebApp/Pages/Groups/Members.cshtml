@@ -113,9 +113,10 @@
                     <!-- End Group Title -->
                     <!-- Configuration bar -->
                     <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                        <p>
-                            <a class="btn bnt-light btn-outline-primary mt-3">Invite Member</a>
-                        </p>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Invite Member
+                        </button>
                     </div>
                     <!-- End Configuration bar -->
                 </div>
@@ -128,7 +129,7 @@
                                 Username
                             </th>
                             <th>
-                                Creation Date
+                                Date Joined
                             </th>
                             <th>
                                 Role
@@ -158,7 +159,12 @@
                                 </td>
                                 <td>
                                     @if (item.Role != Domain.Enums.RoleEnum.Admin) {
-                                        <a asp-page="./Delete" asp-route-id="@item.Id">Ban</a>
+                                        <form asp-page="Members" asp-page-handler="delete"
+                                              onclick="return confirm('Are you sure to remove this account from group?');">
+                                            <input type="hidden" name="accountId" value="@item.AccountId" />
+                                            <input type="hidden" name="groupId" value="@Model.GroupObj.Id" />
+                                            <button type="submit" value="Remove" class="btn btn-danger">Remove</button>
+                                        </form>
                                     }
                                 </td>
                             </tr>
@@ -191,10 +197,46 @@
         <!-- End Right Part -->
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Invite a member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label class="control-label">Username</label>
+                        <input name="username" class="form-control ps-2 border border-1" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input name="groupId" type="hidden" value="@Model.GroupObj.Id" />
+                        <button type="submit" value="Invite" class="btn btn-primary">Invite</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+
 <!--   Core JS Files   -->
 <script src="~/assets/js/plugins/perfect-scrollbar.min.js"></script>
 <script src="~/assets/js/plugins/smooth-scrollbar.min.js"></script>
 <script>
+    var myModal = document.getElementById('myModal')
+    var myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus()
+    })
+
+
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
         var options = {
