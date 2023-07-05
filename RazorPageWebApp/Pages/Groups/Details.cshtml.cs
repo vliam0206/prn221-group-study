@@ -69,5 +69,15 @@ namespace RazorPageWebApp.Pages.Groups
             await _unitOfWork.AccountInGroupRepository.AddAsync(accInGroup);
             return Redirect($"/Groups/{groupId}");
         }
+        public async Task<IActionResult> OnGetLeaveGroup(Guid groupId)
+        {
+            var accInGroups = (await _unitOfWork.AccountInGroupRepository
+                                    .GetAllAsync())
+                                    .Where(x => x.GroupId == groupId
+                                            && x.AccountId == _claimService.GetCurrentUserId)
+                                    .ToList();
+            await _unitOfWork.AccountInGroupRepository.RemoveRangeAsync(accInGroups);
+            return Redirect($"/Groups/{groupId}");
+        }
     }
 }

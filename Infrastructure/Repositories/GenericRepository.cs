@@ -102,4 +102,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         entity.DeletedBy = userId;
         await this.UpdateAsync(entity);
     }
+    public async Task RemoveRangeAsync(List<T> entities)
+    {
+        _dbContext.Set<T>().RemoveRange(entities);
+        await _dbContext.SaveChangesAsync() ;
+    }
 }

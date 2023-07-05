@@ -43,7 +43,9 @@
                             <ul class="dropdown-menu">
                                 <li><a asp-page="/Groups/AdminGroupSetting" asp-route-id="@Model.Group.Id" class="dropdown-item">Group Settings</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger">Leave Group</a></li>
+                                <li>
+                                    <a asp-page-handler="LeaveGroup" asp-route-groupId="@Model.Group.Id"
+                                    class="dropdown-item text-danger">Leave Group</a></li>
                             </ul>
                         </div>
                     }
@@ -64,7 +66,9 @@
                                     <span class="ms-1">Settings</span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item text-danger">Leave Group</a></li>
+                                    <li>
+                                        <a asp-page-handler="LeaveGroup" asp-route-groupId="@Model.Group.Id"
+                                        class="dropdown-item text-danger">Leave Group</a></li>
                                 </ul>
                             </div>
                         }
@@ -163,8 +167,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
 
                                 <form id="live-chat-form" data-userid="@Model.HttpContext.Session.GetString("UserId")"
                                       data-groupid="@Model.Group.Id"
