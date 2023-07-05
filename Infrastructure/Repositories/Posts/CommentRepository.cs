@@ -12,9 +12,9 @@ public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     private readonly AppDBContext _context;
     private readonly IMapper _mapper;
 
-    public CommentRepository(AppDBContext context, IClaimService claimService) : base(claimService)
+    public CommentRepository(IClaimService claimService) : base(claimService)
     {
-        _context = context;
+        _context = new AppDBContext();
     }
     public async Task<bool> AddCommentAsync(Comment comment)
     {

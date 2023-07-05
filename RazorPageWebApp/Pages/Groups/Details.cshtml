@@ -22,12 +22,48 @@
                         @Html.DisplayFor(model => model.Group.Name)
                     </span>
                     @if (Model.AccountInGroup?.Role == RoleEnum.Admin ||
-                   Model.AccountInGroup?.Role == RoleEnum.Moderator
-                   )
+                   Model.AccountInGroup?.Role == RoleEnum.Moderator)
+                    {
+                        @*<span>
+                            <a asp-page="/Groups/AdminGroupSetting" asp-route-id="@Model.Group.Id" class="btn btn-info">Setting group</a>
+                        </span>*@
+                        <!-- Configuration bar -->
+                        <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="material-icons text-lg position-relative">settings</i>
+                                    <span class="ms-1">Settings</span>
+                                </button>
+                                <ul class="dropdown-menu">                                    
+                                    <li><a class="dropdown-item">Group Settings</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger">Leave Group</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- End Configuration bar -->
+                    }
+                    @if (Model.AccountInGroup == null)
                     {
                         <span>
-                            <a asp-page="/Groups/AdminGroupSetting" asp-route-id="@Model.Group.Id" class="btn btn-info">Setting group</a>
+                            <a class="btn bnt-light btn-outline-secondary">Join group</a>                           
                         </span>
+                    } else
+                    {
+                        if (Model.AccountInGroup.Role == RoleEnum.Member)
+                        {
+                            <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="material-icons text-lg position-relative">settings</i>
+                                        <span class="ms-1">Settings</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item text-danger">Leave Group</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
                 <div class="fs-5 fw-normal mb-3">@Html.DisplayFor(model => model.Group.Description)</div>

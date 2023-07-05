@@ -18,9 +18,9 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
     private readonly IClaimService _claimService;
     private readonly IMapper _mapper;
 
-    public PostRepository(AppDBContext context, IClaimService claimService, IMapper mapper) : base(claimService)
+    public PostRepository(IClaimService claimService, IMapper mapper) : base(claimService)
     {
-        _context = context;
+        _context = new AppDBContext();
         _claimService = claimService;
         _mapper = mapper;
     }
