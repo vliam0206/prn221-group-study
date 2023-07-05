@@ -233,6 +233,26 @@
                     @*End list of posts pagin*@
                 </div>
                 <!-- End Detail Info -->
+                <!-- Pagination -->                
+                @{
+                    var prevDisable = Model.Posts.HasPrevious ? "" : "disabled";
+                    var nextDisable = Model.Posts.HasNext ? "" : "disabled";
+                }
+                <nav class="mt-3">
+                    <ul class="pagination">
+                        <li class="page-item @prevDisable">
+                            <a asp-page="/UserScreen/Community"
+                               asp-route-pageIndex="@(Model.Posts.PageIndex -1)"
+                               class="page-link">Previous</a>
+                        </li>
+                        <li class="page-item @nextDisable">
+                            <a asp-page="/UserScreen/Community"
+                               asp-route-pageIndex="@(Model.Posts.PageIndex +1)"
+                               class="page-link">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End Pagination -->
             </div>
             <!-- End Main Part -->
         </div>
