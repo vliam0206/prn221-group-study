@@ -44,6 +44,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         return await _dbContext.Set<T>()
             .OrderByDescending(x => x.CreationDate)
+            .Where(x => x.IsDeleted == false)
             .ToListAsync();
     }
 
@@ -92,5 +93,18 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             PageSize = pagesize,
             TotalItemsCount = itemCount
         };
+    }
+
+    public async Task SoftDeleteAsync(T entity, Guid userId)
+    {
+        entity.IsDeleted = true;
+        entity.DeletedDate = DateTime.UtcNow;
+        entity.DeletedBy = userId;
+        await this.UpdateAsync(entity);
+    }
+    public async Task RemoveRangeAsync(List<T> entities)
+    {
+        _dbContext.Set<T>().RemoveRange(entities);
+        await _dbContext.SaveChangesAsync() ;
     }
 }

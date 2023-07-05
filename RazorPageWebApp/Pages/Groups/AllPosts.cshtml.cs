@@ -19,9 +19,14 @@ public class AllPostsModel : PageModel
 
     public Pagination<Post> Posts { get; set; }
     public Group GroupObj { get; set; }
-    public async Task<IActionResult> OnGetAsync(Guid groupId)
+    public async Task<IActionResult> OnGetAsync(Guid groupId, int? pageIndex)
     {
-        Posts = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(groupId, 1, 10);
+        var index = 0;
+        if (pageIndex != null)
+        {
+            index = pageIndex.Value;
+        }
+        Posts = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(groupId, index, AppConstants.POST_PAGE_SIZE);
         GroupObj = await _unitOfWork.GroupRepository.GetByIdAsync(groupId);
         if (GroupObj == null)
         {

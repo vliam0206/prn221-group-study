@@ -21,4 +21,6 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<int> CountAsync();
     Task SaveChangesAsync();
     Task<Pagination<T>> ToPagination(int pageIndex, int pagesize); // pageIndex start from 0
+    Task SoftDeleteAsync(T entity, Guid userId);
+    Task RemoveRangeAsync(List<T> entities);
 }

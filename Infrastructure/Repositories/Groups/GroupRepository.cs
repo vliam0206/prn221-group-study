@@ -60,7 +60,8 @@ public class GroupRepository : GenericRepository<Group>, IGroupRepository
 
     public async Task<bool> IsUserInGroup(Guid userId, Guid groupId)
     {
-        return await _dbcontext.AccountInGroups.AnyAsync(x => x.AccountId == userId && x.GroupId == groupId);
+        return await _dbcontext.AccountInGroups
+            .AnyAsync(x => x.AccountId == userId && x.GroupId == groupId);
     }
 
     public async Task<List<Group>> GetGroupsAsync(Guid userId)
