@@ -34,8 +34,13 @@ namespace RazorPageWebApp.Pages.Groups
         public Group Group { get; set; } = default!;
         public AccountInGroup? AccountInGroup { get; set; } = default!;
         public Pagination<Post> PostsInGroup { get; set; } = default!;
-        public async Task<IActionResult> OnGetAsync(Guid id)
+        public async Task<IActionResult> OnGetAsync(Guid id, int? pageindex)
         {
+            var index = 0;
+            if (pageindex != null)
+            {
+                index = pageindex.Value;
+            }
             ViewData[AppConstants.LiveChatMSG(id)] = _httpContext.HttpContext.Session.GetEntity<List<LiveChatMessage>>(AppConstants.LiveChatMSG(id));
             var group = await _unitOfWork.GroupRepository.GetGroupByIdAsync(id);
             if (group == null)
@@ -46,10 +51,23 @@ namespace RazorPageWebApp.Pages.Groups
             {
                 Group = group;
                 AccountInGroup = await _unitOfWork.AccountInGroupRepository.GetAccountInGroupAsync(_claimService.GetCurrentUserId, id);
-                PostsInGroup = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(id, 1, 10);
+                PostsInGroup = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(id, 0, AppConstants.POST_PAGE_SIZE);
+                if (group.ForceApprove == true)
+                {
+                    PostsInGroup = await _unitOfWork.PostRepository.GetAllApprovedPostFromGroupAsync(id, index, AppConstants.POST_PAGE_SIZE);
+                }
             }
             return Page();
         }
-
+        public async Task<IActionResult> OnGetJoinGroup(Guid groupId)
+        {
+            var accInGroup = new AccountInGroup
+            {
+                GroupId = groupId,
+                AccountId = _claimService.GetCurrentUserId,
+            };
+            await _unitOfWork.AccountInGroupRepository.AddAsync(accInGroup);
+            return Redirect($"/Groups/{groupId}");
+        }
     }
 }
