@@ -34,7 +34,7 @@ namespace RazorPageWebApp.Pages.Groups
         public Group Group { get; set; } = default!;
         public AccountInGroup? AccountInGroup { get; set; } = default!;
         public Pagination<Post> PostsInGroup { get; set; } = default!;
-        public async Task<IActionResult> OnGetAsync(Guid id, int? pageindex)
+        public async Task<IActionResult> OnGetAsync(Guid id, int? pageindex, string? searchValue)
         {
             var index = 0;
             if (pageindex != null)
@@ -54,7 +54,11 @@ namespace RazorPageWebApp.Pages.Groups
                 PostsInGroup = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(id, 0, AppConstants.POST_PAGE_SIZE);
                 if (group.ForceApprove == true)
                 {
-                    PostsInGroup = await _unitOfWork.PostRepository.GetAllApprovedPostFromGroupAsync(id, index, AppConstants.POST_PAGE_SIZE);
+                    if (searchValue == null) {
+                        PostsInGroup = await _unitOfWork.PostRepository.GetAllApprovedPostFromGroupAsync(id, index, AppConstants.POST_PAGE_SIZE);
+                    } else {
+                        PostsInGroup = await _unitOfWork.PostRepository.GetAllApprovedPostFromGroupSearchAsync(id, searchValue, index, AppConstants.POST_PAGE_SIZE);
+                    }
                 }
             }
             return Page();

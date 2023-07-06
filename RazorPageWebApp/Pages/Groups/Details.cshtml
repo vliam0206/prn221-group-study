@@ -79,8 +79,11 @@
                 {
                     <div class="input-group mb-3">
                         <a class="btn btn-outline-secondary me-5" asp-page="/Posts/CreatePost" asp-route-groupId="@Model.Group.Id" type="button">New Post</a>
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-                        <button class="btn btn-outline-secondary" type="button">Search</button>
+                        <form method="get" asp-page="Details" class="d-flex w-75">
+                            <input type="hidden" name="id" value="@Model.Group.Id"/>
+                            <input type="text" name="searchValue" class="form-control w-100" placeholder="Search with title" >
+                            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+                        </form>
                     </div>
                 }
                 @foreach (var post in Model.PostsInGroup.Items)

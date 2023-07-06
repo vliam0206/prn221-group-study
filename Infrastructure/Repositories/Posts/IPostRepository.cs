@@ -11,6 +11,7 @@ namespace Infrastructure.Repositories.Posts
         Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10);
         Task<Pagination<Post>?> GetAllPostFromGroupSearchAsync(Guid groupId, string searchValue, int pageIndex = 0, int pageSize = 10);
         Task<Pagination<Post>?> GetAllApprovedPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10);
+        Task<Pagination<Post>?> GetAllApprovedPostFromGroupSearchAsync(Guid groupId, string searchValue, int pageIndex = 0, int pageSize = 10);
         Task<Post?> GetPostByIdAsync(Guid postId);
     }
 }
