@@ -11,7 +11,7 @@ namespace Domain.Entities.Groups;
 public class AccountInGroup : BaseEntity
 {
     #region Properties
-    public RoleEnum Role { get; set; }
+    public RoleEnum Role { get; set; } = RoleEnum.Member;
     public GroupStatusEnum Status { get; set; } = GroupStatusEnum.Active;
 
     [DisplayName("Account ID")]

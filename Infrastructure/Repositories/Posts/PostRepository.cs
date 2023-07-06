@@ -18,9 +18,9 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
     private readonly IClaimService _claimService;
     private readonly IMapper _mapper;
 
-    public PostRepository(AppDBContext context, IClaimService claimService, IMapper mapper) : base(claimService)
+    public PostRepository(IClaimService claimService, IMapper mapper) : base(claimService)
     {
-        _context = context;
+        _context = new AppDBContext();
         _claimService = claimService;
         _mapper = mapper;
     }
@@ -54,7 +54,25 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         var query = GetQuery().Where(x => x.GroupId == groupId);
         var totalPostsCount = await query.CountAsync();
         var posts = await query
-                        .Skip((pageIndex - 1) * pageSize)
+                        .Skip((pageIndex) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync();
+        var pagination = new Pagination<Post>
+        {
+            TotalItemsCount = totalPostsCount,
+            PageSize = pageSize,
+            PageIndex = pageIndex,
+            Items = posts
+        };
+        return pagination;
+    }
+    public async Task<Pagination<Post>?> GetAllApprovedPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
+    {
+        var query = GetQuery().Where(x => x.GroupId == groupId
+                                        && x.Status == Domain.Enums.PostStatusEnum.Approved);
+        var totalPostsCount = await query.CountAsync();
+        var posts = await query
+                        .Skip((pageIndex) * pageSize)
                         .Take(pageSize)
                         .ToListAsync();
         var pagination = new Pagination<Post>
@@ -75,6 +93,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                                      .Include(x => x.TagInPosts)
                                      .ThenInclude(x => x.Tag)
                                      .Include(x => x.Attachments)
+                                     .Where(x => x.Status != Domain.Enums.PostStatusEnum.Rejected)
                                      .OrderByDescending(x => x.CreationDate);
     }
 }
