@@ -90,7 +90,7 @@
                 <!-- End Notification Item -->
                 <!-- Members Item -->
                 <li class="nav-item">
-                    <a class="nav-link text-white ">
+                    <a asp-page="/Groups/Members" asp-route-groupId="@Model.GroupObj.Id" class="nav-link text-white ">
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="material-icons opacity-10">person</i>
                         </div>
@@ -126,35 +126,42 @@
                             <h5 class="mb-1">All Posts</h5>
                         </div>
                     </div>
-                    <!-- End Group Title -->                    
+                    <!-- End Group Title -->
                 </div>
+
                 <!-- End Title Info -->
+
+                <form class="input-group" method="get" asp-page="AlllPosts">
+                    <input type="hidden" name="groupId" value="@Model.GroupObj.Id" />
+                    <div class="form-outline w-50">
+                        <input name="searchValue" class="form-control border " placeholder="Search with title">
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-dark" />
+                </form>
+
                 <!-- Detail Info -->
-                <div class="row">                    
+                <div class="row">
                     @*List of posts pagin*@
-                    @foreach (var post in Model.Posts.Items)
-                    {
+                    @foreach (var post in Model.Posts.Items) {
                         <main class="d-flex my-2 mx-5 border-start border-3 border-primary">
                             <div class="col-lg-9 col-auto d-flex flex-column align-items-start">
                                 <div class="dropdown w-100 d-flex justify-content-between">
                                     <div class="d-flex w-100">
-                                        @foreach (var tag in post.TagInPosts)
-                                        {
+                                        @foreach (var tag in post.TagInPosts) {
                                             <a class="btn btn-outline-dark rounded mt-2" asp-page="">@tag.Tag?.Name</a>
                                         }
-                                    </div>                                
+                                    </div>
                                 </div>
                                 <div class="w-100 ps-2 align-self-end h-100 justify-content-between d-flex flex-column">
                                     <div class="h5"><a class="link-dark" href="@Url.Content($"{Model.GroupObj.Id}/view/{post.Id}")">@post.Topic</a></div>
                                     <div class="d-block"><b>Created by:</b> @post.AccountCreated.Username</div>
-                                    <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">                   
+                                    <div class="reaction-container d-flex gap-x-2 justify-content-start align-content-end">
                                         <span class="text-black-50 align-self-center" style="font-size:0.75em">@post.CreationDate.ToLongDateString()</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3 mt-5">
-                                @if (post.Status == Domain.Enums.PostStatusEnum.Waiting)
-                                {
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Waiting) {
                                     <div class="btn-group col-lg-6">
                                         <button type="button" class="btn btn-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                             Waiting
@@ -171,12 +178,17 @@
                                                 </a>
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                            <li>
+                                                <a asp-page="AllPosts" asp-page-handler="Delete"
+                                                   asp-route-groupId="@Model.GroupObj.Id" asp-route-postId="@post.Id" class="dropdown-item text-danger">
+                                                    Delete
+                                                </a>
+                                            </li>
+
                                         </ul>
                                     </div>
                                 }
-                                @if (post.Status == Domain.Enums.PostStatusEnum.Approved)
-                                {
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Approved) {
                                     <div class="btn-group col-lg-6">
                                         <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                             Approved
@@ -193,12 +205,16 @@
                                                 </a>
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                            <li>
+                                                <a asp-page="AllPosts" asp-page-handler="Delete"
+                                                   asp-route-groupId="@Model.GroupObj.Id" asp-route-postId="@post.Id" class="dropdown-item text-danger">
+                                                    Delete
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 }
-                                @if (post.Status == Domain.Enums.PostStatusEnum.Rejected)
-                                {
+                                @if (post.Status == Domain.Enums.PostStatusEnum.Rejected) {
                                     <div class="btn-group col-lg-6">
                                         <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                             Rejected
@@ -215,7 +231,12 @@
                                                 </a>
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#">Delete</a></li>
+                                            <li>
+                                                <a asp-page="AllPosts" asp-page-handler="Delete"
+                                                   asp-route-groupId="@Model.GroupObj.Id" asp-route-postId="@post.Id" class="dropdown-item text-danger">
+                                                    Delete
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 }
@@ -226,7 +247,7 @@
                     @*End list of posts pagin*@
                 </div>
                 <!-- End Detail Info -->
-                <!-- Pagination -->                
+                <!-- Pagination -->
                 @{
                     var prevDisable = Model.Posts.HasPrevious ? "" : "disabled";
                     var nextDisable = Model.Posts.HasNext ? "" : "disabled";
@@ -236,12 +257,12 @@
                         <li class="page-item @prevDisable">
                             <a asp-page="/Groups/AllPosts"
                                asp-route-pageIndex="@(Model.Posts.PageIndex -1)"
-                               class="page-link">Previous</a>
+                               class="page-link"><i class="fa-solid fa-angle-left"></i></a>
                         </li>
                         <li class="page-item @nextDisable">
                             <a asp-page="/Groups/AllPosts"
                                asp-route-pageIndex="@(Model.Posts.PageIndex +1)"
-                               class="page-link">Next</a>
+                               class="page-link"><i class="fa-solid fa-angle-right"></i></a>
                         </li>
                     </ul>
                 </nav>

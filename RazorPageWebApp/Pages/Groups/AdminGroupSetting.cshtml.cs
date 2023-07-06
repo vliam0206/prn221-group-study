@@ -26,7 +26,15 @@ public class AdminGroupSettingModel : PageModel
         {
             return NotFound();
         }
-        if (_claimService.GetCurrentUserId != group.AccountCreatedID)
+
+        var member = await _unitOfWork.AccountInGroupRepository
+            .GetAccountInGroupAsync(_claimService.GetCurrentUserId, Guid.Parse(id));
+
+        if (member == null) {
+            return new RedirectToPageResult("/Error");
+        }
+
+        if (member.Role != Domain.Enums.RoleEnum.Admin && member.Role != Domain.Enums.RoleEnum.Moderator)
         {
             return new RedirectToPageResult("/Error");
         }

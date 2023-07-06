@@ -52,7 +52,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
     }
     public async Task<Pagination<Post>?> GetAllPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {
-        var query = GetQuery().Where(x => x.GroupId == groupId);
+        var query = GetQuery().Where(x => x.GroupId == groupId && x.IsDeleted == false);
         var totalPostsCount = await query.CountAsync();
         var posts = await query
                         .Skip((pageIndex) * pageSize)
@@ -67,9 +67,26 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         };
         return pagination;
     }
+
+    public async Task<Pagination<Post>?> GetAllPostFromGroupSearchAsync(Guid groupId, string searchValue, int pageIndex = 0, int pageSize = 10) {
+        var query = GetQuery().Where(x => x.GroupId == groupId && x.IsDeleted == false).Where(x => x.Topic.Contains(searchValue));
+        var totalPostsCount = await query.CountAsync();
+        var posts = await query
+                        .Skip((pageIndex) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync();
+        var pagination = new Pagination<Post> {
+            TotalItemsCount = totalPostsCount,
+            PageSize = pageSize,
+            PageIndex = pageIndex,
+            Items = posts
+        };
+        return pagination;
+    }
+
     public async Task<Pagination<Post>?> GetAllApprovedPostFromGroupAsync(Guid groupId, int pageIndex = 0, int pageSize = 10)
     {
-        var query = GetQuery().Where(x => x.GroupId == groupId
+        var query = GetQuery().Where(x => x.GroupId == groupId && x.IsDeleted == false
                                         && x.Status == Domain.Enums.PostStatusEnum.Approved);
         var totalPostsCount = await query.CountAsync();
         var posts = await query
