@@ -8,8 +8,10 @@
 <article class="container-fluid bg-light">
     <section class="row mx-5 flex-nowrap gap-x-2">
         <div class="col-lg-3 d-none d-lg-block border border-dark rounded bg-white">
-            <div class="card-img p-2 d-flex justify-content-center">
-                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar" />
+            <div class="card-img p-2 d-flex justify-content-center">                
+                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar" />                
+                <br />
+                <p class="mt-5">@Model.Post.AccountCreated.Username</p>
             </div>
         </div>
         <div class="col-lg-9 col-auto border border-dark rounded bg-white" style="border-left-width:0px">
@@ -53,7 +55,7 @@
                 <div id="comment-@comment.Id" class="comment-container col-lg-10 px-0 border border-secondary rounded">
                     <div class="comment-user-group d-flex ">
                         <div class="">
-                            <img src="data:image/png;base64,@comment.AccountCreated.Avatar"
+                            <img src="@comment.AccountCreated.Avatar"
                                  class="img-thumbnail mx-2 rounded-circle border" />
                         </div>
                         <div class="d-flex flex-column">

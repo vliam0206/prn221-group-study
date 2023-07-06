@@ -20,7 +20,8 @@ public class IndexModel : PageModel {
     }
 
     public Pagination<Group> Groups { get; set; }
-    public String SearchString { get; set; }
+    public string SearchString { get; set; }
+    public IUnitOfWork UnitOfWork { get; set; }
 
     public async Task OnGetAsync(int? pageIndex, string? searchValue)
     {
@@ -29,6 +30,7 @@ public class IndexModel : PageModel {
         {
             index = pageIndex.Value;
         }
+        UnitOfWork = _unitOfWork;
         if (string.IsNullOrEmpty(searchValue))
         {
             Groups = await _unitOfWork.GroupRepository.ToPagination(index, AppConstants.GROUP_PAGE_SIZE);

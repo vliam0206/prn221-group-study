@@ -5,6 +5,7 @@ using DataAccess.FluentAPIs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Reflection;
+
 namespace DataAccess;
 
 public class AppDBContext : DbContext
@@ -51,5 +52,47 @@ public class AppDBContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);            
+    }
+    public override int SaveChanges()
+    {
+        // Get the added entities of AccountInGroup table
+        var addedEntities = ChangeTracker.Entries<AccountInGroup>()
+            .Where(e => e.State == EntityState.Added)
+            .Select(e => e.Entity);
+
+        foreach (var addedEntity in addedEntities)
+        {
+            // Find the corresponding Group entity
+            var group = Groups.Find(addedEntity.GroupId);
+
+            if (group != null)
+            {
+                // Increment the NumOfMember property
+                group.NumOfMember++;
+            }
+        }
+
+        return base.SaveChanges();
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        // Get the added entities of AccountInGroup table
+        var addedEntities = ChangeTracker.Entries<AccountInGroup>()
+            .Where(e => e.State == EntityState.Added)
+            .Select(e => e.Entity);
+
+        foreach (var addedEntity in addedEntities)
+        {
+            // Find the corresponding Group entity
+            var group = Groups.Find(addedEntity.GroupId);
+
+            if (group != null)
+            {
+                // Increment the NumOfMember property
+                group.NumOfMember++;
+            }
+        }
+        return base.SaveChangesAsync(cancellationToken);
     }
 }

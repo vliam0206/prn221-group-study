@@ -17,9 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 //Add DIs
 builder.Services.AddInfrastrucureService();
 
-// Add dbcontext ---> Remember to delete at the end
-builder.Services.AddDbContext<AppDBContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDB")));
+//// Add dbcontext ---> Uncomment these 2 bellow lines and line 47 for seeding initial daatabase
+//builder.Services.AddDbContext<AppDBContext>(options =>
+//                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDB")));
 
 //Add web app services
 builder.Services.AddWebAppServices();
@@ -43,8 +43,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Initialize data for DB
-SeedDatabase();
+//// Initialize data for DB
+//SeedDatabase();
 
 app.UseAuthorization();
 
