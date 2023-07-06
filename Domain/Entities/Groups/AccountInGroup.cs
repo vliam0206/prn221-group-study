@@ -1,6 +1,7 @@
 ﻿using Domain.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,11 @@ public class AccountInGroup : BaseEntity
     #region Properties
     public RoleEnum Role { get; set; } = RoleEnum.Member;
     public GroupStatusEnum Status { get; set; } = GroupStatusEnum.Active;
-    public Guid AccountId { get; set; }    
+
+    [DisplayName("Account ID")]
+    public Guid AccountId { get; set; }
+
+    [DisplayName("Group ID")]
     public Guid GroupId { get; set; }    
     #endregion
 
