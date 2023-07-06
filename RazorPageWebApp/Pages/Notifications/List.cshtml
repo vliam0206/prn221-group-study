@@ -42,7 +42,7 @@
                     <li>
                         <a class="dropdown-item list-group-item
                             @(notification.Status == NotiStatusEnum.Read ? "bg-secondary text-light" : "")"
-                           asp-page="" asp-route-id="@notification.Id" asp-route-path="/UserScreen/HomePage">
+                           asp-page="Empty" asp-route-id="@notification.Id" asp-route-path="/UserScreen/HomePage">
                             <span class="notification-icon"><i class="fa-solid fa-comment"></i></span>
                             <span class="notification-content">@notification.Content</span>
                         </a>
