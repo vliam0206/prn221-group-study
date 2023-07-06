@@ -1,6 +1,7 @@
 using Application.Commons;
 using Domain.Entities.Groups;
 using Domain.Entities.Posts;
+using Domain.Enums;
 using Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -64,6 +65,18 @@ namespace RazorPageWebApp.Pages.Groups {
             await _unitOfWork.AccountInGroupRepository.RemoveAccountInGroupAsync(accountId, groupId);
             Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationAsync(groupId, 0, 10);
             
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostChangeRoleAsync(Guid accountId, Guid groupId, RoleEnum role) {
+            GroupObj = await _unitOfWork.GroupRepository.GetByIdAsync(groupId);
+            if (GroupObj == null) {
+                return NotFound();
+            }
+
+            await _unitOfWork.AccountInGroupRepository.ChangeRoleAccountInGroupAsync(accountId, groupId, role);
+            Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationAsync(groupId, 0, 10);
+
             return Page();
         }
     }

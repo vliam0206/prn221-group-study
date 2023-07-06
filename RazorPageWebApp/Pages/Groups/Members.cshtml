@@ -173,14 +173,33 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Status)
                                 </td>
-                                <td>
+                                <td class="d-flex ">
                                     @if (item.Role != Domain.Enums.RoleEnum.Admin) {
                                         <form asp-page="Members" asp-page-handler="delete"
                                               onclick="return confirm('Are you sure to remove this account from group?');">
                                             <input type="hidden" name="accountId" value="@item.AccountId" />
                                             <input type="hidden" name="groupId" value="@Model.GroupObj.Id" />
-                                            <button type="submit" value="Remove" class="btn btn-danger">Remove</button>
+                                            <button type="submit" value="Remove" class="btn btn-sm btn-danger">Remove</button>
                                         </form>
+
+                                        @if (item.Role == Domain.Enums.RoleEnum.Member) {
+                                            <form asp-page="Members" asp-page-handler="changerole"
+                                                  onclick="return confirm('Are you sure to set role moderator to this account?');">
+                                                <input type="hidden" name="accountId" value="@item.AccountId" />
+                                                <input type="hidden" name="groupId" value="@Model.GroupObj.Id" />
+                                                <input type="hidden" name="role" value="@Domain.Enums.RoleEnum.Moderator" />
+                                                <button type="submit" value="Remove" class="btn btn-sm btn-info">Set Moderator</button>
+                                            </form>
+                                        }
+                                        @if (item.Role == Domain.Enums.RoleEnum.Moderator) {
+                                            <form asp-page="Members" asp-page-handler="changerole"
+                                                  onclick="return confirm('Are you sure to set role moderator to this account?');">
+                                                <input type="hidden" name="accountId" value="@item.AccountId" />
+                                                <input type="hidden" name="groupId" value="@Model.GroupObj.Id" />
+                                                <input type="hidden" name="role" value="@Domain.Enums.RoleEnum.Member" />
+                                                <button type="submit" value="Remove" class="btn btn-sm btn-info">Set Member</button>
+                                            </form>
+                                        }
                                     }
                                 </td>
                             </tr>

@@ -2,6 +2,7 @@
 using Application.IServices;
 using DataAccess;
 using Domain.Entities.Groups;
+using Domain.Enums;
 using Infrastructure.IRepositories.Groups;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -75,6 +76,14 @@ namespace Infrastructure.Repositories.Groups {
             var account = _dbContext.AccountInGroups.Where(x => x.AccountId == accountId && x.GroupId ==  groupId).FirstOrDefault();
             if (account != null) {
                 _dbContext.AccountInGroups.Remove(account);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+        public async Task ChangeRoleAccountInGroupAsync(Guid accountId, Guid groupId, RoleEnum role) {
+            var account = _dbContext.AccountInGroups.Where(x => x.AccountId == accountId && x.GroupId == groupId).FirstOrDefault();
+            if (account != null) {
+                account.Role = role;
+                _dbContext.AccountInGroups.Update(account);
                 await _dbContext.SaveChangesAsync();
             }
         }
