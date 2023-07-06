@@ -1,4 +1,5 @@
 using Application.Commons;
+using Domain.Entities;
 using Domain.Entities.Groups;
 using Domain.Entities.Posts;
 using Domain.Enums;
@@ -19,14 +20,18 @@ public class AllPostsModel : PageModel
 
     public Pagination<Post> Posts { get; set; }
     public Group GroupObj { get; set; }
-    public async Task<IActionResult> OnGetAsync(Guid groupId, int? pageIndex)
+    public async Task<IActionResult> OnGetAsync(Guid groupId, int? pageIndex, string? searchValue)
     {
         var index = 0;
         if (pageIndex != null)
         {
             index = pageIndex.Value;
         }
-        Posts = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(groupId, index, AppConstants.POST_PAGE_SIZE);
+        if (searchValue != null) {
+            Posts = await _unitOfWork.PostRepository.GetAllPostFromGroupSearchAsync(groupId, searchValue, index, AppConstants.POST_PAGE_SIZE);
+        } else {
+            Posts = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(groupId, index, AppConstants.POST_PAGE_SIZE);
+        }
         GroupObj = await _unitOfWork.GroupRepository.GetByIdAsync(groupId);
         if (GroupObj == null)
         {
@@ -34,5 +39,15 @@ public class AllPostsModel : PageModel
         }
         return Page();
     }
-    
+    public async Task<IActionResult> OnGetDeleteAsync(Guid groupId, Guid postId) {
+        GroupObj = await _unitOfWork.GroupRepository.GetByIdAsync(groupId);
+        if (GroupObj == null) {
+            return NotFound();
+        }
+        Posts = await _unitOfWork.PostRepository.GetAllPostFromGroupAsync(groupId, 0, AppConstants.POST_PAGE_SIZE);
+
+        await _unitOfWork.PostRepository.RemoveAsyncId(postId);
+
+        return Page();
+    }
 }
