@@ -8,15 +8,15 @@
 <article class="container-fluid bg-light">
     <section class="row mx-5 flex-nowrap gap-x-2">
         <div class="col-lg-3 d-none d-lg-block border border-dark rounded bg-white">
-            <div class="card-img p-2 d-flex justify-content-center">                
-                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar" />                
+            <div class="card-img p-2 d-flex justify-content-center">
+                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar" />
                 <br />
                 <p class="mt-5">@Model.Post.AccountCreated.Username</p>
             </div>
         </div>
         <div class="col-lg-9 col-auto border border-dark rounded bg-white" style="border-left-width:0px">
-                @if (Model.CurUser.Id == Model.Post.AccountCreatedID)
-                {
+            @if (Model.CurUser.Id == Model.Post.AccountCreatedID)
+            {
                 <div class="dropdown ms-auto d-flex">
                     <button class="btn btn-light ms-auto py-0" type="button" id="drop-down-post-options" data-bs-toggle="dropdown" aria-expanded="false">
                         ...
@@ -26,12 +26,12 @@
                         <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deletePost">Delete</a></li>
                     </ul>
                 </div>
-                }
+            }
             <div class="d-flex flex-column col p-2">
                 <h2>@Model.Post.Topic</h2>
                 <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
                 <div class="d-flex gap-x-3 view-post">
-                    <a class="link-secondary c-pointer">@Model.Post.Likes.Count Likes</a>
+                    <a class="link-secondary c-pointer" onclick="toggleLike(this)" data-postId="@Model.Post.Id">@Model.Post.Likes.Count Likes</a>
                     <a class="link-secondary c-pointer" data-bs-toggle="collapse"
                        data-bs-target="#comment-form-container">@Model.Post.Comments.Count Comments</a>
                 </div>
@@ -39,19 +39,19 @@
         </div>
     </section>
     <section class="row gap-y-3 mx-5">
-        <div class="create-post-form p-0 my-3 collapse" id="comment-form-container" >
-            <form id="comment-form" onsubmit="return AddComment(this)" 
-                    style="display:none" asp-page-handler="Comment">
+        <div class="create-post-form p-0 my-3 collapse" id="comment-form-container">
+            <form id="comment-form" onsubmit="return AddComment(this)"
+                  style="display:none" asp-page-handler="Comment">
                 <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
             </form>
             <label class="fw-bold" asp-for="Comment.Content"></label>
             <textarea class="col-12 p-0 border border-1" id="comment-box"
-                        asp-for="Comment.Content"  form="comment-form" placeholder="Write some comments"></textarea>
+                      asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
             <button class="btn btn-primary my-2" form="comment-form">Submit</button>
         </div>
         <div class="comment-group col-lg-12 my-3 gap-2 px-2 row  ">
-                @foreach (var comment in Model.Post.Comments)
-                {
+            @foreach (var comment in Model.Post.Comments)
+            {
                 <div id="comment-@comment.Id" class="comment-container col-lg-10 px-0 border border-secondary rounded">
                     <div class="comment-user-group d-flex ">
                         <div class="">
@@ -73,7 +73,7 @@
                         <div class="comment-action-container d-flex gap-2">
                             <a class="reply-count link-secondary c-pointer" data-count="@comment.ReplyComments.Count" data-bs-toggle="collapse"
                                data-bs-target="#comment-r-@comment.Id">
-                                    @comment.ReplyComments.Count Reply
+                                @comment.ReplyComments.Count Reply
                             </a>
                         </div>
                     </div>
@@ -90,13 +90,13 @@
                         </form>
                     </article>
                     <div class="reply-group ms-auto col d-flex flex-column gap-y-2">
-                            @foreach (var reply in comment.ReplyComments)
-                            {
+                        @foreach (var reply in comment.ReplyComments)
+                        {
                             <div id="comment-@reply.Id" class="comment-container col-lg-11 ms-auto border border-secondary ">
                                 <div class="comment-user-group d-flex ">
                                     <div>
                                         <img src="data:image/png;base64,@reply.AccountCreated.Avatar"
-                                            @*src="https://picsum.photos/seed/1w32/200/300"*@
+                                        @*src="https://picsum.photos/seed/1w32/200/300"*@
                                              class="rounded-circle img-thumbnail border mx-2" />
                                     </div>
                                     <div class="d-flex flex-column">
@@ -116,12 +116,12 @@
                                     <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@reply.ReplyComments.Count Reply</a>
                                 </div>
                             </div>
-                            }
+                        }
                     </div>
                 </div>
 
 
-                }
+            }
         </div>
 
     </section>
@@ -143,8 +143,9 @@
         </div>
     </div>
 </div>
-                @section Scripts
-                    {
+@section Scripts
+    {
+    <script src="~/js/post.js"></script>
     <script>
         tinymce.init({
             selector: '#comment-box',

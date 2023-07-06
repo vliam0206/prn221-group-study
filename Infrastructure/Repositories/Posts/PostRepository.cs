@@ -3,6 +3,7 @@ using Application.IServices;
 using AutoMapper;
 using DataAccess;
 using Domain.Entities.Posts;
+using Infrastructure.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

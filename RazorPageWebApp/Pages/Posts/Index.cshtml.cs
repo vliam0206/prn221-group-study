@@ -35,7 +35,13 @@ namespace RazorPageWebApp.Pages.Posts
             if (result)
             {
                 Post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);
-                Post.Comments = Post.Comments.Where(x => x.CommentRepliedId == null).ToList();
+                Post.Likes = Post.Likes.Where(x => x.IsDeleted == false && x.Status == Domain.Enums.LikeStatusEnum.Like ).ToList();
+                Post.Comments = Post.Comments.Where(x => x.CommentRepliedId == null).Select(x =>
+                {
+                    x.ReplyComments = x.ReplyComments.Where(x => x.IsDeleted == false).ToList();
+                    return x;
+                }).ToList();
+                
                 Content = Post.Content;
             }
             CurUser = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId); 

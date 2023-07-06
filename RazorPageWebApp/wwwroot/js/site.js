@@ -54,3 +54,17 @@ function initTinyMce(selector) {
         content_css: '/css/tinymce.css'
     });
 }
+
+$(() => {
+    var notiContainer = $("#notifination-container");
+
+    if (notiContainer != null) {
+        $.ajax({
+            url: "/Notification/0/10?handler=Header",
+            method: "GET",
+            success: (result) => {
+                notiContainer.html(result);
+            }
+        })
+    }
+});
