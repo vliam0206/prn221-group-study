@@ -15,37 +15,55 @@ namespace RazorPageWebApp.Pages.Groups {
 
         public Pagination<AccountInGroup>? Accounts { get; set; }
         public Group? GroupObj { get; set; }
-        public async Task<IActionResult> OnGetAsync(Guid groupId) {
-            Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationAsync(groupId, 0, 10);
+
+        public string Message { get; set; }
+        public async Task<IActionResult> OnGetAsync(int? pageIndex, Guid groupId, string? searchValue) {
             GroupObj = await _unitOfWork.GroupRepository.GetByIdAsync(groupId);
             if (GroupObj == null) {
                 return NotFound();
             }
+
+            int index = 0;
+            if (pageIndex != null) {
+                index = pageIndex.Value;
+            }
+
+            if (searchValue == null) {
+                Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationAsync(groupId, index, 10);
+            } else {
+                Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationSearchAsync(groupId, index, 10, searchValue);
+            }
+
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string username, Guid groupId) {
+        public async Task<IActionResult> OnPostAddAsync(string username, Guid groupId) {
             GroupObj = await _unitOfWork.GroupRepository.GetByIdAsync(groupId);
             if (GroupObj == null) {
                 return NotFound();
             }
 
             bool check = await _unitOfWork.AccountInGroupRepository.AddAccountInGroupAsync(username, groupId);
+            Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationAsync(groupId, 0, 10);
+
             if (check) {
-                Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationAsync(groupId, 0, 10);
+                Message = "Add member successfully";
                 return Page();
             } else {
+                Message = "Add member failed";
                 return Page();
             }
         }
 
         public async Task<IActionResult> OnPostDeleteAsync(Guid accountId, Guid groupId) {
-            await _unitOfWork.AccountInGroupRepository.RemoveAccountInGroupAsync(accountId, groupId);
-            Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationAsync(groupId, 0, 10);
             GroupObj = await _unitOfWork.GroupRepository.GetByIdAsync(groupId);
             if (GroupObj == null) {
                 return NotFound();
             }
+
+            await _unitOfWork.AccountInGroupRepository.RemoveAccountInGroupAsync(accountId, groupId);
+            Accounts = await _unitOfWork.AccountInGroupRepository.GetAccountListInGroupPaginationAsync(groupId, 0, 10);
+            
             return Page();
         }
     }

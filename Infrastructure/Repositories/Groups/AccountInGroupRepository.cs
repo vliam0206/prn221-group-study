@@ -25,7 +25,22 @@ namespace Infrastructure.Repositories.Groups {
         }
         
         public async Task<Pagination<AccountInGroup>?> GetAccountListInGroupPaginationAsync(Guid groupId, int pageIndex, int pageSize) {
-            var list = _dbContext.AccountInGroups.Where(x => x.GroupId == groupId).Include(x => x.Account);
+            var list = _dbContext.AccountInGroups.Where(x => x.GroupId == groupId).Include(x => x.Account).OrderByDescending(x => x.CreationDate);
+            var itemCount = await list.CountAsync();
+            var accounts = await list.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
+            var pagination = new Pagination<AccountInGroup> {
+                TotalItemsCount = itemCount,
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+                Items = accounts
+            };
+            return pagination;
+        }
+
+        public async Task<Pagination<AccountInGroup>?> GetAccountListInGroupPaginationSearchAsync(Guid groupId, int pageIndex, int pageSize, string searchValue) {
+            var list = _dbContext.AccountInGroups.Where(x => x.GroupId == groupId).Include(x => x.Account)
+                .Where(x => x.Account.Username.Contains(searchValue) || x.Account.Email.Contains(searchValue))
+                .OrderByDescending(x => x.CreationDate);
             var itemCount = await list.CountAsync();
             var accounts = await list.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync();
             var pagination = new Pagination<AccountInGroup> {
@@ -42,6 +57,9 @@ namespace Infrastructure.Repositories.Groups {
             if (account == null) {
                 return false;
             } else {
+                if (_dbContext.AccountInGroups.Where(x => x.GroupId == groupId && x.AccountId == account.Id).Any())
+                    return false;
+
                 AccountInGroup accountInGroup = new AccountInGroup {
                     Role = Domain.Enums.RoleEnum.Member,
                     AccountId = account.Id,

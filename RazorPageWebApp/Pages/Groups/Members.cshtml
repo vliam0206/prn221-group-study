@@ -120,13 +120,26 @@
                     </div>
                     <!-- End Configuration bar -->
                 </div>
+                <span class="text-danger">@Model.Message</span>
                 <!-- End Title Info -->
                 <!-- Detail Info -->
+
+                <form class="input-group" method="get" asp-page="Members">
+                    <input type="hidden" name="groupId" value="@Model.GroupObj.Id" />
+                    <div class="form-outline w-50">
+                        <input name="searchValue" class="form-control border " placeholder="Search with username or email">
+                    </div>
+                    <input type="submit" value="Search" class="btn btn-dark" />
+                </form>
+
                 <table class="table">
                     <thead>
                         <tr>
                             <th>
                                 Username
+                            </th>
+                            <th>
+                                Email
                             </th>
                             <th>
                                 Date Joined
@@ -147,6 +160,9 @@
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Account.Username)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Account.Email)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.CreationDate)
@@ -206,7 +222,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form method="post">
+                <form method="post" asp-page="Members" asp-page-handler="add">  
                     <div class="form-group">
                         <label class="control-label">Username</label>
                         <input name="username" class="form-control ps-2 border border-1" />
