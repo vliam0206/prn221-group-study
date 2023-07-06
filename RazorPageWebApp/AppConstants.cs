@@ -13,4 +13,8 @@ public class AppConstants
     public static int UNREAD_NOTIFICATION_NUM = 5;
     public static string LiveChatMSG(Guid groupId) => $"LiveChat_Messages_{groupId}";
 
+    public static string GetNotifySession(Guid userId)
+    {
+        return $"NOTIFY-{userId}";
+    }
 }

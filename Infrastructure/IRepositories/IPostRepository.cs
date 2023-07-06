@@ -1,10 +1,9 @@
 ﻿using Application.Commons;
 using Domain.Entities.Posts;
-using Infrastructure.IRepositories;
 
-namespace Infrastructure.Repositories.Posts
+namespace Infrastructure.IRepositories
 {
-    public interface IPostRepository:IGenericRepository<Post>
+    public interface IPostRepository : IGenericRepository<Post>
     {
         Task<bool> AddPostAsync(Guid? groupId, string content);
         Task<bool> EditPostAsync(Post? post);

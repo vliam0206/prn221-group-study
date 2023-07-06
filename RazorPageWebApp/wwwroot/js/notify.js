@@ -16,8 +16,7 @@
             var notificationContent = $("<span>").addClass("notification-content").text(notification);
 
             // Append the elements to the dropdown menu
-            //$(".dropdown-menu").prepend(notificationItem.append(userInfo.append(userAvatar, userName, userEmail), notificationContent));
-            $(".dropdown-menu").prepend(notificationItem.append(userInfo.append(notificationContent));
+            $(".dropdown-menu").prepend(notificationItem.append(userInfo.append(userAvatar, userName, userEmail), notificationContent)));
 
             console.log("Received notification:", notification);
         });

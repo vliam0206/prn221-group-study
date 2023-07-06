@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Commons;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Infrastructure.IRepositories;
 
 public interface INotificationRepository : IGenericRepository<Notification>
 {
-    List<Notification> GetAllUnreadNotification(Guid userId, int numNoti);
+    Task<Pagination<Notification>> GetAllNotification(Guid userId, int pageIndex, int pageSize);
+    Task<Pagination<Notification>> GetAllUnreadNotificationPagination(Guid userId, int pageIndex, int pageSize);
 }

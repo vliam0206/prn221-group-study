@@ -1,4 +1,5 @@
-﻿using Application.IServices;
+﻿using Application.Commons;
+using Application.IServices;
 using DataAccess;
 using Domain.Entities;
 using Infrastructure.IRepositories;
@@ -18,12 +19,18 @@ public class NotificationRepository : GenericRepository<Notification>, INotifica
         _dbContext = new AppDBContext();
     }
 
-    public List<Notification> GetAllUnreadNotification(Guid userId, int numNoti)
+    public async Task<Pagination<Notification>> GetAllUnreadNotificationPagination(Guid userId, int pageIndex, int pageSize)
     {
-        return _dbContext.Notifications
-            .Where(x => x.AccountRecievedId == userId
-                    && x.Status == Domain.Enums.NotiStatusEnum.Unread)
-            .Take(numNoti)
-            .ToList();
+        IQueryable<Notification> query = _dbContext.Notifications
+                    .Where(x => x.AccountRecievedId == userId
+                            && x.Status == Domain.Enums.NotiStatusEnum.Unread)
+                    .Where(x=>x.IsDeleted == false);
+        return await ToPagination(query, pageIndex, pageSize); ;
+    }
+    public  async Task<Pagination<Notification>> GetAllNotification(Guid userId, int pageIndex, int pageSize)
+    {
+        IQueryable<Notification> query = _dbContext.Notifications
+                    .Where(x => x.AccountRecievedId == userId && x.IsDeleted == false);
+        return await ToPagination(query, pageIndex, pageSize); ;
     }
 }

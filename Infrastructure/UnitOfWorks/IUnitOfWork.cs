@@ -1,9 +1,7 @@
 ﻿using Infrastructure.IRepositories;
 using Infrastructure.IRepositories.Groups;
 using Infrastructure.Repositories;
-using Infrastructure.Repositories.Comments;
 using Infrastructure.Repositories.Groups;
-using Infrastructure.Repositories.Posts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +18,5 @@ public interface IUnitOfWork
     public IPostRepository PostRepository { get; }
     public IAccountInGroupRepository AccountInGroupRepository { get; }
     public INotificationRepository NotificationRepository { get; }
-
+    public ILikeRepository LikeRepository { get; }
 }

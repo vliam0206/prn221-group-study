@@ -13,12 +13,12 @@ public class Notification : BaseEntity
     public Guid? FromAccountId { get; set; } // not create relationship here, just for save data
     public string Content { get; set; } = null!;
     public NotiStatusEnum Status { get; set; } = NotiStatusEnum.Unread;
-    public NotiTypeEnum Type { get; set; } = NotiTypeEnum.Info;
+    public NotiTypeEnum Type { get; set; } = NotiTypeEnum.Like;
     public Guid AccountRecievedId { get; set; }           
     #endregion
 
     #region DB Relationship
-    public Account AccountRecieved { get; set; } = null!;
+    public virtual Account AccountRecieved { get; set; } = null!;
     #endregion
 
 }
