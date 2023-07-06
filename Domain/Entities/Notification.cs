@@ -12,8 +12,8 @@ public class Notification : BaseEntity
     #region Properties
     public Guid? FromAccountId { get; set; } // not create relationship here, just for save data
     public string Content { get; set; } = null!;
-    public NotiStatusEnum Status { get; set; }
-    public NotiTypeEnum Type { get; set; }    
+    public NotiStatusEnum Status { get; set; } = NotiStatusEnum.Unread;
+    public NotiTypeEnum Type { get; set; } = NotiTypeEnum.Info;
     public Guid AccountRecievedId { get; set; }           
     #endregion
 

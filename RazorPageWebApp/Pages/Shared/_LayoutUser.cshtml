@@ -1,7 +1,13 @@
-﻿@inject IHttpContextAccessor httpContext
+﻿@using Domain.Entities;
+@using Infrastructure.UnitOfWorks;
+@using RazorPageWebApp.Extensions;
+@inject IHttpContextAccessor httpContext
 @{
     var username = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_NAME);
+    var userID = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_ID);
     var avatar = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_AVATAR);
+    //Lam: Ý tưởng rất hay nhưng ko thành công:<
+    //var _unitOfWork = httpContext.HttpContext?.Session?.GetEntity<IUnitOfWork>(AppConstants.UNIT_OF_WORK_OBJ);
 }
 <!DOCTYPE html>
 
@@ -34,7 +40,37 @@
                 <form method="get" asp-page="/Groups/Index" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                     <input name="searchValue" id="searchInput" type="search" class="form-control border-1" placeholder="Search..." aria-label="Search">
                 </form>
+                <!-- Notification -->
+                @{
+                    var notifications = new List<Notification>();
+                    //Lam: Ý tưởng rất hay nhưng ko thành công:<
+                    //if (_unitOfWork != null)
+                    //{
+                    //    notifications = _unitOfWork?.NotificationRepository.GetAllUnreadNotification(Guid.Parse(userID), AppConstants.UNREAD_NOTIFICATION_NUM);
+                    //}                    
+                }
 
+                <div class="dropdown me-3">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-bell"></i>                        
+                        <span class="badge bg-danger">@notifications?.Count</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <!-- Loop through notification data -->
+                        @foreach (var notification in notifications)
+                        {
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <span class="notification-icon"><i class="fa-solid fa-comment"></i></span>
+                                    <span class="notification-content">@notification.Content</span>
+                                </a>
+                            </li>
+                        }
+                        <!-- End of notification item loop -->
+                    </ul>
+                </div>
+                <!-- End Notification -->
+                <!-- User icon -->
                 <div class="dropdown text-end me-5">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="@avatar" alt="mdo" width="32" height="32" class="rounded-circle">
@@ -57,7 +93,8 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div>                
+                <!-- End user icon -->
             </div>
         </div>
     </header>
@@ -87,6 +124,7 @@
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="https://cdn.tiny.cloud/1/wyopdb0u8mweiku159d2tp39m5451adsboem7qcr0jyyixp1/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/notify.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

@@ -19,5 +19,6 @@ public interface IUnitOfWork
     public IGroupRepository GroupRepository { get; }
     public IPostRepository PostRepository { get; }
     public IAccountInGroupRepository AccountInGroupRepository { get; }
+    public INotificationRepository NotificationRepository { get; }
 
 }
