@@ -51,6 +51,7 @@ function userMessage(user, message, groupid) {
 function appendMessageMe(user, message) {
     var box = $(`<div class="d-flex flex-row justify-content-end mb-4">
                     <div class="p-2 me-2 border" style="border-radius: 15px; background-color: #fbfbfb;">
+                        <p class="small fw-bold mb-0 text-end" style="font-size:0.75em">${user.fullName}</p>
                         <p class="small mb-0">${message}</p> 
                     </div> 
                     <img src="${user.avatar}" alt="${user.username}" style="width: 40px; height: 40px;">
@@ -62,6 +63,7 @@ function appendMessageOther(user, message) {
     var box = $(`<div class="d-flex flex-row justify-content-start mb-4">
                     <img src="${user.avatar}" alt="${user.username}" style="width: 40px; height: 100%;">
                     <div class="p-2 ms-2" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                        <p class="small fw-bold mb-0 text-start" style="font-size:0.75em">${user.fullName}</p>
                         <p class="small mb-0">${message}</p>
                     </div>
                 </div>`);
