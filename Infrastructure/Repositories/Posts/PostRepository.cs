@@ -111,7 +111,6 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                                      .Include(x => x.TagInPosts)
                                      .ThenInclude(x => x.Tag)
                                      .Include(x => x.Attachments)
-                                     .Where(x => x.Status != Domain.Enums.PostStatusEnum.Rejected)
                                      .OrderByDescending(x => x.CreationDate);
     }
 }

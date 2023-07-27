@@ -4,7 +4,6 @@
 (function () {
     $(function () {
         var connection = new signalR.HubConnectionBuilder().withUrl("/notifyHub").build();
-        var connection.start();
         var hubProxy = connection;
 
         hubProxy.on("ReceiveNotify", function (notification) {
@@ -23,12 +22,7 @@
     });
   
     connection.start()
-        .done(function () {
-            console.log("SignalR connected.");
-        })
-        .fail(function (error) {
-            console.error("SignalR connection failed:", error);
-        });
+     
 });
 }) ();
 

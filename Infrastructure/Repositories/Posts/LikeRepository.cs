@@ -20,7 +20,7 @@ public class LikeRepository : GenericRepository<Like>, ILikeRepository
         _dbContext = new AppDBContext();
     }
 
-    public async Task ToggleLikeAsync(Guid postId, Guid id)
+    public async Task<Like> ToggleLikeAsync(Guid postId, Guid id)
     {
         var like = _dbContext.Likes.FirstOrDefault(x => x.PostId == postId && x.AccountCreatedID == id);
         if (like == null) throw new ArgumentException("Like is not Created");
@@ -32,5 +32,6 @@ public class LikeRepository : GenericRepository<Like>, ILikeRepository
             like.Status = Domain.Enums.LikeStatusEnum.Like;
         }
         await base.UpdateAsync(like);
+        return like;
     }
 }

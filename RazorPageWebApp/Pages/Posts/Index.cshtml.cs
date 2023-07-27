@@ -5,6 +5,7 @@ using Infrastructure.UnitOfWorks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using System.Data;
 using System.Text.Json.Nodes;
 
 namespace RazorPageWebApp.Pages.Posts
@@ -24,7 +25,7 @@ namespace RazorPageWebApp.Pages.Posts
         [BindProperty]
         public string Content { get; set; }
         [BindProperty]
-        public Comment? Comment { get; set; }
+        public Comment? Comment { get; set; } 
         public async Task<IActionResult> OnGet(Guid groupId, Guid postId)
         {
             var userId = _claimService.GetCurrentUserId;
@@ -71,6 +72,24 @@ namespace RazorPageWebApp.Pages.Posts
                     }
                 }
 
+            }
+
+            return BadRequest();
+        }
+        [ActionName("Like")]
+        public async Task<IActionResult> OnPostLike(Guid postId)
+        {
+            var userId = _claimService.GetCurrentUserId;
+            var post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);
+            if (post == null) return NotFound();
+            if (userId == Guid.Empty) return RedirectToPage("/auth/login", new { Message = "Please Login To View Post" });
+            var user_in_group = await _unitOfWork.GroupRepository.IsUserInGroup(userId,post.GroupId);
+
+            if (user_in_group)
+            {
+                var like = await _unitOfWork.LikeRepository.ToggleLikeAsync(postId,userId);
+                if (like == null) throw new DataException("Like unsuccessful!");
+                    return new JsonResult(nameof(like.Status));
             }
 
             return BadRequest();
