@@ -25,6 +25,6 @@
     }
 
 #like-post.active {
-    color: var(--primary-color);
+    color: var(--bs-success);
     font-weight:500;
 }

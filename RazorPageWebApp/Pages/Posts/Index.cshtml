@@ -30,12 +30,14 @@
                 <h2>@Model.Post.Topic</h2>
                 <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
                 <div class="d-flex gap-x-3 align-items-center view-post">
-                    <a class="link-secondary c-pointer" id="like-post" onclick="return toggleLike(this)" 
-                    
-                    data-value="@Model.Post.Likes.Count" 
-                    data-postId="@Model.Post.Id" 
-                    data-groupid="@Model.Post.GroupId">@Model.Post.Likes.Count Likes</a>
-                    <a class="link-secondary c-pointer">@Model.Post.Comments.Count Comments</a>
+                    @{
+                        var active = Model.Post.Likes.Any(x => x.AccountCreatedID.Equals(Model.CurUser.Id));
+                    }
+                    <a class="c-pointer @(active? "active":"")" id="like-post" onclick="return toggleLike(this)"
+                       data-value="@Model.Post.Likes.Count"
+                       data-postId="@Model.Post.Id"
+                       data-groupid="@Model.Post.GroupId">@Model.Post.Likes.Count Likes</a>
+                    <p class="m-0">@Model.Post.Comments.Count Comments</p>
                     <button class="btn btn-light ms-auto" type="button" data-bs-toggle="collapse"
                             data-bs-target="#comment-form-container">
                         <i class="fas fa-comment"></i>
@@ -78,11 +80,16 @@
                         </div>
                         <div class="comment-item border w-100 p-2">
                             <div>@Html.Raw(comment.Content)</div>
-                            <div class="comment-action-container d-flex gap-2">
-                                <a class="reply-count link-secondary c-pointer" data-count="@comment.ReplyComments.Count" data-bs-toggle="collapse"
-                                   data-bs-target="#comment-r-@comment.Id">
+                            <div class="comment-action-container d-flex align-items-center gap-2">
+                                <p class="reply-count m-0" data-count="@comment.ReplyComments.Count">
                                     @comment.ReplyComments.Count Reply
-                                </a>
+                                </p>
+                                <button class="btn btn-light ms-auto" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#comment-r-@comment.Id">
+                                    <i class="fas fa-comment"></i>
+                                    Reply Comment
+                                </button>
                             </div>
                         </div>
 
@@ -118,9 +125,9 @@
                                     </div>
                                     <div class="comment-item border w-100 p-2">
                                         <div>@Html.Raw(reply.Content)</div>
-                                        <div class="comment-action-container d-flex gap-2">
-                                            <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@reply.ReplyComments.Count Reply</a>
-                                        </div>
+                                        @* <div class="comment-action-container d-flex gap-2">
+                            <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@reply.ReplyComments.Count Reply</a>
+                            </div>*@
                                     </div>
 
                                 </div>

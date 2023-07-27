@@ -3,7 +3,7 @@
 @{
     Layout = null;
 }  
-<div id="comment-@Model.Comment.Id" data-val-reply="@Model.CommentId" class="comment-container ms-auto col-lg-11 border border-secondary ">
+<div id="comment-@Model.Comment.Id" data-val-reply="@Model.CommentId" class="comment-container ms-auto col-11 border border-secondary ">
     <div class="comment-user-group d-flex ">
         <div class="col-1">
             <img src="@Model.Comment.AccountCreated.Avatar"
@@ -21,9 +21,9 @@
     </div>
     <div class="comment-item border w-100 p-2">
         <div>@Html.Raw(Model.Comment.Content)</div>
-        <div class="comment-action-container d-flex gap-2">
+        @*<div class="comment-action-container d-flex gap-2">
             <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@Model.CommentId">@Model.Comment.ReplyComments.Count Reply</a>
-        </div>
+        </div>*@
     </div>
     
 </div>
