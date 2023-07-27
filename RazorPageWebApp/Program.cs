@@ -44,7 +44,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 //// Initialize data for DB
-//SeedDatabase();
+SeedDatabase();
 
 app.UseAuthorization();
 

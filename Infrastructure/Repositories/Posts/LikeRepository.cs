@@ -7,6 +7,7 @@ using Infrastructure.IRepositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,18 +21,34 @@ public class LikeRepository : GenericRepository<Like>, ILikeRepository
         _dbContext = new AppDBContext();
     }
 
-    public async Task<Like> ToggleLikeAsync(Guid postId, Guid id)
+    public async Task<Like> ToggleLikeAsync(Guid postId, Guid userId)
     {
-        var like = _dbContext.Likes.FirstOrDefault(x => x.PostId == postId && x.AccountCreatedID == id);
-        if (like == null) throw new ArgumentException("Like is not Created");
+        var like = _dbContext.Likes.FirstOrDefault(x => x.PostId == postId && x.AccountCreatedID == userId);
+        bool is_update = true;
+
+        if (like == null)
+        {
+            is_update = false;
+            like = new Like()
+            {
+                Status = Domain.Enums.LikeStatusEnum.Like,
+                PostId = postId
+                ,
+                AccountCreatedID = userId
+            };
+        } else 
         if (like.Status == Domain.Enums.LikeStatusEnum.Like)
         {
             like.Status = Domain.Enums.LikeStatusEnum.Unlike;
-        }else
+        }
+        else
         {
             like.Status = Domain.Enums.LikeStatusEnum.Like;
         }
-        await base.UpdateAsync(like);
+        if (is_update)
+            await base.UpdateAsync(like);
+        else 
+            await base.AddAsync(like);
         return like;
     }
 }
