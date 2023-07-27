@@ -43,6 +43,7 @@ public class LoginModel : PageModel
 
                 // Add current user to session
                 session.SetEntity(AppConstants.CURRENT_USER, account);
+                session.SetEntity(AppConstants.UNIT_OF_WORK_OBJ, _unitOfWork);
                 session.SetString(AppConstants.USER_ID, account!.Id.ToString());
                 session.SetString(AppConstants.USER_NAME, account!.Username);
                 session.SetString(AppConstants.USER_AVATAR, account!.Avatar);

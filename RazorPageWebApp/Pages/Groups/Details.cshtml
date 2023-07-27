@@ -47,7 +47,8 @@
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <a asp-page-handler="LeaveGroup" asp-route-groupId="@Model.Group.Id"
-                                    class="dropdown-item text-danger">Leave Group</a></li>
+                                       class="dropdown-item text-danger">Leave Group</a>
+                                </li>
                             </ul>
                         </div>
                     }
@@ -70,7 +71,8 @@
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a asp-page-handler="LeaveGroup" asp-route-groupId="@Model.Group.Id"
-                                        class="dropdown-item text-danger">Leave Group</a></li>
+                                           class="dropdown-item text-danger">Leave Group</a>
+                                    </li>
                                 </ul>
                             </div>
                         }
@@ -143,8 +145,9 @@
                                         @if (id != null && id.Equals(Model.HttpContext.Session.GetString("UserId")))
                                         {
                                             <div class="d-flex flex-row justify-content-end mb-4">
-                                                <div class="p-2 me-2 border" style="border-radius: 15px; background-color: #fbfbfb;">
-                                                    <p class="small mb-0">@message.Message</p>
+                                                <div class="p-2 me-2 border align-self-end" style="border-radius: 15px; background-color: #fbfbfb;">
+                                                    <p class="small fw-bold mb-0 text-end" style="font-size:0.75em">@message.User?.FullName</p>
+                                                    <p class="small mb-0 text-wrap">@message.Message</p>
                                                 </div>
                                                 <img src="@(message.User?.Avatar)"
                                                      alt="@(message.User?.Username)" style="width: 40px; height: 40px;">
@@ -156,6 +159,7 @@
                                                 <img src="@(message.User?.Avatar)"
                                                      alt="@(message.User?.Username)" style="width: 40px; height: 100%;">
                                                 <div class="p-2 ms-2" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                                    <p class="small fw-bold mb-0 text-start" style="font-size:0.75em">@message.User?.FullName</p>
                                                     <p class="small mb-0">
                                                         @message.Message
                                                     </p>

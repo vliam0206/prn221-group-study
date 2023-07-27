@@ -1,0 +1,70 @@
+﻿@page "/Notification/{pageIndex?}/{pageSize?}"
+@using Domain.Entities;
+@using Domain.Enums;
+@model RazorPageWebApp.Pages.Notifications.ListModel
+@{
+
+    bool hideLayout = ViewData["HideLayout"] != null;
+    if (hideLayout) Layout = null;
+    var notificationList = Model.Notifications.Items;
+    var notificationCount = Model.Notifications.TotalItemsCount;
+}
+<div id="notifination-container" class="@(hideLayout?"dropdown":"container  rounded") me-3">
+    @if (ViewData["HideLayout"] != null)
+    {
+        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-bell"></i>
+            @if (notificationCount > 0)
+            {
+                <span class="badge bg-danger">@notificationList?.Count</span>
+            }
+        </button>
+    }
+
+    <div class="@(hideLayout?"dropdown-menu":"row col-6 mx-auto justify-content-center border") p-2"
+    @(hideLayout ? "style='width:400px'" : "") aria-labelledby="dropdownMenuButton"
+         data-popper-placement="bottom-end">
+        <h3 class="mt-2">Notifications</h3>
+        <hr></hr>
+
+        <!-- Loop through notification data -->
+
+        <div class="col d-flex justify-content-end">
+            <a class="btn-link px-2" asp-page="/Notifications/List">
+                View all
+            </a>
+        </div>
+        @if (notificationCount > 0)
+        {
+            <ul class="list-group">
+                @foreach (var notification in notificationList)
+                {
+                    <li>
+                        <a class="dropdown-item list-group-item
+                            @(notification.Status == NotiStatusEnum.Read ? "bg-secondary text-light" : "")"
+                           asp-page="Empty" asp-route-id="@notification.Id" asp-route-path="/UserScreen/HomePage">
+                            <span class="notification-icon"><i class="fa-solid fa-comment"></i></span>
+                            <span class="notification-content">@notification.Content</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            @if (!hideLayout)
+            {
+                <div class="col d-flex justify-content-end">
+                    There currently no new notification for you.
+                </div>
+            }
+            else
+            {
+                <div class="col d-flex justify-content-end">
+                    Notification is empty.
+                </div>
+            }
+        }
+        <!-- End of notification item loop -->
+    </div>
+</div>

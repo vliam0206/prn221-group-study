@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ public class Like : BaseEntity
 {
     #region Properties
     public Guid PostId { get; set; }
+    public LikeStatusEnum Status { get; set; } = LikeStatusEnum.Like;
     #endregion
 
     #region DB Relationship
@@ -17,3 +19,4 @@ public class Like : BaseEntity
     public Account AccountCreated { get; set; } = null!;
     #endregion
 }
+

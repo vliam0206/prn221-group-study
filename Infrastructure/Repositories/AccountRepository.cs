@@ -40,4 +40,10 @@ public class AccountRepository : GenericRepository<Account>, IAccountRepository
         await _dbContext.Accounts.AddAsync(account);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<bool> IsUserLiked(Guid postId, Guid userId)
+    {
+
+        return await _dbContext.Likes.AnyAsync(x => x.PostId == postId && x.AccountCreatedID == userId);
+    }
 }

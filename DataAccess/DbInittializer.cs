@@ -225,11 +225,13 @@ public class DbInitializer
                 new Like
                 {
                     PostId = post.Id,
+                    Status = LikeStatusEnum.Like,
                     AccountCreatedID = accounts[0].Id
                 },
                 new Like
                 {
                     PostId = post.Id,
+                    Status = LikeStatusEnum.Unlike,
                     AccountCreatedID = accounts[1].Id
                 }
             };
@@ -339,42 +341,42 @@ public class DbInitializer
                 FromAccountId = accounts[0].Id,
                 Content = "Notification 1",
                 Status = NotiStatusEnum.Read,
-                Type = NotiTypeEnum.Info,
+                Type = NotiTypeEnum.Like,
                 AccountRecievedId = accounts[1].Id
             },
             new Notification
             {
                 Content = "Notification 2",
                 Status = NotiStatusEnum.Unread,
-                Type = NotiTypeEnum.Alert,
+                Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[0].Id
             },
             new Notification
             {
                 Content = "Notification 1",
                 Status = NotiStatusEnum.Read,
-                Type = NotiTypeEnum.Alert,
+                Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[1].Id
             },
             new Notification
             {
                 Content = "Notification 2",
                 Status = NotiStatusEnum.Unread,
-                Type = NotiTypeEnum.Alert,
+                Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[1].Id
             },
             new Notification
             {
                 Content = "Notification 1",
                 Status = NotiStatusEnum.Read,
-                Type = NotiTypeEnum.Alert,
+                Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[2].Id
             },
             new Notification
             {
                 Content = "Notification 2",
                 Status = NotiStatusEnum.Unread,
-                Type = NotiTypeEnum.Alert,
+                Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[2].Id
             }
         };
