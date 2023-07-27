@@ -3,8 +3,9 @@
 // Wrap the code in a function to avoid global namespace pollution
 (function () {
     $(function () {
-        var connection = new signalR.HubConnectionBuilder().withUrl("/notifyHub");
-        var hubProxy = connection.build();
+        var connection = new signalR.HubConnectionBuilder().withUrl("/notifyHub").build();
+        var connection.start();
+        var hubProxy = connection;
 
         hubProxy.on("ReceiveNotify", function (notification) {
             // Create a new notification item element
@@ -18,15 +19,16 @@
             // Append the elements to the dropdown menu
             $(".dropdown-menu").prepend(notificationItem.append(userInfo.append(userAvatar, userName, userEmail), notificationContent));
 
-            console.log("Received notification:", notification);
-        });
-
-        connection.start()
-            .done(function () {
-                console.log("SignalR connected.");
-            })
-            .fail(function (error) {
-                console.error("SignalR connection failed:", error);
-            });
+        console.log("Received notification:", notification);
     });
+  
+    connection.start()
+        .done(function () {
+            console.log("SignalR connected.");
+        })
+        .fail(function (error) {
+            console.error("SignalR connection failed:", error);
+        });
 });
+}) ();
+

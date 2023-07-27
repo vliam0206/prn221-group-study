@@ -35,8 +35,17 @@ public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     }
     public async Task<Pagination<Comment>?> GetAllCommentFromPostAsync(Guid postId, int pageIndex = 0, int pageSize = 10)
     {
-        IQueryable<Comment> commentsQuery = _context.Comments.Where(x => x.PostId == postId).Include(x => x.ReplyComments);
+        IQueryable<Comment> commentsQuery = _context.Comments.Where(x => x.PostId == postId).Include(x => x.ReplyComments).ThenInclude(x=>x.AccountReplied).Include(x => x.AccountCreated);
         return await ToPaginationAsync(commentsQuery, pageIndex, pageSize);
+    }
+    public async Task<List<Comment>?> GetAllCommentFromPostAsync(Guid postId)
+    {
+        IQueryable<Comment> commentsQuery = _context.Comments.Where(x => x.PostId == postId)
+                                                             .Include(x => x.ReplyComments)
+                                                             .ThenInclude(x => x.AccountReplied)
+                                                             .Include(x => x.AccountCreated)
+                                                             .OrderByDescending(x => x.CreationDate);   
+        return await commentsQuery.ToListAsync();
     }
     public async Task<Pagination<Comment>?> ToPaginationAsync(IEnumerable<Comment> commentsList, int pageIndex, int pageSize)
     {

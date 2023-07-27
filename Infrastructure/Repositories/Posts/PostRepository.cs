@@ -46,7 +46,7 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
 
     public Task<Post?> GetPostByIdAsync(Guid postId)
     {
-        return GetQuery().FirstOrDefaultAsync(x => x.Id == postId);
+        return GetQuery().Include(x=>x.Comments).ThenInclude(x=>x.ReplyComments).FirstOrDefaultAsync(x => x.Id == postId);
 
 
     }
