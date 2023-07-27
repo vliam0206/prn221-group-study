@@ -7,22 +7,59 @@
         var hubProxy = connection;
 
         hubProxy.on("ReceiveNotify", function (notification) {
-            // Create a new notification item element
-            var notificationItem = $("<li>").addClass("dropdown-item").attr("data-userid", notification.userId);
-            var userInfo = $("<div>").addClass("user-info");
-            var userAvatar = $("<img>").addClass("user-avatar").attr("src", notification.avatarUrl);
-            var userName = $("<span>").addClass("user-name").text(notification.userName);
-            var userEmail = $("<span>").addClass("user-email").text(notification.email);
-            var notificationContent = $("<span>").addClass("notification-content").text(notification);
+            // Assuming notification is a JavaScript object with properties: Type, Status, Id, and Content
 
-            // Append the elements to the dropdown menu
-            $(".dropdown-menu").prepend(notificationItem.append(userInfo.append(userAvatar, userName, userEmail), notificationContent));
+            // Determine the CSS classes based on notification.Type and notification.Status
+            const typeClass = notification.Type.toString().toLowerCase();
+            const statusClass = notification.Status === "Read" ? "bg-secondary text-light" : "";
 
+            // Create the notification item element using jQuery
+            const notificationItem = $("<li>").addClass('list-group-item');
+
+            // Create the notification link element using jQuery with all the necessary attributes and classes
+            const notificationLink = $("<a>")
+                .addClass(`dropdown-item ${typeClass} ${statusClass}`)
+                .attr("href", `/UserScreen/HomePage?id=${notification.Id}&path=/UserScreen/HomePage`);
+
+            // Create the notification icon element using jQuery and set its HTML content
+            const notificationIcon = $("<span>")
+                .addClass("notification-icon")
+                .html('<i class="fa-solid fa-comment"></i>');
+
+            // Create the notification content element using jQuery and set its text content
+            const notificationContent = $("<span>")
+                .addClass("notification-content")
+                .text(notification.Content);
+
+            // Append the icon and content elements to the notification link
+            notificationLink.append(notificationIcon, notificationContent);
+
+            // Append the notification link to the notification item
+            notificationItem.append(notificationLink);
+
+            // Now you can prepend the notificationItem element to the appropriate parent element in your HTML
+            // For example:
+            $(".dropdown-menu").prepend(notificationItem);
         console.log("Received notification:", notification);
     });
   
     connection.start()
      
 });
-}) ();
+})();
 
+function callNotification(postId, type) {
+    $.ajax({
+        url: `/Notification/${postId}/${type}`,
+        method: 'get',
+        data: null,
+        success: (res) => {
+            console.log(res);
+            console.log("Send Notification Successful");
+        },
+        error: err => {
+            console.log(err);
+            console.log(err.status);
+        }
+    })
+}

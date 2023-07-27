@@ -13,7 +13,7 @@ public class Notification : BaseEntity
     public Guid? FromAccountId { get; set; } // not create relationship here, just for save data
     public string Content { get; set; } = null!;
     public NotiStatusEnum Status { get; set; } = NotiStatusEnum.Unread;
-    public NotiTypeEnum Type { get; set; } = NotiTypeEnum.Like;
+    public NotiTypeEnum Type { get; set; } 
     public Guid AccountRecievedId { get; set; }           
     #endregion
 

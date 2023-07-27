@@ -47,14 +47,15 @@ app.UseRouting();
 //SeedDatabase();
 
 app.UseAuthorization();
-
+// map hub
+app.MapHub<LiveChatHub>("/liveChat");
+app.MapHub<NotifyHub>("/notifyHub");
+// map razor page
 app.MapRazorPages();
 
 // use session
 app.UseSession();
-// map hub
-app.MapHub<LiveChatHub>("/liveChat");
-app.MapHub<NotifyHub>("/notifyHub");
+
 // add custom middleware
 app.UseMiddleware<CheckAuthenticationMiddleware>();
 app.UseMiddleware<LoadNotificationMiddleware>();

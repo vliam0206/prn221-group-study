@@ -12,6 +12,6 @@ public interface IAccountRepository : IGenericRepository<Account>
     Task<Account?> GetAccountByUsernameAsync(string username);
 
     Task InsertAccountAsync(Account account);
-    // get the like data recently also get unlike data
+    // check for the user if they have liked(unliked) this post before
     Task<bool> IsUserLiked(Guid postId, Guid userId);
 }
