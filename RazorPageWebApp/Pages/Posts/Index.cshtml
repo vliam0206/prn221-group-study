@@ -8,13 +8,12 @@
 <article class="container-fluid bg-light">
     <section class="row mx-5 flex-nowrap gap-x-2">
         <div class="col-lg-3 d-none d-lg-block border border-dark rounded bg-white">
-            <div class="card-img p-2 d-flex justify-content-center">
-                <img class=" w-50 rounded-circle border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar" />
-                <br />
-                <p class="mt-5">@Model.Post.AccountCreated.Username</p>
+            <div class="card-img p-2 d-flex flex-column justify-content-center">
+                <img class=" w-50 rounded-circle m-auto border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar">
+                <p class="text-center">@Model.Post.AccountCreated.Username</p>
             </div>
         </div>
-        <div class="col-lg-9 col-auto border border-dark rounded bg-white" style="border-left-width:0px">
+        <div class="col-lg-9 col border border-dark rounded bg-white" style="border-left-width:0px">
             @if (Model.CurUser.Id == Model.Post.AccountCreatedID)
             {
                 <div class="dropdown ms-auto d-flex">
@@ -30,10 +29,20 @@
             <div class="d-flex flex-column col p-2">
                 <h2>@Model.Post.Topic</h2>
                 <div class="w-100 view-post">@Html.Raw(Model.Content)</div>
-                <div class="d-flex gap-x-3 view-post">
-                    <a class="link-secondary c-pointer" onclick="toggleLike(this)" data-postId="@Model.Post.Id">@Model.Post.Likes.Count Likes</a>
-                    <a class="link-secondary c-pointer" data-bs-toggle="collapse"
-                       data-bs-target="#comment-form-container">@Model.Post.Comments.Count Comments</a>
+                <div class="d-flex gap-x-3 align-items-center view-post">
+                    @{
+                        var active = Model.Post.Likes.Any(x => x.AccountCreatedID.Equals(Model.CurUser.Id));
+                    }
+                    <a class="c-pointer @(active? "active":"")" id="like-post" onclick="return toggleLike(this)"
+                       data-value="@Model.Post.Likes.Count"
+                       data-postId="@Model.Post.Id"
+                       data-groupid="@Model.Post.GroupId">@Model.Post.Likes.Count Likes</a>
+                    <p class="m-0">@Model.Post.Comments.Count Comments</p>
+                    <button class="btn btn-light ms-auto" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#comment-form-container">
+                        <i class="fas fa-comment"></i>
+                        Add Comment
+                    </button>
                 </div>
             </div>
         </div>
@@ -44,84 +53,90 @@
                   style="display:none" asp-page-handler="Comment">
                 <input asp-for="Comment.PostId" value="@Model.HttpContext.Request.RouteValues["postId"]" />
             </form>
-            <label class="fw-bold" asp-for="Comment.Content"></label>
+            <label class="fw-bold form-label" asp-for="Comment.Content"></label>
             <textarea class="col-12 p-0 border border-1" id="comment-box"
                       asp-for="Comment.Content" form="comment-form" placeholder="Write some comments"></textarea>
             <button class="btn btn-primary my-2" form="comment-form">Submit</button>
         </div>
         <div class="comment-group col-lg-12 my-3 gap-2 px-2 row  ">
             @foreach (var comment in Model.Post.Comments)
-            {
-                <div id="comment-@comment.Id" class="comment-container col-lg-10 px-0 border border-secondary rounded">
-                    <div class="comment-user-group d-flex ">
-                        <div class="">
-                            <img src="@comment.AccountCreated.Avatar"
-                                 class="img-thumbnail mx-2 rounded-circle border" />
-                        </div>
-                        <div class="d-flex flex-column">
-                            <div class="fw-bold">
-                                <a asp-page="/account/profile">@comment.AccountCreated.Username</a>
+                @if (comment.CommentRepliedId == null)
+                {
+                    <div id="comment-@comment.Id" class="comment-container col-lg-10 px-0 border border-secondary rounded">
+                        <div class="comment-user-group d-flex ">
+                            <div class="">
+                                <img src="@comment.AccountCreated.Avatar"
+                                     class="img-thumbnail mx-2 rounded-circle border" />
                             </div>
-                            <div class="text-black-50">
-                                <a asp-page="/account/profile">@comment.AccountCreated.Email</a>
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">
+                                    <a asp-page="/account/profile">@comment.AccountCreated.Username</a>
+                                </div>
+                                <div class="text-black-50">
+                                    <a asp-page="/account/profile">@comment.AccountCreated.Email</a>
+                                </div>
+                            </div>
+                            <aside class="d-flex ms-auto text-black-50">@comment.ModificationDate</aside>
+                        </div>
+                        <div class="comment-item border w-100 p-2">
+                            <div>@Html.Raw(comment.Content)</div>
+                            <div class="comment-action-container d-flex align-items-center gap-2">
+                                <p class="reply-count m-0" data-count="@comment.ReplyComments.Count">
+                                    @comment.ReplyComments.Count Reply
+                                </p>
+                                <button class="btn btn-light ms-auto" type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#comment-r-@comment.Id">
+                                    <i class="fas fa-comment"></i>
+                                    Reply Comment
+                                </button>
                             </div>
                         </div>
-                        <aside class="d-flex ms-auto text-black-50">@comment.ModificationDate</aside>
-                    </div>
-                    <div class="comment-item border w-100 p-2">
-                        <div>@Html.Raw(comment.Content)</div>
-                        <div class="comment-action-container d-flex gap-2">
-                            <a class="reply-count link-secondary c-pointer" data-count="@comment.ReplyComments.Count" data-bs-toggle="collapse"
-                               data-bs-target="#comment-r-@comment.Id">
-                                @comment.ReplyComments.Count Reply
-                            </a>
-                        </div>
-                    </div>
 
-                    <article class="comment-create-reply my-3 collapse ms-auto col-11" id="comment-r-@comment.Id">
-                        <form id="reply-form-@comment.Id" method="post" onsubmit="return AddComment(this)">
-                            <input asp-for="Comment.AccountRepliedId" value="@comment.AccountCreatedID" type="hidden" readonly />
-                            <input asp-for="Comment.CommentRepliedId" value="@comment.Id" type="hidden" readonly />
-                            <input asp-for="Comment.PostId" value="@comment.PostId" type="hidden" readonly />
-                            <input value="@comment.PostId" type="hidden" readonly />
-                            <label class="fw-bold">Reply Comment</label>
-                            <textarea id="reply-text-@comment.Id" asp-for="Comment.Content" placeholder="Enter Your Reply" form="reply-form-@comment.Id" class="comment-create-reply-text"></textarea>
-                            <button class="btn btn-primary" form="reply-form-@comment.Id">Submit</button>
-                        </form>
-                    </article>
-                    <div class="reply-group ms-auto col d-flex flex-column gap-y-2">
-                        @foreach (var reply in comment.ReplyComments)
-                        {
-                            <div id="comment-@reply.Id" class="comment-container col-lg-11 ms-auto border border-secondary ">
-                                <div class="comment-user-group d-flex ">
-                                    <div>
-                                        <img src="data:image/png;base64,@reply.AccountCreated.Avatar"
-                                        @*src="https://picsum.photos/seed/1w32/200/300"*@
-                                             class="rounded-circle img-thumbnail border mx-2" />
-                                    </div>
-                                    <div class="d-flex flex-column">
-                                        <div class="fw-bold">
-                                            <a asp-page="/account/profile">@reply.AccountCreated.Username</a>
+                        <article class="comment-create-reply my-3 collapse ms-auto col-11" id="comment-r-@comment.Id">
+                            <form id="reply-form-@comment.Id" method="post" onsubmit="return AddComment(this)">
+                                <input asp-for="Comment.AccountRepliedId" value="@comment.AccountCreatedID" type="hidden" readonly />
+                                <input asp-for="Comment.CommentRepliedId" value="@comment.Id" type="hidden" readonly />
+                                <input asp-for="Comment.PostId" value="@comment.PostId" type="hidden" readonly />
+                                <input value="@comment.PostId" type="hidden" readonly />
+                                <label class="fw-bold">Reply Comment</label>
+                                <textarea id="reply-text-@comment.Id" asp-for="Comment.Content" placeholder="Enter Your Reply" form="reply-form-@comment.Id" class="comment-create-reply-text"></textarea>
+                                <button class="btn btn-primary" form="reply-form-@comment.Id">Submit</button>
+                            </form>
+                        </article>
+                        <div class="reply-group ms-auto col d-flex flex-column gap-y-2">
+                            @foreach (var reply in comment.ReplyComments)
+                            {
+                                <div id="comment-@reply.Id" class="comment-container col-11 ms-auto border border-secondary ">
+                                    <div class="comment-user-group d-flex ">
+                                        <div>
+                                            <img src="@reply.AccountCreated.Avatar"
+                                                 class="rounded-circle img-thumbnail border mx-2" />
                                         </div>
-                                        <div class="text-black-50">
-                                            <a asp-page="/account/profile">@reply.AccountCreated.Email</a>
+                                        <div class="d-flex flex-column">
+                                            <div class="fw-bold">
+                                                <a asp-page="/account/profile">@reply.AccountCreated.Username</a>
+                                            </div>
+                                            <div class="text-black-50">
+                                                <a asp-page="/account/profile">@reply.AccountCreated.Email</a>
+                                            </div>
                                         </div>
+                                        <aside class="d-flex ms-auto text-black-50">@reply.ModificationDate</aside>
                                     </div>
-                                    <aside class="d-flex ms-auto text-black-50">@reply.ModificationDate</aside>
+                                    <div class="comment-item border w-100 p-2">
+                                        <div>@Html.Raw(reply.Content)</div>
+                                        @* <div class="comment-action-container d-flex gap-2">
+                            <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@reply.ReplyComments.Count Reply</a>
+                            </div>*@
+                                    </div>
+
                                 </div>
-                                <div class="comment-item border w-100 p-2">
-                                    <div>@Html.Raw(reply.Content)</div>
-                                </div>
-                                <div class="comment-action-container d-flex gap-2 mx-2">
-                                    <a class="link-secondary c-pointer" data-bs-toggle="collapse" data-bs-target="#comment-r-@comment.Id">@reply.ReplyComments.Count Reply</a>
-                                </div>
-                            </div>
-                        }
+                            }
+                        </div>
                     </div>
-                </div>
 
 
-            }
+                }
         </div>
 
     </section>
@@ -210,6 +225,7 @@
                     }
                 },
                 error: (e) => {
+                    console.log(e);
                     console.log(e.status);
                 }
             })

@@ -4,6 +4,6 @@ namespace Infrastructure.IRepositories
 {
     public interface ILikeRepository : IGenericRepository<Like>
     {
-        Task ToggleLikeAsync(Guid postId, Guid id);
+        Task<Like> ToggleLikeAsync(Guid postId, Guid id);
     }
 }
