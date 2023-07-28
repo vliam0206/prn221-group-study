@@ -211,6 +211,7 @@
                         // create comment
                         $(".comment-group").prepend(res);
                         selector = '#reply-text-' + res.data('id')
+                        $(selector).text('');
                         initTinyMce(selector)
                         tinymce.get('comment-box').setContent('')
                     } else {
