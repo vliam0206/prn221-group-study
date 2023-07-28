@@ -14,10 +14,10 @@ public class IndexModel : PageModel
         _claimService = claimService;
     }
     [BindProperty]
-    public Comment Comment { get; set; }
+    public Comment? Comment { get; set; }
     public async Task<IActionResult> OnGet(Guid id)
     {
-        Comment = await _unitOfWork.CommentRepository.GetByIdAsync(id ,x => x.AccountCreated,x=>x.AccountReplied,x=>x.ReplyComments,x=>x.CommentReplied);
+        Comment = await _unitOfWork.CommentRepository.GetByIdAsync(id, x => x.AccountCreated, x => x.AccountReplied, x => x.ReplyComments, x => x.CommentReplied);
         return Page();
     }
 }

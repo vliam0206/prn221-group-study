@@ -10,7 +10,9 @@
         <div class="col-lg-3 d-none d-lg-block border border-dark rounded bg-white">
             <div class="card-img p-2 d-flex flex-column justify-content-center">
                 <img class=" w-50 rounded-circle m-auto border border-2 border-dark" src="@Model.Post.AccountCreated.Avatar">
-                <p class="text-center">@Model.Post.AccountCreated.Username</p>
+                <a  class="text-center"> @Model.Post.AccountCreated.FullName </p>
+                <a asp-page="/account/profile" class="text-center fw-bold m-0">@Model.Post.AccountCreated.Username</a>
+                <a asp-page="/account/profile" class="text-center fw-bold m-0">@Model.Post.AccountCreated.Email</a>
             </div>
         </div>
         <div class="col-lg-9 col border border-dark rounded bg-white" style="border-left-width:0px">
@@ -211,6 +213,7 @@
                         // create comment
                         $(".comment-group").prepend(res);
                         selector = '#reply-text-' + res.data('id')
+                        $(selector).text('');
                         initTinyMce(selector)
                         tinymce.get('comment-box').setContent('')
                     } else {

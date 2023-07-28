@@ -80,7 +80,7 @@ namespace RazorPageWebApp.Pages.Posts
         }
 
         [ActionName("Like")]
-        public async Task<IActionResult> OnGetLike(Guid groupId, Guid postId)
+        public async Task<IActionResult> OnPostLike(Guid groupId, Guid postId)
         {
             var userId = _claimService.GetCurrentUserId;
             var post = await _unitOfWork.PostRepository.GetPostByIdAsync(postId);

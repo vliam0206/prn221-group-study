@@ -45,7 +45,7 @@ body {
     font-weight: 700
 }
 a {
-    color: black;
+    color: black!important;
     text-decoration: none;
 }
 

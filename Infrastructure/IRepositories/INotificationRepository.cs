@@ -1,5 +1,6 @@
 ﻿using Application.Commons;
 using Domain.Entities;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,4 +13,5 @@ public interface INotificationRepository : IGenericRepository<Notification>
 {
     Task<Pagination<Notification>> GetAllNotification(Guid userId, int pageIndex, int pageSize);
     Task<Pagination<Notification>> GetAllUnreadNotificationPagination(Guid userId, int pageIndex, int pageSize);
+    bool HadNotify(Guid receivedId, Guid sendId, NotiTypeEnum type);
 }

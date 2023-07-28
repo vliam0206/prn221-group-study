@@ -12,13 +12,11 @@ namespace RazorPageWebApp.Pages.Notifications
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IClaimService _claimService;
-        private readonly NotifyHub _notifyHub;
 
-        public CreateModel(IUnitOfWork unitOfWork, IClaimService claimService, NotifyHub notifyHub)
+        public CreateModel(IUnitOfWork unitOfWork, IClaimService claimService)
         {
             _unitOfWork = unitOfWork;
             _claimService = claimService;
-            _notifyHub = notifyHub;
         }
         Notification Notification { get; set; } = new();
 
@@ -31,21 +29,40 @@ namespace RazorPageWebApp.Pages.Notifications
             if (user == null) return NotFound("User Not Found");
             if (type.Equals("like", StringComparison.OrdinalIgnoreCase))
             {
-                bool hadLiked = await _unitOfWork.AccountRepository.IsUserLiked(postId, user.Id);
-                if (hadLiked)
-                {
-                    // go back 
-                    return BadRequest("No need to create notification");
-                }
+                //bool hadLiked = await _unitOfWork.AccountRepository.IsUserLiked(postId, user.Id);
+                //if (hadLiked)
+                //{
+                //    // go back 
+                //    return new JsonResult("No need to create notification");
+                //}
+                var hadNotify =  _unitOfWork.NotificationRepository.HadNotify(post.AccountCreatedID.Value, user.Id, Domain.Enums.NotiTypeEnum.Like);
+                if(!hadNotify)
                 await CreateLikeNotification(post, user);
+                else
+                return new JsonResult("No need to create notification");
+
             }
             if (type.Equals("comment", StringComparison.OrdinalIgnoreCase))
             {
                 await CreateCommentNotification(post, user);
             }
+            if (type.Equals("reply", StringComparison.OrdinalIgnoreCase))
+            {
+                await CreateCommentReplyNotification(post, user);
+            }
             else return BadRequest();
-            await _notifyHub.SendNotifyOther(Notification);
+            //await _notifyHub.SendNotifyOther(Notification);
             return new JsonResult(Notification);
+        }
+
+        private async Task CreateCommentReplyNotification(Post post, Account user)
+        {
+            Notification.FromAccountId = _claimService.GetCurrentUserId;
+            Notification.Type = Domain.Enums.NotiTypeEnum.Comment;
+            Notification.Status = Domain.Enums.NotiStatusEnum.Unread;
+            Notification.AccountRecievedId = post.AccountCreatedID.Value;
+            Notification.Content = $"User <b>{user.Username}</b> have Replied your Comment <b>{post.Topic}</b>";
+            await _unitOfWork.NotificationRepository.AddAsync(Notification);
         }
 
         private async Task CreateCommentNotification(Post post, Account user)

@@ -1,21 +1,21 @@
-﻿let connection;
+﻿var livechatConnection = new signalR.HubConnectionBuilder().withUrl("/liveChat").build();
+
 let form = $("#live-chat-form");
 let container = $("#live-chat .chat-container");
 var curUserId = $(form).data('userid');
 var curGroupId = $(form).data('groupid');
 var typingTimer = undefined;
 $(() => {
-    connection = new signalR.HubConnectionBuilder().withUrl("/liveChat").build();
-    connection.start();
-    connection.on("UserMessage", (user, message, groupid) => userMessage(user, message, groupid))
-    connection.on("Typing", (user, groupId) => userTyping(user, groupId))
+    livechatConnection.start();
+    livechatConnection.on("UserMessage", (user, message, groupid) => userMessage(user, message, groupid))
+    livechatConnection.on("Typing", (user, groupId) => userTyping(user, groupId))
     form.on('submit', (e) => AddMessage(e.target));
     form.find("textarea").on('keydown', (e) => { check(e); })
     function AddMessage(form) {
         textarea = $(form).find('textarea');
         message = textarea.val();
         if (message != null && message.length > 0) {
-            connection.send("SendMessage", message, curGroupId)
+            livechatConnection.send("SendMessage", message, curGroupId)
             textarea.val("");
         }
         clearTimeout(typingTimer);
@@ -28,7 +28,7 @@ $(() => {
                 form.submit();
             } else {
                 clearTimeout(typingTimer); // Xóa timer hiện tại nếu có
-                connection.send("Typing", curGroupId);
+                livechatConnection.send("Typing", curGroupId);
             }
         }
     }

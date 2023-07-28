@@ -21,11 +21,16 @@
     </div>
     <div class="comment-item border w-100 p-2">
         <div>@Html.Raw(Model.Comment.Content)</div>
-        <div class="comment-action-container d-flex gap-2">
-            <a class="reply-count link-secondary c-pointer" data-count="@Model.Comment.ReplyComments.Count" data-bs-toggle="collapse"
-               data-bs-target="#comment-r-@Model.Comment.Id">
+        <div class="comment-action-container d-flex align-items-center gap-2">
+            <p class="reply-count m-0" data-count="@Model.Comment.ReplyComments.Count">
                 @Model.Comment.ReplyComments.Count Reply
-            </a>
+            </p>
+            <button class="btn btn-light ms-auto" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#comment-r-@Model.Comment.Id">
+                <i class="fas fa-comment"></i>
+                Reply Comment
+            </button>
         </div>
     </div>
 
