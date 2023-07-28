@@ -57,7 +57,7 @@ namespace RazorPageWebApp.Pages.Groups
             {
                 return Page();
             }
-            Group.CreationDate = DateTime.Now;            
+            Group.ModificationDate = DateTime.Now;            
             Group.AccountCreatedID = _claimService.GetCurrentUserId;
 
             await _unitOfWork.GroupRepository.UpdateAsync(Group);

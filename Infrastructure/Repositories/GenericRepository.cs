@@ -85,6 +85,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
                               .Skip(pageIndex * pagesize)
                               .Take(pagesize)
                               .AsNoTracking()
+                              .OrderByDescending(x => x.CreationDate)
                               .ToListAsync();
         return new Pagination<T>
         {

@@ -14,14 +14,15 @@
             <div class="col-md-4">
                 <form method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Group.Id" />
                     <div class="form-group">
                         <label asp-for="Group.Name" class="control-label"></label>
-                        <input asp-for="Group.Name" class="form-control" value="@Model.Group.Name"/>
+                        <input asp-for="Group.Name" class="form-control" value="@Model.Group.Name" />
                         <span asp-validation-for="Group.Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Group.Description" class="control-label">Description (optional)</label>
-                        <input asp-for="Group.Description" class="form-control" value="@Model.Group.Description"/>
+                        <input asp-for="Group.Description" class="form-control" value="@Model.Group.Description" />
                         <span asp-validation-for="Group.Description" class="text-danger"></span>
                     </div>
 
