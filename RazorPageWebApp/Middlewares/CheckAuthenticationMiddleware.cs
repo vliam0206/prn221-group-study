@@ -6,8 +6,7 @@ public class CheckAuthenticationMiddleware : IMiddleware
     {
         var currentUser = context.Session.GetString(AppConstants.USER_NAME);
         var path = context.Request.Path;
-        if (path.HasValue && PathCondition(path) 
-                    && PathConditionNotInclude(path))
+        if (path.HasValue && PathCondition(path) && PathConditionNotInclude(path))
         {
             if (string.IsNullOrEmpty(currentUser))
             {
@@ -22,6 +21,7 @@ public class CheckAuthenticationMiddleware : IMiddleware
         return (
             path.Value.ToLower().StartsWith("/UserScreen".ToLower())
          || path.Value.ToLower().StartsWith("/Groups".ToLower())
+         || path.Value.ToLower().StartsWith("/Notification".ToLower())
             );
     }
     private bool PathConditionNotInclude(PathString path)

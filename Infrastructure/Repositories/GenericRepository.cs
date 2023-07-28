@@ -94,7 +94,22 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             TotalItemsCount = itemCount
         };
     }
-
+    public async Task<Pagination<T>> ToPagination(IQueryable<T> query, int pageIndex, int pagesize)
+    {
+        var itemCount = await query.CountAsync();
+        var items = await query
+                              .Skip(pageIndex * pagesize)
+                              .Take(pagesize)
+                              .AsNoTracking()
+                              .ToListAsync();
+        return new Pagination<T>
+        {
+            Items = items,
+            PageIndex = pageIndex,
+            PageSize = pagesize,
+            TotalItemsCount = itemCount
+        };
+    }
     public async Task SoftDeleteAsync(T entity, Guid userId)
     {
         entity.IsDeleted = true;

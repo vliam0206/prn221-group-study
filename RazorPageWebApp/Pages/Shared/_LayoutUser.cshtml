@@ -1,7 +1,13 @@
-﻿@inject IHttpContextAccessor httpContext
+﻿@using Domain.Entities;
+@using Infrastructure.UnitOfWorks;
+@using RazorPageWebApp.Extensions;
+@inject IHttpContextAccessor httpContext
 @{
     var username = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_NAME);
+    var userID = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_ID);
     var avatar = httpContext.HttpContext?.Session?.GetString(AppConstants.USER_AVATAR);
+    //Lam: Ý tưởng rất hay nhưng ko thành công:<
+    //var _unitOfWork = httpContext.HttpContext?.Session?.GetEntity<IUnitOfWork>(AppConstants.UNIT_OF_WORK_OBJ);
 }
 <!DOCTYPE html>
 
@@ -15,7 +21,7 @@
     <link rel="stylesheet" href="~/RazorPageWebApp.styles.css" asp-append-version="true" />
     <link href="
         https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css
-        " rel="stylesheet">  
+        " rel="stylesheet">
 </head>
 <body>
     <header class="p-2 border-bottom">
@@ -34,7 +40,14 @@
                 <form method="get" asp-page="/Groups/Index" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                     <input name="searchValue" id="searchInput" type="search" class="form-control border-1" placeholder="Search..." aria-label="Search">
                 </form>
-
+                <!-- Notification -->
+                <div id="notifination-container" class="dropdown me-3">
+                    <script>
+                        //code moved to site.js
+                    </script>
+                </div>
+                <!-- End Notification -->
+                <!-- User icon -->
                 <div class="dropdown text-end me-5">
                     <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="@avatar" alt="mdo" width="32" height="32" class="rounded-circle">
@@ -58,6 +71,7 @@
                         </li>
                     </ul>
                 </div>
+                <!-- End user icon -->
             </div>
         </div>
     </header>
@@ -87,6 +101,7 @@
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
     <script src="https://cdn.tiny.cloud/1/wyopdb0u8mweiku159d2tp39m5451adsboem7qcr0jyyixp1/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/notify.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>

@@ -1,10 +1,9 @@
 ﻿using Application.Commons;
 using Domain.Entities.Posts;
-using Infrastructure.IRepositories;
 
-namespace Infrastructure.Repositories.Comments
+namespace Infrastructure.IRepositories
 {
-    public interface ICommentRepository:IGenericRepository<Comment>
+    public interface ICommentRepository : IGenericRepository<Comment>
     {
         Task<bool> AddCommentAsync(Comment comment);
         Task<bool> EditCommentAsync(Comment? comment);

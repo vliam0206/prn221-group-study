@@ -3,6 +3,7 @@ using Application.IServices;
 using AutoMapper;
 using DataAccess;
 using Domain.Entities.Posts;
+using Infrastructure.IRepositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -129,7 +130,6 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
                                      .Include(x => x.TagInPosts)
                                      .ThenInclude(x => x.Tag)
                                      .Include(x => x.Attachments)
-                                     .Where(x => x.Status != Domain.Enums.PostStatusEnum.Rejected)
                                      .OrderByDescending(x => x.CreationDate);
     }
 }

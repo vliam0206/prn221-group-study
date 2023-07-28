@@ -54,8 +54,10 @@ app.MapRazorPages();
 app.UseSession();
 // map hub
 app.MapHub<LiveChatHub>("/liveChat");
+app.MapHub<NotifyHub>("/notifyHub");
 // add custom middleware
 app.UseMiddleware<CheckAuthenticationMiddleware>();
+app.UseMiddleware<LoadNotificationMiddleware>();
 
 app.Run();
 
@@ -69,7 +71,7 @@ void SeedDatabase()
         var services = scope.ServiceProvider;
         try
         {
-            var context = services.GetRequiredService<AppDBContext>();
+            var context = new AppDBContext();
             //context.Database.EnsureCreated(); // create database if not exist, add table if not has any
             DbInitializer.InitializeData(context);
         }
