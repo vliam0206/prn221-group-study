@@ -102,6 +102,25 @@ public class PostRepository : GenericRepository<Post>, IPostRepository
         };
         return pagination;
     }
+
+    public async Task<Pagination<Post>?> GetAllApprovedPostFromGroupSearchAsync(Guid groupId, string searchValue, int pageIndex = 0, int pageSize = 10) {
+        var query = GetQuery().Where(x => x.GroupId == groupId && x.IsDeleted == false
+                                        && x.Status == Domain.Enums.PostStatusEnum.Approved 
+                                        && x.Topic.Contains(searchValue)
+                                        );
+        var totalPostsCount = await query.CountAsync();
+        var posts = await query
+                        .Skip((pageIndex) * pageSize)
+                        .Take(pageSize)
+                        .ToListAsync();
+        var pagination = new Pagination<Post> {
+            TotalItemsCount = totalPostsCount,
+            PageSize = pageSize,
+            PageIndex = pageIndex,
+            Items = posts
+        };
+        return pagination;
+    }
     private IQueryable<Post> GetQuery()
     {
         return _context.Posts.Where(x => x.IsDeleted == false).AsNoTracking()
