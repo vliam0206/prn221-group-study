@@ -45,14 +45,7 @@
                         <a class="dropdown-item @(notification.Type.ToString().ToLower()) @(notification.Status == NotiStatusEnum.Read ? "bg-secondary text-light" : "")"
                    asp-page="Empty" asp-route-id="@notification.Id" asp-route-path="/UserScreen/HomePage">
                             <span class="notification-icon"><i class="fa-solid fa-comment"></i></span>
-                            <span class="notification-content">@notification.Content</span>
-                        </a>
-                    </li>
-                    <li class="list-group-item p-0">
-                        <a class="dropdown-item @(notification.Type.ToString().ToLower()) @(notification.Status == NotiStatusEnum.Read ? "bg-secondary text-light" : "")"
-                   asp-page="Empty" asp-route-id="@notification.Id" asp-route-path="/UserScreen/HomePage">
-                            <span class="notification-icon"><i class="fa-solid fa-comment"></i></span>
-                            <span class="notification-content">@notification.Content</span>
+                            <span class="notification-content">@Html.Raw(notification.Content)</span>
                         </a>
                     </li>
                 }

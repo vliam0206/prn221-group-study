@@ -47,24 +47,24 @@ $(function () {
 });
 
 function callNotification(postId, type) {
-    $.ajax({
-        url: `/Notification/create/${postId}/${type}`,
-        method: 'get',
-        headers:
-        {
-            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-        },
-        data:
-        {
-            "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
-        },
-        success: (res) => {
-            notifyConnection.send('SendNotifyOther', res);
-            console.log(res);
-        },
-        error: err => {
-            console.log(err);
-            console.log(err.status);
-        }
-    })
+    //$.ajax({
+    //    url: `/Notification/create/${postId}/${type}`,
+    //    method: 'get',
+    //    headers:
+    //    {
+    //        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+    //    },
+    //    data:
+    //    {
+    //        "RequestVerificationToken": $('input:hidden[name="__RequestVerificationToken"]').val()
+    //    },
+    //    success: (res) => {
+    //        notifyConnection.send('SendNotifyOther', res);
+    //        console.log(res);
+    //    },
+    //    error: err => {
+    //        console.log(err);
+    //        console.log(err.status);
+    //    }
+    //})
 }
