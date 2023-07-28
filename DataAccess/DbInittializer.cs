@@ -38,7 +38,7 @@ public class DbInitializer
             new Account
             {
                 Username = "lamlam",
-                Password = "123".Hash(),
+                Password = "abc123".Hash(),
                 Email = "v.trclam@gmail.com",
                 FirstName = "Truc Lam",
                 LastName = "Vo",
@@ -49,7 +49,7 @@ public class DbInitializer
             new Account
             {
                 Username = "huynhphu",
-                Password = "123".Hash(),
+                Password = "abc123".Hash(),
                 Email = "phu@fpt.com",
                 FirstName = "Phu",
                 LastName = "Huynh",
@@ -60,7 +60,7 @@ public class DbInitializer
             new Account
             {
                 Username = "binhnguyen",
-                Password = "123".Hash(),
+                Password = "abc123".Hash(),
                 Email = "binh@fpt.com",
                 FirstName = "Tranquility",
                 LastName = "Nguyen",
@@ -340,42 +340,42 @@ public class DbInitializer
             {
                 FromAccountId = accounts[0].Id,
                 Content = "Notification 1",
-                Status = NotiStatusEnum.Read,
+                Status = NotiStatusEnum.Unread,
                 Type = NotiTypeEnum.Like,
                 AccountRecievedId = accounts[1].Id
             },
             new Notification
             {
                 Content = "Notification 2",
-                Status = NotiStatusEnum.Unread,
+                Status = NotiStatusEnum.Read,
                 Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[0].Id
             },
             new Notification
             {
                 Content = "Notification 1",
-                Status = NotiStatusEnum.Read,
+                Status = NotiStatusEnum.Unread,
                 Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[1].Id
             },
             new Notification
             {
                 Content = "Notification 2",
-                Status = NotiStatusEnum.Unread,
+                Status = NotiStatusEnum.Read,
                 Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[1].Id
             },
             new Notification
             {
                 Content = "Notification 1",
-                Status = NotiStatusEnum.Read,
+                Status = NotiStatusEnum.Unread,
                 Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[2].Id
             },
             new Notification
             {
                 Content = "Notification 2",
-                Status = NotiStatusEnum.Unread,
+                Status = NotiStatusEnum.Read,
                 Type = NotiTypeEnum.Comment,
                 AccountRecievedId = accounts[2].Id
             }

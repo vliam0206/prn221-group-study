@@ -18,8 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddInfrastrucureService();
 
 //// Add dbcontext ---> Uncomment these 2 bellow lines and line 47 for seeding initial daatabase
-//builder.Services.AddDbContext<AppDBContext>(options =>
-//                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDB")));
+builder.Services.AddDbContext<AppDBContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDB")));
 
 //Add web app services
 builder.Services.AddWebAppServices();
@@ -44,7 +44,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 //// Initialize data for DB
-//SeedDatabase();
+SeedDatabase();
 
 app.UseAuthorization();
 
@@ -72,7 +72,7 @@ void SeedDatabase()
         try
         {
             var context = new AppDBContext();
-            //context.Database.EnsureCreated(); // create database if not exist, add table if not has any
+            context.Database.EnsureCreated(); // create database if not exist, add table if not has any
             DbInitializer.InitializeData(context);
         }
         catch (Exception ex)
