@@ -120,7 +120,12 @@
                     </div>
                     <!-- End Configuration bar -->
                 </div>
-                <span class="text-danger">@Model.Message</span>
+                @if (Model.Message != null && Model.Message.Contains("successfully")) {
+                    <span class="text-success">@Model.Message</span>
+                } else {
+                    <span class="text-danger">@Model.Message</span>
+
+                }
                 <!-- End Title Info -->
                 <!-- Detail Info -->
 
@@ -193,7 +198,7 @@
                                         }
                                         @if (item.Role == Domain.Enums.RoleEnum.Moderator) {
                                             <form asp-page="Members" asp-page-handler="changerole"
-                                                  onclick="return confirm('Are you sure to set role moderator to this account?');">
+                                                  onclick="return confirm('Are you sure to set role Member to this account?');">
                                                 <input type="hidden" name="accountId" value="@item.AccountId" />
                                                 <input type="hidden" name="groupId" value="@Model.GroupObj.Id" />
                                                 <input type="hidden" name="role" value="@Domain.Enums.RoleEnum.Member" />
