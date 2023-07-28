@@ -168,19 +168,22 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Approved" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
+                                                <a
+                                                   asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Approved" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
                                                     Approve
                                                 </a>
                                             </li>
                                             <li>
-                                                <a asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Rejected" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
+                                                <a
+                                                   asp-page="/Index" asp-page-handler="UpdateStatus" asp-route-id="@post.Id" asp-route-status="Rejected" asp-route-groupId="@Model.GroupObj.Id" class="dropdown-item">
                                                     Reject
                                                 </a>
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
-                                                <a asp-page="AllPosts" asp-page-handler="Delete"
-                                                   asp-route-groupId="@Model.GroupObj.Id" asp-route-postId="@post.Id" class="dropdown-item text-danger">
+                                                <a onclick="return confirm('Are you sure to delete this post from group?')" asp-page="AllPosts" asp-page-handler="Delete"
+                                                   asp-route-groupId="@Model.GroupObj.Id" asp-route-postId="@post.Id" class="dropdown-item text-danger"
+                                                   >
                                                     Delete
                                                 </a>
                                             </li>
