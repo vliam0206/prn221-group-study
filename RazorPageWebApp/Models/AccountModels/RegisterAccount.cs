@@ -6,10 +6,13 @@ namespace RazorPageWebApp.Models.AccountModels;
 public class RegisterAccount
 {
     [Required(ErrorMessage = "Username is required!")]
+    [MinLength(6, ErrorMessage = "Username must be in 6-12 characters.")]
+    [MaxLength(12, ErrorMessage = "Username must be in 6-12 characters.")]
     public string Username { get; set; }
 
     [Required(ErrorMessage = "Password is required!")]
     [PasswordPropertyText]
+    [MinLength(6, ErrorMessage = "Password must at least 6 characters.")]
     public string Password { get; set; }
 
     [Required(ErrorMessage = "Confirm password is required!")]
